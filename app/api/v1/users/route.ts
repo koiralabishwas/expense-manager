@@ -44,6 +44,9 @@ export async function POST(request : NextRequest) {
   return NextResponse.json(data)
 }
 
+
+
+
 export async function GET(request:NextRequest) {
   const client = await clientPromise
   const data = await client.db('expense-app-db').collection('users').find({
