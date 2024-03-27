@@ -21,6 +21,7 @@ export async function POST(request : NextRequest) {
   // quit if the validation is not succeed
   
   const data = {
+    // id will be deafully incremented
     name: body.name,
     email: body.email,
     hashedPassword: body.password,
