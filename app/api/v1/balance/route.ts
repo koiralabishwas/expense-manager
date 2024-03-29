@@ -34,9 +34,9 @@ export async function POST(request : NextRequest) {
 
   try{
     //check userId to all the existing userID
-    const userExistance = await client.db('expense-app-db').collection('users').findOne({_id: new ObjectId(body.userId)})
+    const userExistance = await client.db('expense-app-db').collection('users').findOne({_id: new ObjectId(data.userId)})
 
-    // TODO: catch error not catching errors well
+    // TODO: catch error. not catching errors well
     if (!userExistance)
       return NextResponse.json({error : "user does't exist . check if the user is registered with same Id"} , {status : 400})
 

@@ -24,19 +24,19 @@ export async function POST(request : NextRequest) {
     // id will be deafully incremented
     name: body.name,
     email: body.email,
-    hashedPassword: body.password,
+    password: body.password,
     createdAt: new Date(),
   };
   
   const client = await clientPromise
 
-  // only register if the user with same email is not existing
-  const existingUser = await client.db('expense-app-db').collection('users').findOne({
+  // check if the use is existing with same email
+  const existingEmail = await client.db('expense-app-db').collection('users').findOne({
     email : body.email
   })
 
-  if (existingUser) 
-    return NextResponse.json({ error: "user exists with the username" }, { status: 404 })
+  if (existingEmail) 
+    return NextResponse.json({ error: "user exists with the email" }, { status: 400})
 
   // 
   const registerUser = client.db('expense-app-db').collection('users').insertOne(data)
