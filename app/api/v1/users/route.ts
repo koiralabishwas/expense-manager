@@ -2,6 +2,7 @@ import clientPromise from "@/lib/monogodb";
 import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import bcrypt from 'bcrypt'
 // make this request post and use a schema
 // TODO: make a better validation
 const schema = z.object({
@@ -19,12 +20,15 @@ export async function POST(request : NextRequest) {
   if (!validation.success) 
     return NextResponse.json(validation.error.errors , {status:400});
   // quit if the validation is not succeed
+
+  // hash the password using bcrypt
+  const hashedPassword = await bcrypt.hash(body.password , 10)
   
   const data = {
     // id will be deafully incremented
     name: body.name,
     email: body.email,
-    password: body.password,
+    password: hashedPassword,
     createdAt: new Date(),
   };
   
