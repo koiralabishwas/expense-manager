@@ -55,5 +55,5 @@ export async function GET(request:NextRequest) {
   const client = await clientPromise
   const data = await client.db('expense-app-db').collection('transactions').find().toArray()
 
-  return NextResponse.json(data  , {status : 200})
+  return NextResponse.json(JSON.stringify(data), {status : 200})
 }
