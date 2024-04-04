@@ -1,12 +1,15 @@
 import Image from "next/image";
 import clientPromise from "@/lib/monogodb";
-import FetchUserData from "./components/FetchUserBalance";
+import FetchUserData from "./components/FetchUserData";
+
+
 
 export default function Home() {
 
   return (
     <div>
-      Hello World
+      <div>Hello</div>
+      <p>this is my expense-tracker app</p>
       <FetchUserData />
     </div>
   );
