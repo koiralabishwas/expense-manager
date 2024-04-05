@@ -27,7 +27,8 @@ export async function POST(request : NextRequest) {
     category : body.category,
     description : body.description,
     method : body.method,
-    amount : body.amount
+    amount : body.amount,
+    date : new Date()
   };
   
   const client = await clientPromise
