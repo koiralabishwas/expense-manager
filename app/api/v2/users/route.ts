@@ -3,6 +3,7 @@ import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from 'bcrypt'
+import { ObjectId } from "mongodb";
 // make this request post and use a schema
 // TODO: make a better validation
 const schema = z.object({
@@ -12,7 +13,8 @@ const schema = z.object({
 })
 
 
-// need await in a lot of places
+// register a user
+// need await in a lot of places to work properly
 export async function POST(request : NextRequest) {
   const body = await request.json()
   const validation = schema.safeParse(body)
@@ -25,17 +27,16 @@ export async function POST(request : NextRequest) {
   const hashedPassword = await bcrypt.hash(body.password , 10)
   
   const data = {
-    // id will be deafully incremented
     name: body.name,
     email: body.email,
-    password: hashedPassword,
+    password: await hashedPassword,
     createdAt: new Date(),
   };
   
   const client = await clientPromise
 
   // check if the use is existing with same email
-  const existingEmail = await client.db('expense-app-db').collection('users').findOne({
+  const existingEmail = await client.db('bop-db').collection('users').findOne({
     email : body.email
   })
 
@@ -43,7 +44,7 @@ export async function POST(request : NextRequest) {
     return NextResponse.json({ error: "user exists with the email" }, { status: 400})
 
   // 
-  const registerUser = client.db('expense-app-db').collection('users').insertOne(data)
+  const registerUser = client.db('bop-db').collection('users').insertOne(data)
 
 
   return NextResponse.json(data)
@@ -51,13 +52,14 @@ export async function POST(request : NextRequest) {
 
 
 
-
+// fetch all registered users
 export async function GET(request:NextRequest) {
+  // FIXME: siply return all registered users FIXME: not the transaction array
   const client = await clientPromise
-  const data = await client.db('expense-app-db').collection('users').find({
-    name : 'bishwas'
-  }).toArray()
-  // use toArray to find many in mongodb
+  const projection = {password : 0 , transactions : 0}
+  const data = await client.db('bop-db').collection('users').find({} , {projection}).toArray()
+
+  
 
   return NextResponse.json(data)
 

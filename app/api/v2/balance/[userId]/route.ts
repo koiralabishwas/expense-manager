@@ -53,7 +53,7 @@ export async function POST(request : NextRequest , { params }: { params: { userI
     const filter = {_id : new  ObjectId(params.userId)}
     //: need to type here
     const updateDoc : object  = {
-      $push : {[`transaction.${body.yearMonth}`] : data}
+      $push : {[`transactions.${body.yearMonth}`] : data}
     }
 
 
