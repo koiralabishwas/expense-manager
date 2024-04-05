@@ -1,4 +1,5 @@
 import clientPromise from "@/lib/monogodb";
+import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 
 //  interface Data {
@@ -11,7 +12,8 @@ import { ObjectId } from "mongodb";
 //   userId: string
 // }
 
-import { NextRequest, NextResponse } from "next/server";
+// it fix the not refetching available books in borrowbooks
+export const dynamic = 'force-dynamic'
 
 export async function GET(
   request: NextRequest,
@@ -25,8 +27,5 @@ export async function GET(
     .collection("transactions")
     .find({ userId: params.id })
     .toArray()
-
-  
-
   return NextResponse.json(data, { status: 200 });
 }

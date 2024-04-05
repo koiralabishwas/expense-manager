@@ -29,7 +29,7 @@ const FetchUserData = () => {
     <div>
       {userData.map((data) => (
         <div key={data._id}>
-          <p>{data.category} : {data.description} : {data.method} : {data.amount}</p>
+          
         </div>
       ))}
     </div>
