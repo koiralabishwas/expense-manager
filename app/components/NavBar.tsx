@@ -4,7 +4,7 @@ import Button from './Button'
 const NavBar = () => {
   
   return (
-    <div className='navbar bg-zinc-600 justify-center'>
+    <div className='flex h-9 bg-zinc-600 justify-center'>
       <Button href='/testss' >Home</Button>
       <Button href='/testss' >My Info</Button>
       {/* get session and log in or out */}
