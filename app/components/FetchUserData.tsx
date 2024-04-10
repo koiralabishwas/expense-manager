@@ -17,7 +17,7 @@ const FetchUserData = () => {
   useEffect(() => {
     const fetchData = async () => {
       // TODO: fetch user data dynamaicly later on
-      const response = await fetch("api/v1/balance/66063d32d45d4104783ec5e3");
+      const response = await fetch("api/v2/balance/660feb11f3723956e57ee2dc");
 
       const data: Data[] = await response.json();
       console.log(data);

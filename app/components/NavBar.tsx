@@ -1,23 +1,14 @@
 import React from 'react'
-
-interface ButtonProps {
-  href : string
-  children : React.ReactNode
-  extraCss? : string 
-}
-
-const NavBarButton : React.FC<ButtonProps> = ({href   , children , extraCss}) => {
-  return <a href={href} className={`btn bg-gray-600 text-white btn-outline text-xl px-1 mx-1  ${extraCss}`} >{children}</a>
-}
+import Button from './Button'
 
 const NavBar = () => {
   
   return (
     <div className='navbar bg-zinc-600 justify-center'>
-      <NavBarButton href='/testss' >Home</NavBarButton>
-      <NavBarButton href='/testss' >My Info</NavBarButton>
+      <Button href='/testss' >Home</Button>
+      <Button href='/testss' >My Info</Button>
       {/* get session and log in or out */}
-      <NavBarButton href='/testss' extraCss='bg-green-800' >LogIn/Out</NavBarButton>
+      <Button href='/testss' className='bg-green-800' >LogIn/Out</Button>
     </div>
   )
 }
