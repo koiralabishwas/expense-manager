@@ -3,7 +3,7 @@ import Image from "next/image";
 import clientPromise from "@/lib/monogodb";
 import FetchUserData from "./components/FetchUserData";
 import NavBar from "./components/NavBar";
-import { useFetch } from "./hooks/useFetch";
+import { useFetch } from "./hooks/useFetchUser";
 
 export default function Home() {
   const dateKey = "2024/04";
