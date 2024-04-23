@@ -1,9 +1,14 @@
 import React from 'react'
+import { useForm } from 'react-hook-form'
 
-const page = () => {
+const TransactionForm = () => {
+  
+
+
+  const {register , handleSubmit , formState : {errors} } = useForm()
   return (
-    <div>page</div>
+    <div>TransactionForm</div>
   )
 }
 
-export default page
+export default TransactionForm
