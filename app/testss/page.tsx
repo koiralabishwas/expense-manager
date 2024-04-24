@@ -11,7 +11,7 @@ const schema = z.object({
   category : z.string(),
   description : z.string(),
   amount : z.number(),
-  method : z.number(),
+  method : z.string(),
   at : z.date()
 })
 
@@ -25,6 +25,7 @@ const TransactionForm = () => {
 
   const onSubmit = async (formData : FormData) => {
     // make the userID dynamic later
+    console.log(formData)
     const response = await fetch("/api/v2/balance/660feb11f3723956e57ee2dc" , {
       method : "POST",
       headers : {"Content-Type" : "application/json"},
@@ -44,23 +45,26 @@ const TransactionForm = () => {
       <div>TransactionForm</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="type">Type</label>
-        <select name="type" id="type">
+        <select id="type" {...register("type")}>
           {transactionSchema.type.map(type => (<option key={type} value={type}>{type}</option>) )}
+          
         </select><br />
         <label htmlFor="category">Category</label>
-        <select name="category" id="category" defaultValue="">
+        <select id="category"  {...register('category')}>
           {transactionSchema.category.map(category => <option key={category} value={category}>{category}</option> )}
         </select><br />
         <label htmlFor="description">Description</label>
-        <input type="text" name="input" id="input" /><br />
+        <input type="text" id="input" {...register('description')} /><br />
         <label htmlFor="amount">Amount</label>
-        <input type="number" name="amount" id="amount" /><br />
+        <input type="number" id="amount" {...register("amount")}/><br />
         <label htmlFor="method">Method</label>
-        <select name="method" id="method">
+        <select id="method" {...register('method')}>
           {transactionSchema.method.map(method => <option key={method} value={method}>{method}</option> )}
         </select>
         <label htmlFor="at">At</label>
-        <input type="date" name="at" id="at" />
+        <input type="date" id="at" {...register('at')}/>
+        <br />
+        <button type="submit" className='btn'>submit</button>
       </form>
     </div>
   )
