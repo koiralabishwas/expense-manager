@@ -1,4 +1,4 @@
-const transactionSchema = {
+export const transactionSchema = {
   category : [
     "water",
     "meals",
@@ -12,5 +12,7 @@ const transactionSchema = {
     "others"    
   ],
 
-  pavement : ["credit" , "cash" ]
+  method : ["credit" , "cash" ],
+
+  type : ["income" , "expense"]
 }

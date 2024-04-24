@@ -32,8 +32,8 @@ export async function POST(request : NextRequest , { params }: { params: { userI
     type : body.type,
     category : body.category,
     description : body.description,
-    method : body.method,
     amount : body.amount,
+    method : body.method,
     at : new Date()
   };
   

@@ -18,6 +18,7 @@ const TransactionsTable = () => {
       <table className="text-lg">
         <thead>
           <tr className="text-white">
+            <th>Type</th>
             <th>Category</th>
             <th>Description</th>
             <th>Amount</th>
@@ -25,11 +26,12 @@ const TransactionsTable = () => {
             <th>Pavement</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className='text-xs'>
           {data &&
             data.map((thedata) =>
               thedata.transactions[dateKey].map((transaction) => (
                 <tr key={transaction.id}>
+                  <td>{transaction.type}</td>
                   <td>{transaction.category}</td>
                   <td>{transaction.description}</td>
                   <td>{transaction.amount}</td>
