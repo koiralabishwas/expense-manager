@@ -12,7 +12,8 @@ const schema = z.object({
   category : z.string(),
   description : z.string(),
   method : z.string(),
-  amount : z.number()
+  amount : z.number(),
+  at : z.string()
 })
 
 export const dynamic = 'force-dynamic'
@@ -34,7 +35,7 @@ export async function POST(request : NextRequest , { params }: { params: { userI
     description : body.description,
     amount : body.amount,
     method : body.method,
-    at : new Date()
+    at :  new Date(body.at)
   };
   
   const client = await clientPromise
