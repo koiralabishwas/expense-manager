@@ -14,5 +14,5 @@ export const transactionSchema = {
 
   method : ["credit" , "cash" ],
 
-  type : ["income" , "expense"]
+  type : [ "expense" , "income" ]
 }

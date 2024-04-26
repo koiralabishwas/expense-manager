@@ -40,6 +40,8 @@ const TransactionForm = () => {
       console.log("registration failed", data);
       alert("registration failed");
     }
+
+    
     
     
   }
