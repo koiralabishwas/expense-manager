@@ -35,6 +35,7 @@ export async function POST(request : NextRequest , { params }: { params: { userI
     description : body.description,
     amount : body.amount,
     method : body.method,
+    // if at is null then it will just create a date now 
     at :  new Date(body.at)
   };
   
