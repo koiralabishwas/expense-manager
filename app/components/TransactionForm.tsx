@@ -22,7 +22,7 @@ type FormData = z.infer<typeof schema>
 
 const TransactionForm = () => {
   // zod resolver is also cumpolsary
-  const {register , handleSubmit , formState : {errors} } = useForm<FormData>({resolver : zodResolver(schema)})
+  const {register , handleSubmit , reset , formState : {errors} } = useForm<FormData>({resolver : zodResolver(schema)})
 
   const onSubmit = async (formData : FormData) => {
     // make the userID dynamic later
@@ -40,10 +40,8 @@ const TransactionForm = () => {
       console.log("registration failed", data);
       alert("registration failed");
     }
-
-    
-    
-    
+    // resets the form datas
+    reset()
   }
   return (
     <div>
@@ -75,7 +73,7 @@ const TransactionForm = () => {
           {transactionSchema.method.map(method => <option key={method} value={method}>{method}</option> )}
         </select>
         <label htmlFor="at">At</label>
-        <input type="date" id="at" {...register('at' ,{setValueAs : value => new Date(value).toLocaleDateString()}) }/>
+        <input type="date" placeholder='' id="at" {...register('at' ,{setValueAs : value => new Date(value).toLocaleDateString()}) }/>
         {errors.at && <p className='text-red-500'>{errors.at.message}</p> }
         <br />
         <button type='submit' className='btn'>submit</button>
