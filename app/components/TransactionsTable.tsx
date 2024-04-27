@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Image from "next/image";
 import clientPromise from "@/lib/monogodb";
 import NavBar from './NavBar';
 import { useFetch } from '../hooks/useFetchUser';
+import { shallowEqual } from 'shallow-equal';
+
 
 const TransactionsTable = () => {
   const defaultDate = new Date().toISOString().substring(0, 7).replace('-', '/')
@@ -13,17 +15,25 @@ const TransactionsTable = () => {
 
   const [monthSheet , setMonthSheet] = useState<string[][]>()
   const [sheetDate , setSheetDate] = useState(defaultDate)
+
+  // Use useCallback for memoized dateTitle calculation
+  const calculateDateTitle = useCallback(() => {
+    if (!data) return;
+    const dateTitle = data.map(theData => Object.keys(theData.transactions));
+    return dateTitle;
+  }, [data]);
+
+  console.log(calculateDateTitle())
+
+  useEffect(() => {
+    if (!data) return;
+    const newMonthSheet = calculateDateTitle();
+    if (!monthSheet || !shallowEqual(monthSheet, newMonthSheet)) {
+      setMonthSheet(newMonthSheet);
+    }
+  }, [data, sheetDate, calculateDateTitle, shallowEqual])
   
-  if (data) {
-    const dateTitle = data.map(theData => Object.keys(theData.transactions))
-    console.log(dateTitle)
-    setMonthSheet(dateTitle)
-  }
-
  
-
-  const filteredData = data?.map(theData => ({...theData , transactions : theData.transactions[sheetDate] || []}))
-
 
   return (
     <div className="grid place-items-center pb-16 text-white text-lg table table-zebra-zebra overflow-x-auto">

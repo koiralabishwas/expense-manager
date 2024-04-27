@@ -49,6 +49,7 @@ const TransactionForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="yearMonth">YearMonth</label><br />
         <select id="yearMonth" {...register("yearMonth")}>
+          <option value="2024/05">2024/05</option>
           <option value="2024/04">2024/04</option>
         </select><br />
         <label htmlFor="type">Type</label>
