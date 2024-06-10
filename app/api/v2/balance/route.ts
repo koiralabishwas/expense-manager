@@ -1,5 +1,4 @@
 import clientPromise from "@/lib/monogodb";
-import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 // fetch all balance of all users

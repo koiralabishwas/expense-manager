@@ -1,23 +1,17 @@
 import clientPromise from "@/lib/monogodb";
-import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import bcrypt from 'bcrypt'
-import { ObjectId } from "mongodb";
+import { userSchema } from "@/app/schemas/user";
 // make this request post and use a schema
 // TODO: make a better validation
-const schema = z.object({
-  name : z.string().min(1),
-  email : z.string().min(6),
-  password : z.string().min(6),
-})
+
 
 
 // register a user
 // need await in a lot of places to work properly
 export async function POST(request : NextRequest) {
   const body = await request.json()
-  const validation = schema.safeParse(body)
+  const validation = userSchema.safeParse(body)
 
   if (!validation.success) 
     return NextResponse.json(validation.error.errors , {status:400});
@@ -41,7 +35,7 @@ export async function POST(request : NextRequest) {
   })
 
   if (existingEmail) 
-    return NextResponse.json({ error: "user exists with the email" }, { status: 400})
+    return NextResponse.json({ error: "user exists with the email . contact admin or use another email" }, { status: 400})
 
   // 
   const registerUser = client.db('bop-db').collection('users').insertOne(data)
