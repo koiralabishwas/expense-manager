@@ -2,24 +2,43 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
+interface res {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: string;
+  transactions: {
+    [key: string]: {
+      id: string;
+      type: string;
+      category: string;
+      description: string;
+      amount: number;
+      at: string;
+      method: string;
+    }[]
+  }
+}
+
 const fetchTransactions = async () => {
   const response = await fetch("/api/v2/balance/660feb11f3723956e57ee2dc");
   if (!response.ok) {
-    throw new Error("Network response was not ok");
+    throw new Error("response error");
   }
   return response.json();
 };
 
 const TransactionsTable = () => {
   // defie the schema of the mongo db
-  const { data, isLoading, isError, error } = useQuery<any>({
+  const { data, isLoading, isError, error } = useQuery<res>({
     queryKey: ["transactions"],
     queryFn: () => fetchTransactions(),
   });
   console.log(data);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="text-white text-5xl loading-spinner"></div>;
   }
 
   if (isError) {
@@ -28,6 +47,7 @@ const TransactionsTable = () => {
 
   return (
     <div>hello</div>
+    
     // <div className='alert'>
     //   {data && data.map((transaction: any) => (
     //     <div key={transaction.id}>
