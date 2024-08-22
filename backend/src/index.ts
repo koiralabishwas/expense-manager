@@ -1,12 +1,17 @@
-import { serve } from 'bun'
 import { Hono } from 'hono'
+import { home } from './routes/home'
+import { test } from './routes/new'
 
-const app = new Hono()
+export const app = new Hono()
+console.log("app started on prot 8000")
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.route("/" , home)
+app.route("/test" , test)
 
+
+
+
+// route errors
 app.notFound((c) => {
   return c.text("ERROR : 404 not found " , 404)
 })
