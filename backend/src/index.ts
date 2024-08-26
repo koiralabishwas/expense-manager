@@ -1,17 +1,22 @@
 import { Hono } from 'hono';
 import { home } from './routes/home';
-import { db } from './db/db';
-import { users } from './routes/users';
+import { db } from './configs/db';
+import { users } from './routes/userRoutes';
 
 const app = new Hono();
 
 function startServer() {
-  app.route("/", home);  // Set up routes
-  app.route("/users",users)
+  app.route("/", home);  // Set up home routes
+  app.route("/users", users);  // Set up user routes
   app.notFound((c) => c.text("ERROR: 404 not found", 404));  // Handle 404 errors
-  app.fire();  // Start the server
-  console.log(`Server is running on port ${process.env.SERVER_PORT}`);
-};
+  
+  try {
+    app.fire();  // Start the server
+    console.log(`Server is running on port ${process.env.SERVER_PORT || 3000}`);
+  } catch (error) {
+    console.error("Failed to start the server:", error);
+  }
+}
 
 db.then(() => {
   console.log("MongoDB connected");
@@ -21,6 +26,6 @@ db.then(() => {
 });
 
 export default {
-  port: process.env.SERVER_PORT,
+  port: process.env.SERVER_PORT || 3000,  // Use a default port if not specified
   fetch: app.fetch,
 };
