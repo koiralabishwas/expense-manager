@@ -1,5 +1,4 @@
 import { Context } from "hono";
-import { listUserById, listUsers } from "../services/userServices";
 import User from "../models/user";
 
 export async function getUsers(ctx: Context) {
@@ -37,6 +36,16 @@ export async function updateUser(ctx: Context) {
     const body = await ctx.req.json();
     const updatedUser = await User.findByIdAndUpdate(id, body, { new: true })
     return ctx.json(updatedUser)
+  } catch (error) {
+    return ctx.json({error} , 400)
+  }
+}
+
+export async function deleteUser(ctx : Context) {
+  try{
+    const id = ctx.req.param('id');
+    const deletedUser = await User.findByIdAndDelete(id);
+    return ctx.json({deletedUser})
   } catch (error) {
     return ctx.json({error} , 400)
   }
