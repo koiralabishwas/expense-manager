@@ -14,7 +14,7 @@ function startServer() {
   
   try {
     app.fire();  // Start the server
-    console.log(`Server is running on port ${process.env.SERVER_PORT || 3000}`);
+    console.log(`Server is running on port ${process.env.SERVER_PORT}`);
   } catch (error) {
     console.error("Failed to start the server:", error);
   }

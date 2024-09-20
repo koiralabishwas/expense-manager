@@ -37,3 +37,15 @@ export async function addUserIncome(ctx : Context) {
     return ctx.json({error} , 401)
   }
 }
+
+export async function editUserIncome(ctx:Context) {
+  try{
+    const incomeId = ctx.req.param('incomeId')
+    const userId = ctx.req.param('userId')
+    const body = await ctx.req.json()
+    const changedUserIncome = await Income.findOneAndUpdate({_id : incomeId , userId : userId },body,{new : true})
+    return ctx.json(changedUserIncome)
+  } catch (error) {
+    return ctx.json({error},400)
+  }
+}
