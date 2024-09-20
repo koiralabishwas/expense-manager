@@ -2,7 +2,8 @@ import { Hono } from 'hono';
 import { home } from './routes/home';
 import { db } from './configs/db';
 import { users } from './routes/userRoutes';
-import { incomes } from './routes/IncomeRoutes';
+import { incomes } from './routes/incomeRoutes';
+import { expenses } from './routes/expenseRoutes'
 
 const app = new Hono();
 
@@ -10,6 +11,7 @@ function startServer() {
   app.route("/", home);  // Set up home routes
   app.route("/users", users);  // Set up user routes
   app.route("/incomes",incomes)
+  app.route("/expenses" , expenses)
   app.notFound((c) => c.text("ERROR: 404 not found LOL", 404));  // Handle 404 errors
   
   try {

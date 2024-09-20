@@ -1,6 +1,5 @@
 import { Context } from "hono";
 import Income from '../models/income'
-import { Mongoose } from "mongoose";
 
 export async function getAllIncomes(ctx : Context) {
   try {
@@ -47,5 +46,16 @@ export async function editUserIncome(ctx:Context) {
     return ctx.json(changedUserIncome)
   } catch (error) {
     return ctx.json({error},400)
+  }
+}
+
+export async function deleteUserIncome(ctx:Context) {
+  try {
+    const incomeId = ctx.req.param('incomeId')
+    const userId = ctx.req.param('userId')
+    const deletedUserIncome = await Income.findOneAndDelete({_id : incomeId , userId : userId})
+    return ctx.json(deletedUserIncome)
+  } catch (error) {
+    return ctx.json({error} , 400)
   }
 }
