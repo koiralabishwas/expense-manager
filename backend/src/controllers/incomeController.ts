@@ -39,10 +39,10 @@ export async function addUserIncome(ctx : Context) {
 
 export async function editUserIncome(ctx:Context) {
   try{
-    const incomeId = ctx.req.param('incomeId')
     const userId = ctx.req.param('userId')
+    const incomeId = ctx.req.param('incomeId')
     const body = await ctx.req.json()
-    const changedUserIncome = await Income.findOneAndUpdate({_id : incomeId , userId : userId },body,{new : true})
+    const changedUserIncome = await Income.findOneAndUpdate({_id : incomeId , userId : userId },body,{new : true , runValidators : true})
     return ctx.json(changedUserIncome)
   } catch (error) {
     return ctx.json({error},400)
@@ -51,8 +51,8 @@ export async function editUserIncome(ctx:Context) {
 
 export async function deleteUserIncome(ctx:Context) {
   try {
-    const incomeId = ctx.req.param('incomeId')
     const userId = ctx.req.param('userId')
+    const incomeId = ctx.req.param('incomeId')
     const deletedUserIncome = await Income.findOneAndDelete({_id : incomeId , userId : userId})
     return ctx.json(deletedUserIncome)
   } catch (error) {
