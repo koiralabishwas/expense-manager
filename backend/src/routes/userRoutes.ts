@@ -4,8 +4,8 @@ import { createUser, getUserById, getUsers , updateUser , deleteUser } from '../
 export const users = new Hono();
 
 users.get('/',getUsers);
-users.get('/:id' ,getUserById)
+users.get('/:userId' ,getUserById)
 // Handle POST requests to add a new user
 users.post('/', createUser);
-users.put('/:id' , updateUser)
-users.delete('/:id' , deleteUser)
+users.put('/:userId' , updateUser)
+users.delete('/:userId' , deleteUser)
