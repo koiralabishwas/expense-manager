@@ -6,7 +6,7 @@ const expenseSchema = new mongoose.Schema({
   amount : {type : Number , required : true},
   genre : {
     type : String ,
-    enum : ["Food" , "Snack" , "Beverage" , "Water" , "Education" , "Others" , "Entertainment" , "Bad Habit"],
+    enum : ["Food" , "Snack" , "Beverage" , "Water" , "Education" , "Other" , "Entertainment" , "Bad Habit"],
     default : "Other" 
   }
 } , {timestamps : true})
