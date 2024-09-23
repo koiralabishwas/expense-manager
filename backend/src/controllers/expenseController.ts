@@ -1,5 +1,4 @@
 import { Context } from "hono";
-import Income from '../models/income'
 import Expense from "../models/expense";
 
 export async function getAllExpenses(ctx:Context) {
@@ -54,8 +53,8 @@ export async function deleteUserExpense(ctx:Context) {
   try {
     const userId = ctx.req.param('userId')
     const expenseId = ctx.req.param('expenseId')
-    const deletedUserIncome = await Expense.findOneAndDelete({_id : expenseId , userId : userId})
-    return ctx.json(deleteUserExpense)
+    const deletedUserExpense = await Expense.findOneAndDelete({_id : expenseId , userId : userId})
+    return ctx.json(deletedUserExpense)
   } catch (error) {
     return ctx.json({error} , 400)
   }
