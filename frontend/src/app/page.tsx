@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 export default function Home() {
   return (
     <div>
-      <Button variant='contained' color="inherit"   >Hello World</Button>
+      <Button variant='contained' color="inherit">Hello World</Button>
     </div>
   );
 }
