@@ -11,7 +11,7 @@ export default function Header() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" className='mb-2'>
-        <Toolbar className='bg-green-600 '>
+        <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             expense-tracker
           </Typography>
