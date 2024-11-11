@@ -4,7 +4,7 @@ import User from "../models/user";
 import { sign } from "hono/jwt";
 import {setCookie , getCookie} from "hono/cookie"
 
-
+// dunno what tf is this
 export async function authentication(ctx : Context) {
   const authHeader = ctx.req.header("Authorization")
 }
