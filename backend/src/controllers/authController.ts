@@ -1,14 +1,27 @@
 import { Context } from "hono";
 import Expense from "../models/expense";
 import User from "../models/user";
-import { sign } from "hono/jwt";
+import { sign , verify } from "hono/jwt";
 import {setCookie , getCookie} from "hono/cookie"
 
 // dunno what tf is this
-export async function authentication(ctx : Context) {
-  const authHeader = ctx.req.header("Authorization")
-}
+export async function authentication(ctx: Context) {
+  const token = getCookie(ctx, "token") || ctx.req.header("Authorization")?.replace("Bearer ", "");
+  
+  if (!token) {
+    return ctx.json({ error: "Unauthorized" }, 401);
+  }
 
+  try {
+
+    
+    const payload = await verify(token, process.env.JWT_SECRET!);
+    ctx.set("user", payload);  // Attach user payload for future use
+    return await next();  // Continue to the next handler
+  } catch (error) {
+    return ctx.json({ error: "Unauthorized" }, 401);
+  }
+}
 
 export async function login(ctx:Context) {
   const {email , password} = await ctx.req.json()
@@ -26,4 +39,8 @@ export async function login(ctx:Context) {
   const token = await sign(payload , process.env.JWT_SECRET!)
   setCookie(ctx,"token" , token)
   return ctx.json({payload , token})
+}
+
+function next() {
+  throw new Error("Function not implemented.");
 }
