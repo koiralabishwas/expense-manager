@@ -4,10 +4,11 @@ import { Box, Heading } from "@chakra-ui/react";
 import Image from "next/image";
 
 export default function Home() {
-  let buttonLoading = false;
+  let buttonLoading = true;
+  // const sessioninfo = 
   return (
     <div>
-      <Header></Header>
+      
     </div>
   );
 }
