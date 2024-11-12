@@ -17,7 +17,7 @@ export async function authentication(ctx: Context) {
     
     const payload = await verify(token, process.env.JWT_SECRET!);
     ctx.set("user", payload);  // Attach user payload for future use
-    return await next();  // Continue to the next handler
+    return;  // Continue to the next handler
   } catch (error) {
     return ctx.json({ error: "Unauthorized" }, 401);
   }
@@ -41,6 +41,3 @@ export async function login(ctx:Context) {
   return ctx.json({payload , token})
 }
 
-function next() {
-  throw new Error("Function not implemented.");
-}
