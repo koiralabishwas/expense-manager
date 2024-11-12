@@ -19,7 +19,7 @@ export async function authentication(ctx: Context) {
     ctx.set("user", payload);  // Attach user payload for future use
     return;  // Continue to the next handler
   } catch (error) {
-    return ctx.json({ error: "Unauthorized" }, 401);
+    return ctx.json( {error} , 401);
   }
 }
 
