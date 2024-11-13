@@ -13,7 +13,6 @@ function startServer() {
   app.route("/", home);  // Set up home routes
 
   // auth required routes
-  app.use("/api/*" , authentication)
   app.route("/api/users", users);  // Set up user routes
   app.route("/api/incomes",incomes)
   app.route("/api/expenses" , expenses)

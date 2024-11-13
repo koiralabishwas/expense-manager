@@ -1,7 +1,10 @@
 import { Hono } from 'hono';
 import { addUserExpense, deleteUserExpense, editUserExpense, getAllExpenses, getUserExpenses } from '../controllers/expenseController';
+import { authentication } from '../controllers/authController';
 
 export const expenses = new Hono();
+expenses.use("/*", authentication)
+
 // Get all Expenses of all Users
 expenses.get('/',getAllExpenses)
 // Get Expenses of a User by userId

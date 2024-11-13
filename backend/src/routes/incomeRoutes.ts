@@ -1,7 +1,10 @@
 import { Hono } from 'hono';
 import { addUserIncome, deleteUserIncome, editUserIncome, getAllIncomes, getUserIncomes } from '../controllers/incomeController';
+import { authentication } from '../controllers/authController';
 
 export const incomes = new Hono();
+incomes.use("/*", authentication)
+
 // Get all Incomes of all Users
 incomes.get('/',getAllIncomes)
 // Get Incomes of a User by userId

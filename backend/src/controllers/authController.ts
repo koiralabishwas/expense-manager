@@ -13,8 +13,6 @@ export async function authentication(ctx: Context) {
   }
 
   try {
-
-    
     const payload = await verify(token, process.env.JWT_SECRET!);
     ctx.set("user", payload);  // Attach user payload for future use
     return;  // Continue to the next handler
