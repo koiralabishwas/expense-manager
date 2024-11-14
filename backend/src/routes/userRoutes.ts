@@ -1,12 +1,11 @@
 import { Hono } from 'hono';
 import { createUser, getUserById, getUsers , updateUser , deleteUser } from '../controllers/userController';
-import { authentication } from '../controllers/authController';
+import { authentication } from '../middlewares/authentication';
 
-export const users = new Hono();
-users.use("/*", authentication)
-users.get('/',getUsers);
-users.get('/:userId' ,getUserById)
+export const userRoutes = new Hono();
+userRoutes.get('/',getUsers);
+userRoutes.get('/:userId' ,getUserById)
 // Handle POST requests to add a new user
-users.post('/', createUser);
-users.put('/:userId' , updateUser)
-users.delete('/:userId' , deleteUser)
+userRoutes.post('/', createUser);
+userRoutes.put('/:userId' , updateUser)
+userRoutes.delete('/:userId' , deleteUser)

@@ -4,23 +4,6 @@ import User from "../models/user";
 import { sign , verify } from "hono/jwt";
 import {setCookie , getCookie} from "hono/cookie"
 
-// dunno what tf is this
-export async function authentication(ctx: Context) {
-  const token = getCookie(ctx, "token") || ctx.req.header("Authorization")?.replace("Bearer ", "");
-  
-  if (!token) {
-    return ctx.json({ error: "Unauthorized" }, 401);
-  }
-
-  try {
-    const payload = await verify(token, process.env.JWT_SECRET!);
-    ctx.set("user", payload);  // Attach user payload for future use
-    return;  // Continue to the next handler
-  } catch (error) {
-    return ctx.json( {error} , 401);
-  }
-}
-
 export async function login(ctx:Context) {
   const {email , password} = await ctx.req.json()
   // get user from emai and check password
@@ -35,7 +18,13 @@ export async function login(ctx:Context) {
   }
 
   const token = await sign(payload , process.env.JWT_SECRET!)
-  setCookie(ctx,"token" , token)
-  return ctx.json({payload , token})
+  setCookie(ctx,"token" , token , {
+    httpOnly : true,
+    secure : process.env.NODE_ENV === "production",
+    sameSite : 'strict',
+    path : '/',
+    maxAge : 60 * 60
+  })
+  return ctx.json({message : "LogIn Successful" , payload , token})
 }
 
