@@ -5,7 +5,6 @@ import { users } from './routes/userRoutes';
 import { incomes } from './routes/incomeRoutes';
 import { expenses } from './routes/expenseRoutes'
 import { auth } from './routes/authRoutes';
-import { authentication } from './controllers/authController';
 
 const app = new Hono();
 
