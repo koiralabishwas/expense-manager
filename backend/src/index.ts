@@ -10,7 +10,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 
 const app = new Hono();
 const protectedRoutes = new Hono();
-app.use("*" , errorHandler)
+app.use("*" ,errorHandler)
 app.route("/", home);
 app.route("/auth", authRoutes);
 
