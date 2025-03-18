@@ -2,7 +2,7 @@ import { Context } from "hono";
 import Expense from "../models/expense";
 import User from "../models/user";
 import { sign , verify } from "hono/jwt";
-import {genSalt , hash ,compare} from 'bcrypt';
+import {genSalt , hash ,compare} from 'bcryptjs';
 import {setCookie , getCookie} from "hono/cookie"
 
 export async function login(ctx:Context) {
@@ -35,6 +35,8 @@ export async function login(ctx:Context) {
 export async function register(ctx : Context) {
   const {name , email , password} = await ctx.req.json()
   // password hasing 
+  const existingUser = await User.findOne({email : email})
+  if (existingUser) return ctx.json({error :"user already exists with the given mail address"},400)
   const hashedPassword = hash(password , await genSalt(10))
   const user = new User({
     name: name,
