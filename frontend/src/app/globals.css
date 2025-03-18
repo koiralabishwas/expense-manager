@@ -1,6 +1,6 @@
 /* Root Variables */
 :root {
-  --background: #ffffff;
+  --background: #f6f6f6;
   --foreground: #171717;
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);

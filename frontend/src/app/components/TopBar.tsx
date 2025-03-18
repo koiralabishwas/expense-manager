@@ -3,15 +3,13 @@ import React from 'react'
 
 const TopBar = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
     <AppBar position="absolute">
       <Toolbar>
         <IconButton
-          size="large"
+          size="large" // Slightly smaller button
           edge="start"
           color="inherit"
           aria-label="menu"
-          sx={{ mr: 2 }}
         >
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -20,7 +18,6 @@ const TopBar = () => {
         <Button color="inherit">Login</Button>
       </Toolbar>
     </AppBar>
-  </Box>
   )
 }
 
