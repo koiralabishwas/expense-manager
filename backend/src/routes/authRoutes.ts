@@ -6,6 +6,6 @@ export const authRoutes = new Hono();
 
 // auth.use('/*',authentication)
 authRoutes.post("/login",login)
-authRoutes.post("register" , register)
+authRoutes.post("/register" , register)
 
 

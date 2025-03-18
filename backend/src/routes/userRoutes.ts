@@ -1,6 +1,5 @@
 import { Hono } from 'hono';
 import { createUser, getUserById, getUsers , updateUser , deleteUser } from '../controllers/userController';
-import { authentication } from '../middlewares/authentication';
 
 export const userRoutes = new Hono();
 userRoutes.get('/',getUsers);

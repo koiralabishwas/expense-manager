@@ -4,10 +4,12 @@
     "dev": "bun run --hot src/server.ts"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "hono": "^4.5.7",
     "mongoose": "^8.5.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/bun": "latest"
   }
 }
