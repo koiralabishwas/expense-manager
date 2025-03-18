@@ -6,7 +6,7 @@ export async function errorHandler(ctx:Context , next : Next) {
   } catch (error) {
     console.log(error)
     ctx.status(500)
-    ctx.json({error : "eternal server is messed up"})
+    ctx.json({error})
   }
 }
 

@@ -13,10 +13,10 @@ export async function login(ctx:Context) {
   if (!isPassMatch) return ctx.json({error : "Invalid "},401)
 
   const payload = {
-    id : user?._id,
+    _id : user?._id.toHexString(),
     name : user?.name,
     email : user?.email,
-    exp : Math.floor(Date.now() / 1000) * 60 * 60
+    exp : Math.floor(Date.now() / 1000) * 7 * 24 * 60 * 60 // expires in 7 days
   }
 
   const token = await sign(payload , process.env.JWT_SECRET!)
