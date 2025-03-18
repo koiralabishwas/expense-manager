@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { home } from "./routes/home";
+import { home } from "./routes/homeRoutes";
 import { db } from "./configs/db";
 import { userRoutes } from "./routes/userRoutes";
 import { incomeRoutes } from "./routes/incomeRoutes";
