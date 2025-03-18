@@ -3,6 +3,13 @@ import { addUserIncome, deleteUserIncome, editUserIncome, getAllIncomes, getUser
 
 export const incomeRoutes = new Hono();
 
+/**
+ * GET '/' get all income
+ * POST '/' register an income
+ * put '/:incomeID
+ * delete '/:incomeID
+ */
+
 // Get all Incomes of all Users
 incomeRoutes.get('/',getAllIncomes)
 // Get Incomes of a User by userId

@@ -31,12 +31,13 @@ export async function login(ctx:Context) {
 export async function register(ctx : Context) {
   const {name , email , password} = await ctx.req.json()
   
-  const user = new User({
+  const user = await new User({
     name: name,
     email: email,
     password: password
   })
-
+  await user.save()
   return ctx.json({message : "register success" , user : {name , email}})
+
 }
 

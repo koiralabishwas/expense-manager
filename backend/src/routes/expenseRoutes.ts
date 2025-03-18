@@ -3,6 +3,13 @@ import { addUserExpense, deleteUserExpense, editUserExpense, getAllExpenses, get
 
 export const expenseRoutes = new Hono();
 
+/**
+ * GET '/' get all expence
+ * POST '/' register an expence
+ * put '/:ExpenseId
+ * delete '/:ExpenseID
+ */
+
 // Get all Expenses of all Users
 expenseRoutes.get('/',getAllExpenses)
 // Get Expenses of a User by userId
