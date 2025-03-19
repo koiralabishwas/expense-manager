@@ -1,5 +1,6 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose, { Mongoose, Types } from "mongoose";
 
+// TODO : Make this type usable in other places
 const expenseSchema = new mongoose.Schema({
   userId : {type : mongoose.Schema.Types.ObjectId , ref : 'User' , required : true},
   description : {type : String , required : true},
@@ -10,5 +11,6 @@ const expenseSchema = new mongoose.Schema({
   }
 } , {timestamps : true})
 const Expense = mongoose.model('Expense' , expenseSchema)
+
 
 export default Expense

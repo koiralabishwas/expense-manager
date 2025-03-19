@@ -1,31 +1,22 @@
 import { Context } from "hono";
 import Expense from "../models/expense";
 
-export async function getAllExpenses(ctx:Context) {
-  try {
-    const expenses = await Expense.find().exec()
-    return ctx.json(expenses)
-  } catch (error) {
-    return ctx.json({error} , 401)
-  }
-}
-
 export async function getUserExpenses(ctx:Context) {
   try {
-    const userId = ctx.req.param('userId')
-    const userExpense = await Expense.find({userId : userId})
+    const {_id} = ctx.get('user')
+    const userExpense = await Expense.find({userId : _id})
     return ctx.json(userExpense)
   } catch (error) {
     return ctx.json({error},400)
   }
 }
 
-export async function addUserExpense(ctx :Context) {
+export async function postUserExpenses(ctx :Context) {
   try {
-    const userId = ctx.req.param('userId')
+    const user = ctx.get('user')
     const body = await ctx.req.json()
     const newUserExpense = await new Expense({
-      userId : userId,
+      userId : user._id,
       description : body.description,
       amount : body.amount,
       genre : body.genre
@@ -38,10 +29,10 @@ export async function addUserExpense(ctx :Context) {
 
 export async function editUserExpense(ctx:Context) {
   try {
-    const userId = ctx.req.param("userId")
     const expenseId = ctx.req.param("expenseId")
+    const user = await ctx.get('user')
     const body = await ctx.req.json()
-    const changedUserExpense = await Expense.findOneAndUpdate({_id : expenseId , userId :userId} , body , {new : true , runValidators : true})
+    const changedUserExpense = await Expense.findOneAndUpdate({_id : expenseId , userId :user._id} , body , {new : true , runValidators : true})
     return ctx.json(changedUserExpense)
   } catch (error) {
     return ctx.json({error},400)
@@ -51,9 +42,9 @@ export async function editUserExpense(ctx:Context) {
 
 export async function deleteUserExpense(ctx:Context) {
   try {
-    const userId = ctx.req.param('userId')
+    const user = ctx.get('user')
     const expenseId = ctx.req.param('expenseId')
-    const deletedUserExpense = await Expense.findOneAndDelete({_id : expenseId , userId : userId})
+    const deletedUserExpense = await Expense.findOneAndDelete({_id : expenseId , userId : user._id})
     return ctx.json(deletedUserExpense)
   } catch (error) {
     return ctx.json({error} , 400)
