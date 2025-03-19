@@ -11,7 +11,7 @@ export async function getUserIncomes(ctx : Context) {
   }
 }
 
-export async function postUserIncomes(ctx : Context) {
+export async function postUserIncome(ctx : Context) {
   try {
     const user = ctx.get('user')
     const body = await ctx.req.json()

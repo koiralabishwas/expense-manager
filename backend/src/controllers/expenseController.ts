@@ -11,7 +11,7 @@ export async function getUserExpenses(ctx:Context) {
   }
 }
 
-export async function postUserExpenses(ctx :Context) {
+export async function postUserExpense(ctx :Context) {
   try {
     const user = ctx.get('user')
     const body = await ctx.req.json()
