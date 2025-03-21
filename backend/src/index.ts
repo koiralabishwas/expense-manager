@@ -21,8 +21,8 @@ app.route("/api/incomes", incomeRoutes);
 app.route("/api/expenses", expenseRoutes);
 
 app.notFound((c) => c.text("ERROR: 404 not found LOL", 404)); // Handle 404 errors
-app.routes.forEach(route => {
-  console.log(`${route.method} ${route.path}`)
-})
+// app.routes.forEach(route => {
+//   console.log(`${route.method} ${route.path}`)
+// })
 
 export { app };
