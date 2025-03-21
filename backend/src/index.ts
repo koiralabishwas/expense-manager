@@ -10,7 +10,7 @@ import { authentication } from "./middlewares/authentication";
 
 const app = new Hono();
 const protectedRoutes = new Hono();
-app.use("*" ,errorHandler)
+app.use("/*" ,errorHandler)
 app.route("/", home);
 app.route("/auth", authRoutes);
 
@@ -21,5 +21,8 @@ app.route("/api/incomes", incomeRoutes);
 app.route("/api/expenses", expenseRoutes);
 
 app.notFound((c) => c.text("ERROR: 404 not found LOL", 404)); // Handle 404 errors
+app.routes.forEach(route => {
+  console.log(`${route.method} ${route.path}`)
+})
 
 export { app };

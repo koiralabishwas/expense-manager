@@ -1,5 +1,6 @@
 import { Context } from "hono";
 import User from "../models/user";
+import {omit} from "lodash"
 
 // List all users
 export async function getUsers(ctx: Context) {
@@ -7,7 +8,37 @@ export async function getUsers(ctx: Context) {
     const users = await User.find().exec(); // Return the list of users as JSON
     return ctx.json(users);
   } catch (error) {
-    return ctx.json({ error: "Failed to fetch users" }, 500);
+    return ctx.json({ error: "Failed to fetch users" , err:error }, 500);
+  }
+}
+
+export async function getLoggedUser(ctx: Context) {
+  try {
+    const user = await ctx.get('user')
+    return ctx.json(omit(user ,'exp'));
+  } catch (error) {
+    return ctx.json({ error: "failed getting users", err: error }, 500);
+  }
+}
+
+export async function updateLoggedUser(ctx: Context) {
+  try {
+    const user = await ctx.get('user')
+    const body = await ctx.req.json();
+    const updatedUser = await User.findByIdAndUpdate(user._id, body, { new: true })
+    return ctx.json(updatedUser)
+  } catch (error) {
+    return ctx.json({error} , 400)
+  }
+}
+
+export async function deleteLoggedUser(ctx : Context) {
+  try {
+    const user = await ctx.get('user')
+    const deletedUser = await User.findByIdAndDelete(user._id  , {new : true})
+    return ctx.json(deleteLoggedUser)
+  }catch(error) {
+    return ctx.json({error} , 401)
   }
 }
 
@@ -21,6 +52,8 @@ export async function getUserById(ctx: Context) {
     return ctx.json({ error }, 400);
   }
 }
+
+
 
 // Create new User
 export async function createUser(ctx: Context) {

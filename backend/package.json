@@ -4,8 +4,10 @@
     "dev": "bun run --hot src/server.ts"
   },
   "dependencies": {
+    "@types/lodash": "^4.17.16",
     "bcryptjs": "^3.0.2",
     "hono": "^4.5.7",
+    "lodash": "^4.17.21",
     "mongoose": "^8.5.3"
   },
   "devDependencies": {
