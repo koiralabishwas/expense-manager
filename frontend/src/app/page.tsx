@@ -6,8 +6,6 @@ export default function Home() {
     <div>
       <main >
       <Button  variant="contained" size="large" type="button" sx={{borderRadius : '10px'}}>Hello World</Button>
-
-      
       </main>
       <footer>
         
