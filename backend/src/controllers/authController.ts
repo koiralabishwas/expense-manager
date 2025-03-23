@@ -24,7 +24,7 @@ export async function login(ctx:Context) {
   //TODO: look up this setCookie later
   setCookie(ctx,"x-auth-token" , token , {
     httpOnly : true,
-    secure : process.env.NODE_ENV === "production",
+    secure : process.env.NODE_ENV === "production", //TODO: ここtrue?false?
     sameSite : 'strict',
     path : '/',
     maxAge : 60 * 60 * 60

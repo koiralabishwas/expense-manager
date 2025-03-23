@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { cors } from 'hono/cors'
 import { home } from "./routes/homeRoutes";
 import { db } from "./configs/db";
 import { userRoutes } from "./routes/userRoutes";
@@ -10,6 +11,10 @@ import { authentication } from "./middlewares/authentication";
 
 const app = new Hono();
 const protectedRoutes = new Hono();
+app.use('/*',cors({
+  origin: "http://localhost:3000",
+  credentials: true, // needed for cookies/session handling
+}))
 app.use("/*" ,errorHandler)
 app.route("/", home);
 app.route("/auth", authRoutes);
