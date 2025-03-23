@@ -1,51 +1,73 @@
 "use client";
 import { useEffect, useState } from "react";
-import { authFetch } from "../utils/authFetch";
 import { Box, Typography, CircularProgress } from "@mui/material";
 
-type User = { _id: string; name: string; email: string };
+interface User {
+  _id: string;
+  // name: string;
+  // email: string;
+}
 
 export default function Dashboard() {
-  const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<[User] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    authFetch<{ payload: User }>("http://localhost:8000/api/users")
-      .then((data) => setUser(data.payload))
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => setLoading(false));
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes`, {
+          credentials: "include", // Important for auth cookies
+        });
+
+        if (!res.ok) {
+          throw new Error(`Error: ${res.status}`);
+        }
+
+        const data: [User] = await res.json();
+        setUser(data);
+      } catch (err: any) {
+        setError(err.message || "Error fetching user");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
-      <Box sx={{ textAlign: "center", mt: 4 }}>
+      <Box sx={{ p: 3, display: "flex", justifyContent: "center" }}>
         <CircularProgress />
       </Box>
     );
+  }
 
-  if (error)
+  if (error) {
     return (
-      <Box sx={{ textAlign: "center", mt: 4 }}>
-        <Typography color="error">Error: {error}</Typography>
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h6" color="error">
+          {error}
+        </Typography>
       </Box>
     );
+  }
 
-  if (!user)
+  if (user) {
     return (
-      <Box sx={{ textAlign: "center", mt: 4 }}>
-        <Typography>No user data available.</Typography>
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h4">{user[0].description}!</Typography>
+        {/* <Typography variant="h4">{user.name}!</Typography>
+        <Typography variant="body1">{user.email}</Typography> */}
       </Box>
     );
+  }
 
   return (
     <Box sx={{ color: "black", p: 3 }}>
-      <Typography variant="h4">User Dashboard</Typography>
-      <Typography variant="h6">Name: {user.name}</Typography>
-      <Typography>Email: {user.email}</Typography>
-      <Typography>ID: {user._id}</Typography>
+      <Typography variant="h4">User data not available.</Typography>
     </Box>
   );
 }
