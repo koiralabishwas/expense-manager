@@ -21,12 +21,12 @@ const handler = NextAuth({
 
         const data = await res.json();
 
-        if (res.ok && data.user) {
-          // Include necessary user fields here
-          return data.user;
+        if (res.ok && data.user && data.token) {
+          // Return both user and token to JWT
+          return { ...data.user, token: data.token };
         }
 
-        // Return null if authentication fails
+        // Authentication failed
         return null;
       },
     }),
@@ -37,12 +37,18 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.user = user;
+        token.user = {
+          _id: user._id,
+          name: user.name!,
+          email: user.email!,
+        };
+        token.accessToken = user.token;
       }
       return token;
     },
     async session({ session, token }) {
-      session.user = token.user as any;
+      session.user = token.user!;
+      session.accessToken = token.accessToken;
       return session;
     },
   },
