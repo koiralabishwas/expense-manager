@@ -1,7 +1,6 @@
-'use  client'
+'use client'
 import {
   AppBar,
-  Box,
   Button,
   IconButton,
   Toolbar,
@@ -11,7 +10,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
 
 const TopBar = () => {
-  const {data : session , status} = useSession()
+  const { data: session, status } = useSession();
+
   return (
     <AppBar
       position="absolute"
@@ -24,6 +24,7 @@ const TopBar = () => {
           color="inherit"
           aria-label="menu"
         ></IconButton>
+
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           News
         </Typography>
@@ -34,10 +35,10 @@ const TopBar = () => {
           </Typography>
         ) : session ? (
           <>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {session.user?.name}
-          </Typography>
-          <Button color="inherit" onClick={() => signOut()}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              {session.user?.name || "User"}
+            </Typography>
+            <Button color="inherit" onClick={() => signOut()}>
               Logout
             </Button>
           </>
