@@ -3,15 +3,48 @@
 import { useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(5, "Password must be at least 5 characters").max(30),
+});
+
+type LoginForm = z.infer<typeof schema>;
 
 export default function LoginPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting},
+    setError
+  } = useForm<LoginForm>({
+    resolver: zodResolver(schema),
+  });
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const onSubmit: SubmitHandler<LoginForm> = async (formData : LoginForm) => {
+    const result = await signIn("credentials", {
+      ...formData,
+      redirect: false,
+    });
+
+    if (!result?.ok) {
+      setError("root" , {
+        message : "Login Failed.Try again later",
+        type: "validate",
+
+      })
+    } else {
+      router.replace("/");
+      // Optionally handle error message here
+      
+    }
+  };
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -19,26 +52,6 @@ export default function LoginPage() {
       router.replace("/");
     }
   }, [status, router]);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-
-    setLoading(false);
-
-    if (result?.error) {
-      setError("Invalid credentials.");
-    } else {
-      router.replace("/");
-    }
-  };
 
   if (status === "loading") {
     return (
@@ -48,46 +61,47 @@ export default function LoginPage() {
     );
   }
 
-  if (status === "authenticated") {
-    return null; // Or a loader, or redirect handled in useEffect
-  }
-
   return (
-    <div className="flex items-center justify-center h-screen">
-      <form
-        className="w-96 p-6 shadow-md bg-white rounded-lg"
-        onSubmit={handleLogin}
-      >
-        <h2 className="text-xl font-bold mb-4">Login</h2>
-
-        {error && <div className="text-red-500 mb-2">{error}</div>}
-
-        <input
+    <Box maxWidth={400} mx="auto" mt={6} px={2}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
+          Sign In
+        </Typography>
+        <Typography color="error">{errors.root?.message}</Typography>
+        <TextField
+          label="Email"
+          id="email"
           type="email"
-          placeholder="Email"
-          className="w-full mb-3 p-2 border rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          {...register("email")}
         />
 
-        <input
+        <TextField
+          label="Password"
+          id="password"
           type="password"
-          placeholder="Password"
-          className="w-full mb-4 p-2 border rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          error={!!errors.password}
+          helperText={errors.password?.message}
+          {...register("password")}
         />
 
-        <button
+        <Button
           type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded disabled:opacity-60"
-          disabled={loading}
+          variant="contained"
+          fullWidth
+          sx={{ mt: 2 }}
+          disabled={isSubmitting}
         >
-          {loading ? "Logging in..." : "Login"}
-        </button>
+          {isSubmitting ? "Logging in..." : "Log In"}
+        </Button>
       </form>
-    </div>
+    </Box>
   );
 }
