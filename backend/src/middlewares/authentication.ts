@@ -3,7 +3,8 @@ import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 
 export async function authentication(ctx:Context,next : Next) {
-  const token = getCookie(ctx , 'x-auth-token') || ctx.req.header('Authorization')?.replace('Bearer' , '')
+  const token = getCookie(ctx, 'x-auth-token') 
+  || ctx.req.header('Authorization')?.replace(/^Bearer\s+/, '');
   
   if (!token) {
     return ctx.json({error : 'Unauthorized' },401)

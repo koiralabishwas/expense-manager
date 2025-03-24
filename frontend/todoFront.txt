@@ -1,7 +1,0 @@
-hit backend with login info
-.....backend sets token in cookie
-
-....log header (if possible ,specific cookie) and see how it isdoing
-
-....use cookeie parser and save decoded value as well ???
-I dunno
