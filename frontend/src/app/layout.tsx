@@ -30,7 +30,6 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <div className="container">
           <MUIThemeProvider>
-
           <AuthProvider>
           <TopBar />
           <main className="main">{children}</main>
