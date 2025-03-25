@@ -32,7 +32,7 @@ export default function RootLayout({
           <MUIThemeProvider>
           <AuthProvider>
           <TopBar />
-          <main className="main">{children}</main>
+          {children}
           </AuthProvider>
           </MUIThemeProvider>
           <footer className="footer">© 2025 Your App</footer>
