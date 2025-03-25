@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TopBar from "./components/TopBar";
 import AuthProvider from "./providers/AuthProvider";
+import MUIThemeProvider from "./providers/MUIThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,10 +29,13 @@ export default function RootLayout({
     <html lang="ja">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <div className="container">
+          <MUIThemeProvider>
+
           <AuthProvider>
           <TopBar />
           <main className="main">{children}</main>
           </AuthProvider>
+          </MUIThemeProvider>
           <footer className="footer">© 2025 Your App</footer>
         </div>
       </body>

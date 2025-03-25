@@ -69,6 +69,7 @@ export default function LoginPage() {
         </Typography>
         <Typography color="error">{errors.root?.message}</Typography>
         <TextField
+          color="primary"
           label="Email"
           id="email"
           type="email"
@@ -77,6 +78,19 @@ export default function LoginPage() {
           fullWidth
           error={!!errors.email}
           helperText={errors.email?.message}
+          sx={{
+            '&:hover .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: 'blue',
+              },
+            },
+            '& .MuiOutlinedInput-root': {
+              '&:hover fieldset': {
+                borderColor: 'lightgreen',
+                
+              },
+            },
+          }}
           {...register("email")}
         />
 
@@ -95,6 +109,7 @@ export default function LoginPage() {
         <Button
           type="submit"
           variant="contained"
+          color="primary"
           fullWidth
           sx={{ mt: 2 }}
           disabled={isSubmitting}

@@ -15,7 +15,7 @@ const TopBar = () => {
   return (
     <AppBar
       position="absolute"
-      sx={{ backgroundColor: "white", color: "red", boxShadow: "none" }}
+      sx={{ boxShadow: "none" }}
     >
       <Toolbar>
         <IconButton
