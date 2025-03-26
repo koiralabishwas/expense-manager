@@ -1,10 +1,12 @@
 'use client'
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const {data : session , status } = useSession()
   return (
     <Box mx="auto" mt={6} px={2}  >
-      <Button variant="contained" color="primary" size="large" type="button" sx={{borderRadius : '10px' , paddingX : 5}}>Hello World</Button>
+      {status === "authenticated" && <Typography>Hello {session.user.name}</Typography>}
     </Box>
   );
 }

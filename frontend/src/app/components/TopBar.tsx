@@ -6,25 +6,30 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+
 import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
 import LoadingIcon from "./ui/LoadingIcon";
+import { BorderAll, BorderAllOutlined } from "@mui/icons-material";
 
 const TopBar = () => {
   const { data: session, status } = useSession();
 
   return (
     <AppBar
-      position="fixed"
+      position="absolute"
       sx={{ boxShadow: "none" }}
     >
       <Toolbar>
         <IconButton
           size="large"
           edge="start"
-          color="inherit"
           aria-label="menu"
-        >三</IconButton>
+          color="secondary"
+          sx={{border : 2,marginRight : 1} }
+          
+        >{session?.user.name[0]}</IconButton>
 
         <Typography fontSize={25} variant="h6" component="div" sx={{ flexGrow: 1 }}>
           家計師くん
@@ -32,15 +37,6 @@ const TopBar = () => {
 
         {status === "loading" ? (
           <LoadingIcon/>
-        ) : session ? (
-          <>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {session.user?.name || "User"}
-            </Typography>
-            <Button color="secondary" sx={{borderWidth : 8 , borderRadius : 3}} variant="contained"  onClick={() => signOut()}>
-              Logout
-            </Button>
-          </>
         ) : (
           <Button color="secondary" sx={{borderWidth : 8 , borderRadius : 3}} variant="contained"  onClick={() => signIn()}>
             Log in
