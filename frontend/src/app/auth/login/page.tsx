@@ -87,7 +87,6 @@ export default function LoginPage() {
             '& .MuiOutlinedInput-root': {
               '&:hover fieldset': {
                 borderColor: 'lightgreen',
-                
               },
             },
           }}
@@ -109,7 +108,6 @@ export default function LoginPage() {
         <Button
           type="submit"
           variant="contained"
-          color="primary"
           fullWidth
           sx={{ mt: 2 }}
           disabled={isSubmitting}

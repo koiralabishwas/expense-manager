@@ -43,7 +43,7 @@ const TopBar = () => {
             </Button>
           </>
         ) : (
-          <Button color="inherit" onClick={() => signIn()}>
+          <Button color="inherit"  onClick={() => signIn()}>
             Login
           </Button>
         )}
