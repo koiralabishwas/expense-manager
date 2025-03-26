@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
+import LoadingIcon from "../components/ui/LoadingIcon";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -49,23 +50,19 @@ export default function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (status === "authenticated") {
-      router.replace("/");
+      router.push("/");
     }
   }, [status, router]);
 
-  if (status === "loading") {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-lg">Checking session...</p>
-      </div>
-    );
-  }
+
 
   return (
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      {status === "loading" && <LoadingIcon/>}
+      {status === "unauthenticated" &&
+        <form onSubmit={handleSubmit(onSubmit)}>
         <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
-          Sign In
+          Log in
         </Typography>
         <Typography color="error">{errors.root?.message}</Typography>
         <TextField
@@ -78,18 +75,6 @@ export default function LoginPage() {
           fullWidth
           error={!!errors.email}
           helperText={errors.email?.message}
-          sx={{
-            '&:hover .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: 'blue',
-              },
-            },
-            '& .MuiOutlinedInput-root': {
-              '&:hover fieldset': {
-                borderColor: 'lightgreen',
-              },
-            },
-          }}
           {...register("email")}
         />
 
@@ -105,6 +90,8 @@ export default function LoginPage() {
           {...register("password")}
         />
 
+        <Link color="secondary" href="/register">新規登録はこちら</Link>
+
         <Button
           type="submit"
           variant="contained"
@@ -115,6 +102,8 @@ export default function LoginPage() {
           {isSubmitting ? "Logging in..." : "Log In"}
         </Button>
       </form>
+      }
+      
     </Box>
   );
 }
