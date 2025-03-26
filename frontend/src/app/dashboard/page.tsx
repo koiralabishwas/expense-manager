@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 interface User {
   _id: string;
@@ -9,35 +10,42 @@ interface User {
 }
 
 export default function Dashboard() {
-  // const [user, setUser] = useState<User | null>(null);
+  const { data: session, status } = useSession();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`, {
-          credentials: "include", // Important for auth cookies
-        });
+      if (status === "authenticated" && session?.accessToken) {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`, {
+            headers: {
+              Authorization: `Bearer ${session.accessToken}`,
+            },
+          });
 
-        if (!res.ok) {
-          throw new Error(`Error: ${res.status}`);
+          if (!res.ok) {
+            throw new Error(`Error: ${res.status}`);
+          }
+
+          const data: User = await res.json();
+          setUser(data);
+        } catch (err: any) {
+          setError(err.message || "Error fetching user");
+        } finally {
+          setLoading(false);
         }
-
-        const data: User = await res.json();
-        setUser(data);
-      } catch (err: any) {
-        setError(err.message || "Error fetching user");
-      } finally {
+      } else if (status === "unauthenticated") {
+        setError("Not logged in");
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [session, status]); // Important to include session and status here!
 
-  if (loading) {
+  if (loading || status === "loading") {
     return (
       <Box sx={{ p: 3, display: "flex", justifyContent: "center" }}>
         <CircularProgress />
@@ -58,8 +66,8 @@ export default function Dashboard() {
   if (user) {
     return (
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4">{user._id}!</Typography>
-        <Typography variant="h4">{user.name}!</Typography>
+        <Typography variant="h4">{user._id}</Typography>
+        <Typography variant="h4">{user.name}</Typography>
         <Typography variant="body1">{user.email}</Typography>
       </Box>
     );
