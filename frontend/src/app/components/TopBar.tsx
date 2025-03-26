@@ -37,11 +37,15 @@ const TopBar = () => {
 
         {status === "loading" ? (
           <LoadingIcon/>
-        ) : (
+        ) : status === "unauthenticated" ? (
           <Button color="secondary" sx={{borderWidth : 8 , borderRadius : 3}} variant="contained"  onClick={() => signIn()}>
             Log in
           </Button>
-        )}
+        ) : 
+        <Button color="error" sx={{borderWidth : 8 , borderRadius : 3}} variant="contained"  onClick={() => signOut()}>
+        Logout
+      </Button>
+        }
       </Toolbar>
     </AppBar>
   );
