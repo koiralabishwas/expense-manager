@@ -30,10 +30,10 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <div>
           <MUIThemeProvider>
-          <AuthProvider>
-          <TopBar />
-          {children}
-          </AuthProvider>
+            <AuthProvider>
+              <TopBar />
+              {children}
+            </AuthProvider>
           </MUIThemeProvider>
           <footer className="footer">© 2025 Your App</footer>
         </div>
