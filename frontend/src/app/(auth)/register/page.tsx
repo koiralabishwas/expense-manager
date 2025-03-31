@@ -76,8 +76,8 @@ export default function RegisterPage() {
             variant="outlined"
             margin="normal"
             fullWidth
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            error={!!errors.name}
+            helperText={errors.name?.message}
             {...register("name")}
           />
   
