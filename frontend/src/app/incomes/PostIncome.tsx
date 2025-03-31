@@ -90,6 +90,8 @@ const postIncome = () => {
   });
 
   const onSubmit: SubmitHandler<IncomeForm> = async (formData: IncomeForm) => {
+    // TODO: do theese fetching in server action 
+    // ref => https://github.com/HamedBahram/next-rhf/blob/main/components/with-action.tsx
     const result = await fetch(
       process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/incomes",
       {

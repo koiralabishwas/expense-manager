@@ -23,7 +23,7 @@ export async function postExpense(prevState : any , formData : FormData) {
     }
   })
 
-  const json = await res.json()
+  const result = await res.json()
 
   if(!res.ok){
     return {message : "request failed"}
