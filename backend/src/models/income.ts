@@ -9,7 +9,7 @@ const incomeSchema = new mongoose.Schema(
     },
     description: { type: String, required: true },
     amount: { type: Number, required: true },
-    currecny : {type : String , default :  "JPY"},
+    currency : {type : String , default :  "JPY"},
     genre: {
       type: String,
       default: "Other",
