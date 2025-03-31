@@ -1,5 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Info } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -43,6 +44,7 @@ type FormFeild = {
   color?: "primary" | "secondary";
   options?: string[];
 };
+
 const formFeilds: FormFeild[] = [
   {
     name: "description",
@@ -81,7 +83,8 @@ const postIncome = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting , isSubmitSuccessful },
   } = useForm<IncomeForm>({
     resolver: zodResolver(schema),
   });
@@ -103,20 +106,29 @@ const postIncome = () => {
       setError("root", {
         message: "request failed",
       });
+      
     } else {
+      reset()
       //TODO:
-      // router.refresh();
+      // show the registered data in modal
       console.log("ok");
     }
   };
 
   return (
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
-      <form onSubmit={handleSubmit(onSubmit)}>
         <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
           収入登録
         </Typography>
         <Typography color="error">{errors.root?.message}</Typography>
+      { isSubmitSuccessful && (
+        <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
+            <Typography variant="h5" color="success" fontWeight="bold">
+            収入を登録しました
+            </Typography>
+        </Box>
+      )}
+      <form onSubmit={handleSubmit(onSubmit)}>
         {formFeilds.map((field) =>
           field.type === "text" || field.type === "number" ? (
             <TextField
