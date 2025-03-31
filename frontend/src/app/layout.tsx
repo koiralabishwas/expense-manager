@@ -4,6 +4,7 @@ import "./globals.css";
 import TopBar from "./components/TopBar";
 import AuthProvider from "./providers/AuthProvider";
 import MUIThemeProvider from "./providers/MUIThemeProvider";
+import { EmotionCacheProvider } from "./providers/EmotionCacheProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,15 +29,14 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div>
+        <EmotionCacheProvider>
           <MUIThemeProvider>
             <AuthProvider>
               <TopBar />
               {children}
             </AuthProvider>
           </MUIThemeProvider>
-          <footer className="footer">© 2025 Your App</footer>
-        </div>
+        </EmotionCacheProvider>
       </body>
     </html>
   );
