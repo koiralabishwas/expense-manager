@@ -33,10 +33,10 @@ const themeOptions: ThemeOptions = {
       contrastText: 'rgba(189,189,189,0.87)',
     },
     success: {
-      main: '#26ff2d',
+      main: '#009b07', // Adjusted to be slightly darker
       contrastText: '#ffffff',
-      light: '#28c0ff',
-      dark: '#d32aff',
+      light: '#5eff5e', // Adjusted light
+      dark: '#007500', // Adjusted dark
     },
     text: {
       primary: '#000000',

@@ -16,13 +16,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Settings, Logout } from "@mui/icons-material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { signIn, signOut, useSession } from "next-auth/react";
-import LoadingIcon from "./ui/LoadingIcon";
-import LeftDrawer from "./LeftDrawer";
-
-const TopBar = () => {
-  const { data: session, status } = useSession();
+import { signIn, signOut } from "next-auth/react";
+import LeftDrawer from "./ui/LeftMenu";
+import { Session } from "next-auth";
+interface Props {
+  session: Session | null;
+}
+const TopBar = ({ session }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -40,16 +40,14 @@ const TopBar = () => {
     <AppBar position="absolute" sx={{ boxShadow: "none" }}>
       <Toolbar variant="dense" disableGutters>
         {/* User Initial Icon or Placeholder */}
-        <LeftDrawer/>
+        <LeftDrawer />
         {/* Title */}
         <Typography fontSize={25} sx={{ flexGrow: 1 }}>
           家計師くん
         </Typography>
 
         {/* Auth Buttons */}
-        {status === "loading" ? (
-          <LoadingIcon />
-        ) : status === "unauthenticated" ? (
+        {!session ? (
           <Button
             color="secondary"
             variant="contained"

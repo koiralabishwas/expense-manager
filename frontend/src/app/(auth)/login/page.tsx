@@ -19,7 +19,7 @@ type LoginForm = z.infer<typeof schema>;
 
 export default function LoginPage() {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const {
     register,
     handleSubmit,

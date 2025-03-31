@@ -19,6 +19,7 @@ export async function postUserIncome(ctx : Context) {
       userId : user._id,
       description : body.description,
       amount : body.amount , 
+      currecny : body.currency,
       genre : body.genre
     }).save()
     return ctx.json(newUserIncome)

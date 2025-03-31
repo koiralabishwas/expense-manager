@@ -7,7 +7,6 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
@@ -21,28 +20,19 @@ export default function LeftDrawer() {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+    <Box sx={{ width: 200 }} onClick={toggleDrawer(false)}>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+        {[
+          { text: "Home", icon: <InboxIcon /> ,link : "/"},
+          { text: "Income", icon: <InboxIcon /> , link : "/incomes" },
+          { text: "Expense", icon: <MailIcon /> , link : "/expenses" },
+        ].map((item, index) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton onClick={() => {window.location.href = item.link}}>
+              {/* TODO: Icon 入れろ */}
+              {/* <ListItemIcon>{item.icon}</ListItemIcon> */}
+              <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
         ))}
