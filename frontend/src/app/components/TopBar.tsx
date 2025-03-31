@@ -15,10 +15,11 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import {Settings, Logout } from "@mui/icons-material";
-import MenuIcon from '@mui/icons-material/Menu';
+import { Settings, Logout } from "@mui/icons-material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { signIn, signOut, useSession } from "next-auth/react";
 import LoadingIcon from "./ui/LoadingIcon";
+import LeftDrawer from "./LeftDrawer";
 
 const TopBar = () => {
   const { data: session, status } = useSession();
@@ -27,24 +28,19 @@ const TopBar = () => {
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-    console.log(anchorEl)
+    console.log(anchorEl);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    console.log(anchorEl)
+    console.log(anchorEl);
   };
 
   return (
     <AppBar position="absolute" sx={{ boxShadow: "none" }}>
-      <Toolbar variant="dense" disableGutters >
+      <Toolbar variant="dense" disableGutters>
         {/* User Initial Icon or Placeholder */}
-        <IconButton
-          size="large"
-        >
-          <MenuIcon fontSize="large"/>
-        </IconButton>
-
+        <LeftDrawer/>
         {/* Title */}
         <Typography fontSize={25} sx={{ flexGrow: 1 }}>
           家計師くん
@@ -73,7 +69,7 @@ const TopBar = () => {
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
               >
-                <Avatar sx={{ width: 40, height: 40 , color:"black" }}>
+                <Avatar sx={{ width: 40, height: 40, color: "black" }}>
                   {session?.user?.name?.[0] ?? "U"}
                 </Avatar>
               </IconButton>
@@ -81,7 +77,6 @@ const TopBar = () => {
             <Menu
               anchorEl={anchorEl}
               id="account-menu"
-              
               open={open}
               onClose={handleMenuClose}
               onClick={handleMenuClose}
@@ -117,7 +112,8 @@ const TopBar = () => {
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
               <MenuItem>
-                <Avatar />My Profile
+                <Avatar />
+                My Profile
               </MenuItem>
               <Divider />
               <MenuItem>
