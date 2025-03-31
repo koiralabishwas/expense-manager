@@ -112,6 +112,7 @@ const postIncome = () => {
       //TODO:
       // show the registered data in modal
       console.log("ok");
+      router.refresh()
     }
   };
 
