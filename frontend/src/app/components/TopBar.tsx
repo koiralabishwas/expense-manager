@@ -19,7 +19,7 @@ import { Settings, Logout } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { signIn, signOut, useSession } from "next-auth/react";
 import LoadingIcon from "./ui/LoadingIcon";
-import LeftDrawer from "./LeftDrawer";
+import LeftDrawer from "./ui/LeftMenu";
 
 const TopBar = () => {
   const { data: session, status } = useSession();
