@@ -48,7 +48,7 @@ export default function RegisterPage() {
 
       })
     } else {
-      router.replace("/auth/login");      
+      router.replace("/login");      
     }
   };
 
