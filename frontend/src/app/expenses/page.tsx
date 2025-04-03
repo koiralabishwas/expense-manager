@@ -3,6 +3,10 @@ import React, { useActionState } from 'react'
 import { postExpense } from './action'
 import { Box, Button, TextField } from '@mui/material'
 
+type FormFeild = {
+  
+}
+
 const initialState = {
   message : ""
 }
