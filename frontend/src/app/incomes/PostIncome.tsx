@@ -59,20 +59,20 @@ const formFeilds: FormFeild[] = [
     type: "number",
   },
   {
-    name: "currency",
-    label: "Currency",
-    color: "secondary",
-    placeholder: "JPY",
-    default: "JPY",
-    type: "text",
-  },
-  {
     name: "genre",
     label: "Genre",
     type: "select",
     placeholder: "Salary",
     default: "Salary",
     options: IncomeGenre.options,
+  },
+  {
+    name: "currency",
+    label: "Currency",
+    color: "secondary",
+    placeholder: "JPY",
+    default: "JPY",
+    type: "text",
   },
 ];
 
@@ -84,13 +84,13 @@ const postIncome = () => {
     handleSubmit,
     setError,
     reset,
-    formState: { errors, isSubmitting , isSubmitSuccessful },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<IncomeForm>({
     resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<IncomeForm> = async (formData: IncomeForm) => {
-    // TODO: do theese fetching in server action 
+    // TODO: do theese fetching in server action
     // ref => https://github.com/HamedBahram/next-rhf/blob/main/components/with-action.tsx
     const result = await fetch(
       process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/incomes",
@@ -108,27 +108,26 @@ const postIncome = () => {
       setError("root", {
         message: "request failed",
       });
-      
     } else {
-      reset()
+      reset();
       //TODO:
       // show the registered data in modal
       console.log("ok");
-      router.refresh()
+      router.refresh();
     }
   };
 
   return (
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
-        <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
-          収入登録
-        </Typography>
-        <Typography color="error">{errors.root?.message}</Typography>
-      { isSubmitSuccessful && (
+      <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
+        収入登録
+      </Typography>
+      <Typography color="error">{errors.root?.message}</Typography>
+      {isSubmitSuccessful && (
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-            <Typography variant="h5" color="success" fontWeight="bold">
+          <Typography variant="h5" color="success" fontWeight="bold">
             収入を登録しました
-            </Typography>
+          </Typography>
         </Box>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
