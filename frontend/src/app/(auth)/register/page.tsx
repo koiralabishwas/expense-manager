@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import LoadingIcon from "../../components/ui/LoadingIcon";
+import LoadingIcon from "../../../components/ui/LoadingIcon";
 
 const schema = z.object({
   name : z.string().min(5).max(20),
@@ -48,7 +48,7 @@ export default function RegisterPage() {
 
       })
     } else {
-      router.replace("/auth/login");      
+      router.replace("/login");      
     }
   };
 

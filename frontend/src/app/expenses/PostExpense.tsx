@@ -1,52 +1,52 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Box,
-  Button,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Typography, TextField, MenuItem, Button } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { number, string, z } from "zod";
 
-export const IncomeGenre = z.enum([
-  "Salary",
-  "Gratuity",
-  "Allowence",
-  "Bonus",
+const ExpenseGenre = z.enum([
+  "Water",
+  "Drinks",
+  "Meal",
+  "Snacks",
+  "Groceries",
+  "Entertainment",
+  "Devices",
+  "Hangouts",
+  "Study",
+  "Clothing",
   "Other",
 ]);
 
 const schema = z.object({
-  // description , amount , genre , currency
   description: string().min(1).max(50),
-  genre: IncomeGenre,
+  genre: ExpenseGenre,
   amount: number(),
   currency: string()
     .regex(/^[A-Z]{3}/, "must be 3 digit currency Code")
     .default("JPY"),
 });
 
-type IncomeForm = z.infer<typeof schema>;
+export type ExpenseForm = z.infer<typeof schema>
 
 type FormFeild = {
-  name: keyof IncomeForm;
-  label: string;
-  type: "text" | "number" | "select";
-  placeholder: string;
-  default?: String;
-  color?: "primary" | "secondary";
-  options?: string[];
-};
+  name : keyof ExpenseForm
+  label : string 
+  type : 'text' |  "number"| "select"
+  placeholder : string
+  default? : string
+  color? : "primary" | "secondary"
+  options? : string[] 
+}
 
 const formFeilds: FormFeild[] = [
   {
     name: "description",
-    placeholder: "description of the income",
+    placeholder: "description of the expense",
     label: "Description",
     type: "text",
   },
@@ -60,9 +60,9 @@ const formFeilds: FormFeild[] = [
     name: "genre",
     label: "Genre",
     type: "select",
-    placeholder: "Salary",
-    default: "Salary",
-    options: IncomeGenre.options,
+    placeholder: "Water",
+    default: "Water",
+    options: ExpenseGenre.options,
   },
   {
     name: "currency",
@@ -74,34 +74,30 @@ const formFeilds: FormFeild[] = [
   },
 ];
 
-const postIncome = () => {
-  const router = useRouter();
-  const { data: session, status } = useSession();
+const PostExpense = () => {
+  const router = useRouter()
+  const {data : session , status} = useSession() 
   const {
-    register,
-    handleSubmit,
+    register , 
+    handleSubmit , 
     setError,
-    reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = useForm<IncomeForm>({
-    resolver: zodResolver(schema),
-  });
+    reset , 
+    formState : {errors , isSubmitting , isSubmitSuccessful}
+  } = useForm<ExpenseForm>({
+    resolver : zodResolver(schema)
+  })
 
-  const onSubmit: SubmitHandler<IncomeForm> = async (formData: IncomeForm) => {
-    // TODO: do theese fetching in server action
-    // ref => https://github.com/HamedBahram/next-rhf/blob/main/components/with-action.tsx
-    const result = await fetch(
-      process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/incomes",
-      {
-        body: JSON.stringify(formData),
+  const onSubmit : SubmitHandler<ExpenseForm> = async (formData : ExpenseForm) => {
+    // async await はだめだけど、try catch は通る
+
+    const result = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/expenses" , {
+      body: JSON.stringify(formData),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`
+          Authorization: `Bearer ${session?.accessToken}`,
         },
         method: "POST",
-      }
-    );
-
+    })
     if (!result.ok) {
       setError("root", {
         message: "request failed",
@@ -110,20 +106,26 @@ const postIncome = () => {
       reset();
       //TODO:
       // show the registered data in modal
+      console.log("ok");
       router.refresh();
     }
-  };
+    
+    router.refresh()
+  }
+ 
 
+
+  
   return (
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
       <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
-        収入登録
+        支出登録
       </Typography>
       <Typography color="error">{errors.root?.message}</Typography>
       {isSubmitSuccessful && (
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
           <Typography variant="h5" color="success" fontWeight="bold">
-            収入を登録しました
+            支出を登録しました
           </Typography>
         </Box>
       )}
@@ -194,4 +196,4 @@ const postIncome = () => {
   );
 };
 
-export default postIncome;
+export default PostExpense;

@@ -1,7 +1,7 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React from 'react'
 
-interface Income{
+type Column = {
   _id : string,
   description : string ,
   amount : number , 
@@ -11,25 +11,32 @@ interface Income{
 }
 
 interface Props{
-  incomes : Income[]
+  records : Column[]
 }
 
-const IncomeTable = ({incomes} : Props) => {
-  console.log(incomes)
+const columnLabels: Partial<Record<keyof Column, string>> = {
+  description: "Description",
+  amount: "Amount",
+  currency: "Currency",
+  genre: "Genre",
+  createdAt: "Date",
+};
+const columnKeys =  Object.keys(columnLabels) as (keyof Column)[];
+
+
+const TableView = ({records} : Props) => {
   return (
     <TableContainer component={Paper}>
       <Table  aria-label='simple table' >
         <TableHead>
           <TableRow>
-              <TableCell >descripion</TableCell>
-              <TableCell align='right'>amount</TableCell>
-              <TableCell align='right'>genre</TableCell>
-              <TableCell align='right'>currency</TableCell>
-              <TableCell align='right'>Date</TableCell>
+          {columnKeys.map((column) => (
+            <TableCell sx={{textAlign : "left"}} key={column} >{column}</TableCell>
+          ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {incomes.map((income) => (
+          {records.map((income) => (
             <TableRow key={income._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component="th" scope='row'>{income.description}</TableCell>
               <TableCell align='right' >{income.amount}</TableCell>
@@ -44,4 +51,4 @@ const IncomeTable = ({incomes} : Props) => {
   )
 }
 
-export default IncomeTable
+export default TableView
