@@ -1,110 +1,43 @@
-"use client";
-import React, { useActionState } from "react";
-import { postExpense } from "./action";
-import {
-  Alert,
-  Box,
-  Button,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import React from 'react'
+import PostExpense from './PostExpense'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../lib/auth'
+import IncomeTable from '../incomes/IncomeTable'
+import { Typography } from '@mui/material'
 
-const initialState = {
-  message: "",
-};
+const page = async () => {
+  const session = await getServerSession(authOptions)
 
-const genreOptions = [
-  "Water",
-  "Drinks",
-  "Meal",
-  "Snacks",
-  "Groceries",
-  "Entertainment",
-  "Devices",
-  "Hangouts",
-  "Study",
-  "Clothing",
-  "Other",
-];
+  if(!session?.accessToken){
+    return <div>Login Needed</div>
+  }
 
-const page = () => {
-  const [state, formAction, pending] = useActionState(
-    postExpense,
-    initialState
-  );
+  const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/expenses" , {
+    //TODO: I need to know more about this bearer thing
+    headers : {
+      Authorization : `Bearer ${session.accessToken}`
+    },
+    cache : 'no-store'
+  });
+
+  // TODO: add types ?
+  const expenses = await res.json()
+
   return (
-    <Box maxWidth={400} mx={"auto"} mt={6} px={2}>
-      <form action={formAction}>
-        <Typography
-          component={"h1"}
-          variant="h5"
-          textAlign={"center"}
-          gutterBottom
-          margin={"normal"}
-        >
-          出費登録
-        </Typography>
-        <TextField
-          label="description"
-          id="description"
-          name="description"
-          margin="normal"
-          required
-          fullWidth
-        />
-        <TextField
-          label="amount"
-          id="amount"
-          name="amount"
-          type="number"
-          margin={"normal"}
-          required
-          fullWidth
-        />
-        <TextField
-          select
-          label="genre"
-          id="genre"
-          name="genre"
-          margin="normal"
-          defaultValue={"Water"}
-          required
-          fullWidth
-        >
-          {genreOptions.map((genre) => (
-            <MenuItem key={genre} value={genre}>
-              {genre}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          label="currency"
-          id="currency"
-          name="currency"
-          defaultValue={"JPY"}
-          margin="normal"
-          required
-          fullWidth
-        />
-        {state?.message && (
-          <Alert severity="info" sx={{ mt: 2 }}>
-            {state.message}
-          </Alert>
-        )}
+    <div>
+      <Typography
+        component={"h1"}
+        variant="h5"
+        textAlign={"center"}
+        gutterBottom
+        margin={"normal"}
+      >
+        出費登録
+      </Typography>
+      <IncomeTable incomes={expenses}></IncomeTable>
+      <PostExpense/>
+    </div>
+  )
+}
 
-        <Button
-          type="submit"
-          variant="contained"
-          disabled={pending}
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          {pending ? "submitting.." : "submit"}
-        </Button>
-      </form>
-    </Box>
-  );
-};
-
-export default page;
+export default page
