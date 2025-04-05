@@ -119,13 +119,13 @@ const PostExpense = () => {
   return (
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
       <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
-        収入登録
+        支出登録
       </Typography>
       <Typography color="error">{errors.root?.message}</Typography>
       {isSubmitSuccessful && (
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
           <Typography variant="h5" color="success" fontWeight="bold">
-            収入を登録しました
+            支出を登録しました
           </Typography>
         </Box>
       )}

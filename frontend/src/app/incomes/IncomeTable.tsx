@@ -1,7 +1,7 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import React from 'react'
 
-interface Income{
+type Income = {
   _id : string,
   description : string ,
   amount : number , 
@@ -14,18 +14,25 @@ interface Props{
   incomes : Income[]
 }
 
+const columnLabels: Partial<Record<keyof Income, string>> = {
+  description: "Description",
+  amount: "Amount",
+  currency: "Currency",
+  genre: "Genre",
+  createdAt: "Date",
+};
+const columnKeys =  Object.keys(columnLabels) as (keyof Income)[];
+
+
 const IncomeTable = ({incomes} : Props) => {
-  console.log(incomes)
   return (
     <TableContainer component={Paper}>
       <Table  aria-label='simple table' >
         <TableHead>
           <TableRow>
-              <TableCell >descripion</TableCell>
-              <TableCell align='right'>amount</TableCell>
-              <TableCell align='right'>genre</TableCell>
-              <TableCell align='right'>currency</TableCell>
-              <TableCell align='right'>Date</TableCell>
+          {columnKeys.map((column) => (
+            <TableCell key={column} >{column}</TableCell>
+          ))}
           </TableRow>
         </TableHead>
         <TableBody>
