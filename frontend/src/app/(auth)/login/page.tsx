@@ -8,7 +8,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import LoadingIcon from "@/app/components/ui/LoadingIcon";
+import LoadingIcon from "../../../components/ui/LoadingIcon";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
