@@ -34,6 +34,7 @@ const page = async () => {
       >
         出費登録
       </Typography>
+      {/* TOOD: Make it right table */}
       <IncomeTable incomes={expenses}></IncomeTable>
       <PostExpense/>
     </div>

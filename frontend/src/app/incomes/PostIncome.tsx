@@ -1,11 +1,9 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Info } from "@mui/icons-material";
 import {
   Box,
   Button,
   MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -48,7 +46,7 @@ type FormFeild = {
 const formFeilds: FormFeild[] = [
   {
     name: "description",
-    placeholder: "description of the expense",
+    placeholder: "description of the income",
     label: "Description",
     type: "text",
   },
@@ -98,7 +96,7 @@ const postIncome = () => {
         body: JSON.stringify(formData),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
+          Authorization: `Bearer ${session?.accessToken}`
         },
         method: "POST",
       }
@@ -112,7 +110,6 @@ const postIncome = () => {
       reset();
       //TODO:
       // show the registered data in modal
-      console.log("ok");
       router.refresh();
     }
   };
