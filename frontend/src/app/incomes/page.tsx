@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import PostIncome from "./PostIncome";
 import { Typography } from "@mui/material";
 import { authOptions } from "../lib/auth";
-import IncomeTable from "./IncomeTable";
+import TableView from "../../components/TableView"; 
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -24,7 +24,7 @@ export default async function Page() {
     <div>
 
       <h2>収入一覧</h2>
-      <IncomeTable incomes={incomes}></IncomeTable>
+      <TableView records={incomes}></TableView>
       <PostIncome />
     </div>
   );

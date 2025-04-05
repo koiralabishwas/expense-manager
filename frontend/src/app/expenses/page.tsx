@@ -2,8 +2,8 @@ import React from 'react'
 import PostExpense from './PostExpense'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../lib/auth'
-import IncomeTable from '../incomes/IncomeTable'
 import { Typography } from '@mui/material'
+import TableView from '../../components/TableView'
 
 const page = async () => {
   const session = await getServerSession(authOptions)
@@ -35,7 +35,7 @@ const page = async () => {
         出費登録
       </Typography>
       {/* TOOD: Make it right table */}
-      <IncomeTable incomes={expenses}></IncomeTable>
+      <TableView records={expenses}></TableView>
       <PostExpense/>
     </div>
   )
