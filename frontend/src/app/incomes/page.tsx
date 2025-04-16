@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import PostIncome from "./PostIncome";
 import { Typography } from "@mui/material";
-import { authOptions } from "../lib/auth";
+import { authOptions } from "../../lib/auth";
 import TableView from "../../components/TableView";
 import FormModal from "@/components/FormModal";
 

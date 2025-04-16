@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TopBar from "../components/TopBar";
-import AuthProvider from "./providers/AuthProvider";
-import MUIThemeProvider from "./providers/MUIThemeProvider";
-import { EmotionCacheProvider } from "./providers/EmotionCacheProvider";
+import AuthProvider from "../providers/AuthProvider";
+import MUIThemeProvider from "../providers/MUIThemeProvider";
+import { EmotionCacheProvider } from "../providers/EmotionCacheProvider";
 import { getServerSession } from "next-auth";
 
 const geistSans = Geist({

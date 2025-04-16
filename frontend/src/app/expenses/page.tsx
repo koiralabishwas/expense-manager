@@ -1,7 +1,7 @@
 import React from "react";
 import PostExpense from "./PostExpense";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../lib/auth";
+import { authOptions } from "../../lib/auth";
 import { Typography } from "@mui/material";
 import TableView from "../../components/TableView";
 import FormModal from "@/components/FormModal";
