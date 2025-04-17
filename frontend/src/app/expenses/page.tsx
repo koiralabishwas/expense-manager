@@ -5,6 +5,7 @@ import { authOptions } from "../../lib/auth";
 import { Typography } from "@mui/material";
 import TableView from "../../components/TableView";
 import FormModal from "@/components/FormModal";
+import ExpenseTable from "@/components/expenses/ExpenseTable";
 
 const page = async () => {
   const session = await getServerSession(authOptions);
@@ -41,7 +42,7 @@ const page = async () => {
       <FormModal>
         <PostExpense />
       </FormModal>
-      <TableView records={expenses} session={session}></TableView>
+      <ExpenseTable session={session} expenses={expenses} />
       {/* TOOD: Make it right table */}
     </div>
   );
