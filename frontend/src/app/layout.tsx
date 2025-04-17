@@ -27,20 +27,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  const session = await getServerSession()
+  const session = await getServerSession();
 
   return (
     <html lang="ja">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <EmotionCacheProvider>
-          <MUIThemeProvider>
+        <MUIThemeProvider>
+          <EmotionCacheProvider>
             <AuthProvider>
               <TopBar session={session} />
               {children}
             </AuthProvider>
-          </MUIThemeProvider>
-        </EmotionCacheProvider>
+          </EmotionCacheProvider>
+        </MUIThemeProvider>
       </body>
     </html>
   );
