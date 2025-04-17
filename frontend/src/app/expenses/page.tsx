@@ -41,8 +41,7 @@ const page = async () => {
       </Typography>
       <FormModal>
         <PostExpense />
-        // FIXME:TableViewの中のuseState のせいで、 post したあと、自動で追加されない
-
+        {/* //FIXME:TableViewの中のuseState のせいで、 post したあと、自動で追加されない */}
       </FormModal>
       <ExpenseTable session={session} expenses={expenses} />
       {/* TOOD: Make it right table */}
