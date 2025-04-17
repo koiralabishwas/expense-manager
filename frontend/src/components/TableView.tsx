@@ -37,6 +37,7 @@ const columnKeys = Object.keys(columnLabels) as (keyof Column)[];
 
 const TableView = ({ records: recordArray, deleteRecord }: Props) => {
   const [records, setRecord] = useState<Column[]>(recordArray);
+  // FIXME:多分この state のせいで、 post したあと、自動で追加されない
 
   return (
     <TableContainer component={Paper}>
