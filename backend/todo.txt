@@ -1,2 +1,4 @@
 make admin routes that can view all data
 make tests for all routes
+
+delete request to not existing income/expense returns 200 , must return 400 or smth else 
