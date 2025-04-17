@@ -41,7 +41,7 @@ const page = async () => {
       <FormModal>
         <PostExpense />
       </FormModal>
-      <TableView records={expenses}></TableView>
+      <TableView records={expenses} session={session}></TableView>
       {/* TOOD: Make it right table */}
     </div>
   );

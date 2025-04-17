@@ -4,6 +4,7 @@ import { Typography } from "@mui/material";
 import { authOptions } from "../../lib/auth";
 import TableView from "../../components/TableView";
 import FormModal from "@/components/FormModal";
+import IncomeTable from "@/components/incomes/IncomeTable";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -24,13 +25,15 @@ export default async function Page() {
 
   const incomes = await res.json();
 
+
+
   return (
     <div>
       <h2>収入一覧</h2>
       <FormModal>
         <PostIncome />
       </FormModal>
-      <TableView records={incomes}></TableView>
+      <IncomeTable session={session} incomes={incomes}/>
     </div>
   );
 }
