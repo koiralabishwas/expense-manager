@@ -9,9 +9,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Session } from "next-auth";
-import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 
 type Column = {
   _id: string;
@@ -37,7 +35,9 @@ const columnLabels: Partial<Record<keyof Column, string>> = {
 };
 const columnKeys = Object.keys(columnLabels) as (keyof Column)[];
 
-const TableView = ({ records , deleteRecord }: Props) => {
+const TableView = ({ records: recordArray, deleteRecord }: Props) => {
+  const [records, setRecord] = useState<Column[]>(recordArray);
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -51,23 +51,32 @@ const TableView = ({ records , deleteRecord }: Props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {records.map((income) => (
+          {records.map((record) => (
             <TableRow
-              key={income._id}
+              key={record._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {income.description}
+                {record.description}
               </TableCell>
-              <TableCell align="right">{income.amount}</TableCell>
-              <TableCell align="right">{income.genre}</TableCell>
-              <TableCell align="right">{income.currency}</TableCell>
+              <TableCell align="right">{record.amount}</TableCell>
+              <TableCell align="right">{record.genre}</TableCell>
+              <TableCell align="right">{record.currency}</TableCell>
               <TableCell align="right">
-                {new Date(income.createdAt)
+                {new Date(record.createdAt)
                   .toLocaleDateString("sv-SE")
                   .replace(/-/g, "/")}
               </TableCell>
-              <TableCell><Button onClick={() => deleteRecord(income._id)}>Delete</Button></TableCell>
+              <TableCell>
+                <Button
+                  onClick={() => {
+                    deleteRecord(record._id);
+                    setRecord(records.filter((r) => r._id !== record._id));
+                  }}
+                >
+                  Delete
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
