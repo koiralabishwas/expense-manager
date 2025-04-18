@@ -109,9 +109,9 @@ const PostIncome = () => {
       });
     } else {
       onToggleModal()
+      router.push('/incomes')
     }
 
-    if (isSubmitted) router.refresh()
   };
 
   return (
