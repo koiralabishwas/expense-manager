@@ -30,9 +30,7 @@ export default async function Page() {
   return (
     <div>
       <h2>収入一覧</h2>
-      <FormModal>
         <PostIncome />
-      </FormModal>
       <IncomeTable session={session} incomes={incomes}/>
     </div>
   );
