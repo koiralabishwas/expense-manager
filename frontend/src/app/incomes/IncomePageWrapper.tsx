@@ -18,14 +18,13 @@ const IncomePageWrapper = ({ initialIncomes, session }: Props) => {
       <FormModal>
         <PostIncome
           onPost={(newIncome: any) => {
-            console.log("new INcome", newIncome);
             setIncomes((previous) => [...previous, newIncome]);
           }}
         />
       </FormModal>
       <IncomeTable
         onDelete={(id: string) => {
-          console.log("deletedIncome" , id);
+          console.log("deletedIncome", id);
           setIncomes(incomes.filter((i) => i._id !== id));
         }}
         session={session}

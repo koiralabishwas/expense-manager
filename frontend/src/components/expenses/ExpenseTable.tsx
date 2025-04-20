@@ -6,8 +6,9 @@ import { Session } from "next-auth";
 interface Props {
   session: Session;
   expenses: Array<any>;
+  onDelete : (id : string) => void
 }
-const ExpenseTable = ({ expenses, session }: Props) => {
+const ExpenseTable = ({ expenses, session , onDelete }: Props) => {
   const deleteExpense = (id: string) => {
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/${id}`, {
       method: "DELETE",
@@ -15,6 +16,8 @@ const ExpenseTable = ({ expenses, session }: Props) => {
         Authorization: `Bearer ${session.accessToken}`,
       },
     });
+
+    onDelete(id)
   };
 
   return <TableView records={expenses} deleteRecord={deleteExpense} />;

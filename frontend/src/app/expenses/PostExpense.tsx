@@ -74,8 +74,11 @@ const formFeilds: FormFeild[] = [
   },
 ];
 
-const PostExpense = () => {
-  const router = useRouter()
+interface Props {
+  onPost : (expense : any) => void
+}
+
+const PostExpense = ({onPost} : Props) => {
   const {data : session , status} = useSession() 
   const {
     register , 
@@ -103,14 +106,11 @@ const PostExpense = () => {
         message: "request failed",
       });
     } else {
+      const expense = await result.json()
       reset();
-      //TODO:
-      // show the registered data in modal
-      console.log("ok");
-      router.refresh();
+      onPost(expense)
     }
     
-    router.refresh()
   }
  
 

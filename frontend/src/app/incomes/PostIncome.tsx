@@ -79,7 +79,6 @@ interface Props {
 }
 
 const postIncome = ({onPost} : Props) => {
-  const router = useRouter();
   const { data: session, status } = useSession();
   const {
     register,
