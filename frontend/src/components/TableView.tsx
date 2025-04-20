@@ -35,9 +35,7 @@ const columnLabels: Partial<Record<keyof Column, string>> = {
 };
 const columnKeys = Object.keys(columnLabels) as (keyof Column)[];
 
-const TableView = ({ records: recordArray, deleteRecord }: Props) => {
-  const [records, setRecord] = useState<Column[]>(recordArray);
-  // FIXME:多分この state のせいで、 post したあと、自動で追加されない
+const TableView = ({ records, deleteRecord }: Props) => {
 
   return (
     <TableContainer component={Paper}>
@@ -72,7 +70,6 @@ const TableView = ({ records: recordArray, deleteRecord }: Props) => {
                 <Button
                   onClick={() => {
                     deleteRecord(record._id);
-                    setRecord(records.filter((r) => r._id !== record._id));
                   }}
                 >
                   Delete

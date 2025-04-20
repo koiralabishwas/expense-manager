@@ -5,6 +5,7 @@ import { authOptions } from "../../lib/auth";
 import TableView from "../../components/TableView";
 import FormModal from "@/components/FormModal";
 import IncomeTable from "@/components/incomes/IncomeTable";
+import IncomePageWrapper from "./IncomePageWrapper";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -26,14 +27,14 @@ export default async function Page() {
   const incomes = await res.json();
 
 
-
   return (
     <div>
       <h2>収入一覧</h2>
-      <FormModal>
-        <PostIncome />
+      {/* <FormModal>
+        <PostIncome onPost={(income) => incomes.push(income)} />
       </FormModal>
-      <IncomeTable session={session} incomes={incomes}/>
+      <IncomeTable session={session} incomes={incomes}/> */}
+      <IncomePageWrapper session={session} initialIncomes={incomes} />
     </div>
   );
 }

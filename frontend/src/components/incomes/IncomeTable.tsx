@@ -6,9 +6,10 @@ import TableView from "../TableView";
 interface Props {
   session: Session;
   incomes: Array<any>;
+  onDelete : (id : string) => void
 }
 
-const IncomeTable = ({ session, incomes }: Props) => {
+const IncomeTable = ({ session, incomes  , onDelete}: Props) => {
   const deleteIncome = (id: string) => {
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes/${id}`, {
       method: "DELETE",
@@ -16,6 +17,8 @@ const IncomeTable = ({ session, incomes }: Props) => {
         Authorization: `Bearer ${session.accessToken}`,
       },
     });
+
+    onDelete(id)
   };
   return <TableView deleteRecord={deleteIncome} records={incomes} />;
 };
