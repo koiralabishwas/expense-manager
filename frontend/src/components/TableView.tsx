@@ -9,7 +9,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 
 type Column = {
   _id: string;
@@ -35,8 +35,7 @@ const columnLabels: Partial<Record<keyof Column, string>> = {
 };
 const columnKeys = Object.keys(columnLabels) as (keyof Column)[];
 
-const TableView = ({ records, deleteRecord }: Props) => {
-
+const TableView = ({ deleteRecord, records }: Props) => {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">

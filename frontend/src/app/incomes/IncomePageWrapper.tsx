@@ -3,33 +3,40 @@ import FormModal from "@/components/FormModal";
 import { Session } from "next-auth";
 import React, { useState } from "react";
 import PostIncome from "./PostIncome";
-import IncomeTable from "@/components/incomes/IncomeTable";
+import TableView from "@/components/TableView";
 
 interface Props {
-  initialIncomes: Array<any>;
+  initialColumns: Array<any>;
   session: Session;
 }
 
-const IncomePageWrapper = ({ initialIncomes, session }: Props) => {
-  const [incomes, setIncomes] = useState(initialIncomes);
+const IncomePageWrapper = ({ initialColumns, session }: Props) => {
+  const [columns, setColumns] = useState(initialColumns);
+
+  const handleDelete = async (id: string) => {
+    await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+      }
+    );
+
+    setColumns((prev) => prev.filter((i) => i._id !== id));
+  };
 
   return (
     <div>
       <FormModal>
         <PostIncome
           onPost={(newIncome: any) => {
-            setIncomes((previous) => [...previous, newIncome]);
+            setColumns((previous) => [...previous, newIncome]);
           }}
         />
       </FormModal>
-      <IncomeTable
-        onDelete={(id: string) => {
-          console.log("deletedIncome", id);
-          setIncomes(incomes.filter((i) => i._id !== id));
-        }}
-        session={session}
-        incomes={incomes}
-      />
+      <TableView records={columns} deleteRecord={handleDelete} />
     </div>
   );
 };
