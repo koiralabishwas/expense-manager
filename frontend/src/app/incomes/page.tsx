@@ -33,7 +33,7 @@ export default async function Page() {
       >
         収入登録
       </Typography>
-      <IncomePageWrapper session={session} initialIncomes={incomes} />
+      <IncomePageWrapper  session={session} initialColumns={incomes}/>
     </div>
   );
 }
