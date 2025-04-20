@@ -1,3 +1,4 @@
+// TODO: I think it is reusabel in PostIncome and PostExpense
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -79,7 +80,6 @@ interface Props {
 }
 
 const postIncome = ({onPost} : Props) => {
-  const router = useRouter();
   const { data: session, status } = useSession();
   const {
     register,

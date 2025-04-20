@@ -1,11 +1,7 @@
 import { getServerSession } from "next-auth";
-import PostIncome from "./PostIncome";
-import { Typography } from "@mui/material";
 import { authOptions } from "../../lib/auth";
-import TableView from "../../components/TableView";
-import FormModal from "@/components/FormModal";
-import IncomeTable from "@/components/incomes/IncomeTable";
 import IncomePageWrapper from "./IncomePageWrapper";
+import {Typography} from "@mui/material";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -26,14 +22,17 @@ export default async function Page() {
 
   const incomes = await res.json();
 
-
   return (
     <div>
-      <h2>収入一覧</h2>
-      {/* <FormModal>
-        <PostIncome onPost={(income) => incomes.push(income)} />
-      </FormModal>
-      <IncomeTable session={session} incomes={incomes}/> */}
+      <Typography
+        component={"h1"}
+        variant="h5"
+        textAlign={"center"}
+        gutterBottom
+        margin={"normal"}
+      >
+        収入登録
+      </Typography>
       <IncomePageWrapper session={session} initialIncomes={incomes} />
     </div>
   );
