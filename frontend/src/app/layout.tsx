@@ -6,6 +6,7 @@ import AuthProvider from "../providers/AuthProvider";
 import MUIThemeProvider from "../providers/MUIThemeProvider";
 import { EmotionCacheProvider } from "../providers/EmotionCacheProvider";
 import { getServerSession } from "next-auth";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,14 +33,16 @@ export default async function RootLayout({
   return (
     <html lang="ja">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <MUIThemeProvider>
-          <EmotionCacheProvider>
-            <AuthProvider>
-              <TopBar />
-              {children}
-            </AuthProvider>
-          </EmotionCacheProvider>
-        </MUIThemeProvider>
+        <AuthProvider>
+          <ReactQueryProvider>
+            <MUIThemeProvider>
+              <EmotionCacheProvider>
+                <TopBar />
+                {children}
+              </EmotionCacheProvider>
+            </MUIThemeProvider>
+          </ReactQueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

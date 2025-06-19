@@ -12,7 +12,7 @@ import LoadingIcon from "../../../components/ui/LoadingIcon";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string().min(5, "Password must be at least 5 characters").max(30),
+  password: z.string().min(5, "Password must be at least 5 characters").max(30 , "must be max 30 characters"),
 });
 
 type LoginForm = z.infer<typeof schema>;
