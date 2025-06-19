@@ -35,7 +35,7 @@ export default async function RootLayout({
         <MUIThemeProvider>
           <EmotionCacheProvider>
             <AuthProvider>
-              <TopBar session={session} />
+              <TopBar />
               {children}
             </AuthProvider>
           </EmotionCacheProvider>

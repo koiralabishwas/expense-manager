@@ -16,14 +16,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Settings, Logout } from "@mui/icons-material";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import LeftDrawer from "./ui/LeftMenu";
 import { Session } from "next-auth";
-interface Props {
-  session: Session | null;
-}
-const TopBar = ({ session }: Props) => {
+
+const TopBar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+const { data: sessions, status } = useSession();
   const open = Boolean(anchorEl);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -36,6 +35,11 @@ const TopBar = ({ session }: Props) => {
     console.log(anchorEl);
   };
 
+
+  if (status === "loading") {
+    return null; // or a loading spinner
+  }
+
   return (
     <AppBar position="absolute" sx={{ boxShadow: "none" }}>
       <Toolbar variant="dense" disableGutters>
@@ -47,7 +51,7 @@ const TopBar = ({ session }: Props) => {
         </Typography>
 
         {/* Auth Buttons */}
-        {!session ? (
+        {!sessions?.user ? (
           <Button
             color="secondary"
             variant="contained"
@@ -68,7 +72,7 @@ const TopBar = ({ session }: Props) => {
                 aria-expanded={open ? "true" : undefined}
               >
                 <Avatar sx={{ width: 40, height: 40, color: "black" }}>
-                  {session?.user?.name?.[0] ?? "U"}
+                  {sessions?.user?.name?.[0] ?? "?"}
                 </Avatar>
               </IconButton>
             </Tooltip>
