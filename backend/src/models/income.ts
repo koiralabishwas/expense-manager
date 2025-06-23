@@ -7,9 +7,14 @@ const incomeSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    yearMonth: {
+      type: String,
+      required: true,
+      match: /^\d{6}$/, // ensures YYYYMM format
+    },
     description: { type: String, required: true },
     amount: { type: Number, required: true },
-    currency : {type : String , default :  "JPY"},
+    currency: { type: String, default: "JPY" },
     genre: {
       type: String,
       default: "Other",
