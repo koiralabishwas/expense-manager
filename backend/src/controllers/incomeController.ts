@@ -8,7 +8,7 @@ export async function getUserIncomes(ctx: Context) {
 
     const userIncome = await Income.find({
       userId: _id,
-      ...(yearMonth && { yearMonth }), 
+      ...(yearMonth && { yearMonth }),
     });
     return ctx.json(userIncome);
   } catch (error) {
@@ -22,15 +22,15 @@ export async function postUserIncome(ctx: Context) {
     const body = await ctx.req.json();
     const newUserIncome = await new Income({
       userId: user._id,
-      description: body.description,
       yearMonth: body.yearMonth,
+      description: body.description,
       amount: body.amount,
       currency: body.currency,
       genre: body.genre,
     }).save();
     return ctx.json(newUserIncome);
   } catch (error) {
-    return ctx.json({ error, info: "unexpected Error" }, 401);
+    return ctx.json({ error }, 400);
   }
 }
 
