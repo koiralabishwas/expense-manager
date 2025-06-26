@@ -1,0 +1,53 @@
+### Sign up
+POST http://localhost:8000/auth/register
+
+{
+  "name": "testuser",
+  "email": "testemail@email.com",
+  "password" : "testPassword"
+}
+
+### Log in 
+POST http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+  "email": "testemail@email.com",
+  "password": "testPassword"
+}
+
+########################################################
+
+### POST Expense 
+POST http://localhost:8000/api/expenses
+Content-Type: application/json
+
+{
+  "description" : "test expense3",
+  "amount" : 1000,
+  "yearMonth" : 202507
+}
+
+### GET Expense
+GET http://localhost:8000/api/expenses
+  ?yearMonth=202506
+
+########################################################
+
+
+### POST Income
+POST http://localhost:8000/api/incomes
+Content-Type: application/json
+
+{
+  "description" : "test income",
+  "amount" : 5000,
+  "yearMonth" : 202507
+}
+
+### GET Income
+GET http://localhost:8000/api/incomes?yearMonth=202506
+
+
+
+
