@@ -4,27 +4,24 @@ import { authOptions } from "../../lib/auth";
 import { Typography } from "@mui/material";
 
 import ExpensePageWrapper from "./ExpensePageWrapper";
+import { getExpense } from "@/lib/actions/expense";
+import { getCurrnentYearMonth } from "@/lib/utils";
+//TODO: need to implement react query 
 
-const page = async () => {
+interface Props {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+const page = async ({ searchParams }: Props) => {
   const session = await getServerSession(authOptions);
 
   if (!session?.accessToken) {
     return <div>Login Needed</div>;
   }
 
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_BACKEND_URL + "/api/expenses",
-    {
-      //TODO: I need to know more about this bearer thing
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-      cache: "no-store",
-    }
-  );
-
-  // TODO: add types ?
-  const expenses = await res.json();
+  // Parse yearMonth from searchParams (assuming it's a query string)
+  const yearMonth =
+    searchParams.yearMonth?.toString() || getCurrnentYearMonth();
+  const expenses = await getExpense(yearMonth);
 
   return (
     <div>

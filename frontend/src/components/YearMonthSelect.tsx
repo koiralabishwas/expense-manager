@@ -25,8 +25,7 @@ export default function YearMonthSelect() {
     const newYM = event.target.value;
     const params = new URLSearchParams(searchParams);
     params.set("yearMonth", newYM);
-    router.push(`?${params.toString()}`);
-    router.refresh();
+    window.location.search = params.toString();
   };
 
   return (
