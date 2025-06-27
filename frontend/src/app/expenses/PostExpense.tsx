@@ -1,9 +1,10 @@
 "use client";
 
+import { getCurrnentYearMonth } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Typography, TextField, MenuItem, Button } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { number, string, z } from "zod";
@@ -90,33 +91,32 @@ const PostExpense = ({onPost} : Props) => {
     resolver : zodResolver(schema)
   })
 
+  const params = useSearchParams();
+  const yearMonth = params.get('yearMonth') || getCurrnentYearMonth();
+
   const onSubmit : SubmitHandler<ExpenseForm> = async (formData : ExpenseForm) => {
     // async await はだめだけど、try catch は通る
 
-    const result = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/expenses" , {
-      body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        method: "POST",
-    })
+    const req = { ...formData, yearMonth };
+    const result = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/expenses", {
+      body: JSON.stringify(req),
+      headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.accessToken}`,
+      },
+      method: "POST",
+    });
     if (!result.ok) {
       setError("root", {
-        message: "request failed",
+      message: "request failed",
       });
     } else {
-      const expense = await result.json()
+      const expense = await result.json();
       reset();
-      onPost(expense)
+      onPost(expense);
     }
-    
   }
- 
-
-
-  
-  return (
+  return(
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
       <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
         支出登録
