@@ -1,13 +1,9 @@
-"use server";
-
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
-export async function getExpense(
-  yearMonth: string
-): Promise<any> {
+export async function getIncomes(yearMonth: string): Promise<any> {
   const session = await getServerSession(authOptions);
-  const url = new URL(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/expenses");
+  const url = new URL(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/incomes");
   if (yearMonth) {
     url.searchParams.append("yearMonth", yearMonth);
   }
@@ -18,6 +14,7 @@ export async function getExpense(
     cache: "no-store",
   });
 
-  const expense = await res.json();
-  return expense;
+  const incomes = await res.json();
+  console.log("here are incomes",incomes)
+  return incomes;
 }
