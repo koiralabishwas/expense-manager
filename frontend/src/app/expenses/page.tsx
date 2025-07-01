@@ -4,7 +4,7 @@ import { authOptions } from "../../lib/auth";
 import { Typography } from "@mui/material";
 
 import ExpensePageWrapper from "./ExpensePageWrapper";
-import { getExpense } from "@/lib/actions/expense";
+import { getExpense } from "@/lib/actions/expenses";
 import { getCurrnentYearMonth } from "@/lib/utils";
 //TODO: need to implement react query 
 
