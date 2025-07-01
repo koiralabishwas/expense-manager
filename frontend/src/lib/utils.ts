@@ -1,4 +1,4 @@
-export function getCurrnentYearMonth() {
+export function getCurrentYearMonth() {
   const now = new Date();
 
   const currentYear = now.getFullYear();
