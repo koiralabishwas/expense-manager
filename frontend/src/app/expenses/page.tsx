@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 
 import ExpensePageWrapper from "./ExpensePageWrapper";
 import { getExpense } from "@/lib/actions/expenses";
-import { getCurrnentYearMonth } from "@/lib/utils";
+import { getCurrentYearMonth } from "@/lib/utils";
 //TODO: need to implement react query 
 
 interface Props {
@@ -20,7 +20,7 @@ const page = async ({ searchParams }: Props) => {
 
   // Parse yearMonth from searchParams (assuming it's a query string)
   const yearMonth =
-    searchParams.yearMonth?.toString() || getCurrnentYearMonth();
+    searchParams.yearMonth?.toString() || getCurrentYearMonth();
   const expenses = await getExpense(yearMonth);
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { getCurrnentYearMonth } from "@/lib/utils";
+import { getCurrentYearMonth } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Typography, TextField, MenuItem, Button } from "@mui/material";
 import { useSession } from "next-auth/react";
@@ -92,7 +92,7 @@ const PostExpense = ({onPost} : Props) => {
   })
 
   const params = useSearchParams();
-  const yearMonth = params.get('yearMonth') || getCurrnentYearMonth();
+  const yearMonth = params.get('yearMonth') || getCurrentYearMonth();
 
   const onSubmit : SubmitHandler<ExpenseForm> = async (formData : ExpenseForm) => {
     // async await はだめだけど、try catch は通る

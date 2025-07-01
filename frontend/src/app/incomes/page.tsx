@@ -1,26 +1,19 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import IncomePageWrapper from "./IncomePageWrapper";
-import {Typography} from "@mui/material";
+import { Typography } from "@mui/material";
+import { getIncomes } from "@/lib/actions/incomes";
+import { getCurrentYearMonth } from "@/lib/utils";
 
-export default async function Page() {
+export default async function IncomePage() {
   const session = await getServerSession(authOptions);
 
   if (!session?.accessToken) {
     return <div>ログインが必要です</div>;
   }
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes`,
-    {
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-      cache: "no-store",
-    }
-  );
-
-  const incomes = await res.json();
+  const currentYearMonth = getCurrentYearMonth();
+  const incomes = getIncomes(currentYearMonth);
 
   return (
     <div>
@@ -33,7 +26,7 @@ export default async function Page() {
       >
         収入登録
       </Typography>
-      <IncomePageWrapper  session={session} initialColumns={incomes}/>
+      <IncomePageWrapper session={session} />
     </div>
   );
 }
