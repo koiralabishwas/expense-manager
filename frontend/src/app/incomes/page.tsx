@@ -4,6 +4,7 @@ import IncomePageWrapper from "./IncomePageWrapper";
 import { Typography } from "@mui/material";
 import { getIncomes } from "@/lib/actions/incomes";
 import { getCurrentYearMonth } from "@/lib/utils";
+import InDevelopmentAlert from "@/components/InDevelopmentAlert";
 
 export default async function IncomePage() {
   const session = await getServerSession(authOptions);
@@ -17,6 +18,7 @@ export default async function IncomePage() {
 
   return (
     <div>
+      <InDevelopmentAlert/>
       <Typography
         component={"h1"}
         variant="h5"
