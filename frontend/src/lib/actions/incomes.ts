@@ -1,8 +1,8 @@
-"use server"
+"use server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
-export async function getIncomes(yearMonth: string): Promise<any> {
+export async function getIncomes(yearMonth: string): Promise<Income> {
   const session = await getServerSession(authOptions);
   const url = new URL(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/incomes");
   if (yearMonth) {
@@ -16,6 +16,22 @@ export async function getIncomes(yearMonth: string): Promise<any> {
   });
 
   const incomes = await res.json();
-  console.log("here are incomes",incomes)
+  console.log("here are incomes", incomes);
   return incomes;
+}
+
+export async function deleteIncome(
+  id: string,
+  accessToken: string
+): Promise<Income> {
+  const deleteReq = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return await deleteReq.json()
 }

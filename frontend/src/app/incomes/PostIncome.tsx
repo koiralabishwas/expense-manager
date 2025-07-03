@@ -33,7 +33,7 @@ const schema = z.object({
     .default("JPY"),
 });
 
-type IncomeForm = z.infer<typeof schema>;
+export type IncomeForm = z.infer<typeof schema>;
 
 type FormFeild = {
   name: keyof IncomeForm;

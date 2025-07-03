@@ -21,7 +21,7 @@ type Column = {
 };
 
 interface Props {
-  records: Column[];
+  records: Column[] | Income[];
   edit?: (id: string) => void;
   deleteRecord: (id: string) => void;
 }
