@@ -1,5 +1,6 @@
 // TODO: I think it is reusabel in PostIncome and PostExpense
 "use client";
+import { getCurrentYearMonth } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
@@ -9,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { number, string, z } from "zod";
@@ -76,10 +77,10 @@ const formFeilds: FormFeild[] = [
 ];
 
 interface Props {
-  onPost : (newIncome : any) => void
+  onPost: (newIncome: any) => void
 }
 
-const postIncome = ({onPost} : Props) => {
+const postIncome = ({ onPost }: Props) => {
   const { data: session, status } = useSession();
   const {
     register,
@@ -91,13 +92,17 @@ const postIncome = ({onPost} : Props) => {
     resolver: zodResolver(schema),
   });
 
+
+  const params = useSearchParams();
+  const yearMonth = params.get('yearMonth') || getCurrentYearMonth();
   const onSubmit: SubmitHandler<IncomeForm> = async (formData: IncomeForm) => {
     // TODO: do theese fetching in server action
     // ref => https://github.com/HamedBahram/next-rhf/blob/main/components/with-action.tsx
+    const req = { ...formData, yearMonth };
     const result = await fetch(
       process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/incomes",
       {
-        body: JSON.stringify(formData),
+        body: JSON.stringify(req),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.accessToken}`
