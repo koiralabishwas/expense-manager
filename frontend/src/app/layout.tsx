@@ -7,6 +7,7 @@ import MUIThemeProvider from "../providers/MUIThemeProvider";
 import { EmotionCacheProvider } from "../providers/EmotionCacheProvider";
 import { getServerSession } from "next-auth";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import { authOptions } from "@/lib/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  // TODO: need to redirect to /login if not logged in
+
 
   return (
     <html lang="ja">

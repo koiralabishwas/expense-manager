@@ -1,34 +1,31 @@
 "use client";
 import FormModal from "@/components/FormModal";
-import { Session } from "next-auth";
 import React from "react";
 import PostIncome from "./PostIncome";
 import TableView from "@/components/TableView";
-import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
+import {  useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteIncome, getIncomes } from "@/lib/actions/incomes";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import YearMonthSelect from "@/components/YearMonthSelect";
 import { Box } from "@mui/material";
 
-interface Props {
-  session: Session
-}
 
-const IncomePageWrapper = ({ session }: Props) => {
+
+const IncomePageWrapper = () => {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
-  const { data, isLoading, isError, refetch } = useQuery({
+
+  const { data } = useQuery({
     queryKey: ["incomes", yearMonth],
     queryFn: () => getIncomes(yearMonth),
   });
   const incomes = Array.isArray(data) ? data : [];
-  console.log(incomes)
 
   const handleDelete = async (id: string) => {
-    const deleted = await deleteIncome(id , session.accessToken!)
-    if (deleted)
+    const deleted = await deleteIncome(id)
+    if (deleted._id)
     queryClient.setQueryData(['incomes', yearMonth], (oldData: any) => {
       return oldData.filter((income: any) => income._id !== deleted._id)
     })
@@ -43,7 +40,6 @@ const IncomePageWrapper = ({ session }: Props) => {
           gap: 5,
         }}
       >
-
         <FormModal>
           <PostIncome
             onPost={(newIncome: any) => {
@@ -56,7 +52,6 @@ const IncomePageWrapper = ({ session }: Props) => {
         <YearMonthSelect />
       </Box>
       <TableView records={incomes} deleteRecord={handleDelete} />
-
     </div>
   );
 };

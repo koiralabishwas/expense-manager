@@ -22,14 +22,15 @@ export async function getIncomes(yearMonth: string): Promise<Income> {
 
 export async function deleteIncome(
   id: string,
-  accessToken: string
 ): Promise<Income> {
+  const session = await getServerSession(authOptions)
+  console.log("session",session?.accessToken)
   const deleteReq = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes/${id}`,
     {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${session?.accessToken}`,
       },
     }
   );
