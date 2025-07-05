@@ -4,7 +4,7 @@ import React from "react";
 import PostIncome from "./PostIncome";
 import TableView from "@/components/TableView";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteIncome, getIncomes } from "@/lib/actions/incomes";
+import { deleteIncome, getIncomes } from "../actions/income.server";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import YearMonthSelect from "@/components/YearMonthSelect";
@@ -42,7 +42,7 @@ const IncomePageWrapper = () => {
         <FormModal>
           <PostIncome
             onPost={(newIncome: Income) => {
-              queryClient.invalidateQueries({ queryKey: ["incomes", yearMonth], refetchType: "inactive" })
+              queryClient.invalidateQueries({ queryKey: ["incomes", yearMonth]})
             }}
           />
         </FormModal>

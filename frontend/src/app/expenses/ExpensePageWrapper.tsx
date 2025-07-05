@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { Box } from "@mui/material";
 import YearMonthSelect from "@/components/YearMonthSelect";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteExpense, getExpense } from "@/lib/actions/expenses";
+import { deleteExpense, getExpense } from "../actions/expense.server";
 import { getCurrentYearMonth } from "@/lib/utils";
 
 
@@ -38,7 +38,7 @@ const ExpensePageWrapper = () => {
         <FormModal>
           <PostExpense
             onPost={(newExpense: Expense) => {
-              queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth], refetchType: "inactive" });
+              queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
             }}
           />
         </FormModal>

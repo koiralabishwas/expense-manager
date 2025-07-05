@@ -1,7 +1,6 @@
 "use server";
-
+import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth";
 
 export async function getExpense(yearMonth: string): Promise<Expense[]> {
   const session = await getServerSession(authOptions);
@@ -16,7 +15,7 @@ export async function getExpense(yearMonth: string): Promise<Expense[]> {
     cache: "no-store",
   });
 
-  const expenses : Expense[] = await res.json();
+  const expenses: Expense[] = await res.json();
   return expenses;
 }
 
