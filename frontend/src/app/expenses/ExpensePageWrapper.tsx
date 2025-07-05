@@ -7,27 +7,33 @@ import TableView from "@/components/TableView";
 import { useSearchParams } from "next/navigation";
 import { Box } from "@mui/material";
 import YearMonthSelect from "@/components/YearMonthSelect";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getExpense } from "@/lib/actions/expenses";
+import { getCurrentYearMonth } from "@/lib/utils";
 
-interface Props {
-  expenses: Array<any>;
-  session: Session;
-}
 
-const ExpensePageWrapper = ({ session, expenses: initialExpenses }: Props) => {
-  const [expenses, setExpenses] = useState(initialExpenses);
+const ExpensePageWrapper = () => {
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
+  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
+
+  const { data } = useQuery({
+    queryKey: ["expenses", yearMonth],
+    queryFn: () => getExpense(yearMonth),
+  });
+  const expenses = Array.isArray(data) ? data : [];
 
   const handleDelete = async (id: string) => {
-    const deleted = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-    });
-    if (deleted.ok)
-    setExpenses((prev) => prev.filter((i) => i._id !== id));
+    // const deleted = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/${id}`, {
+    //   method: "DELETE",
+    //   headers: {
+    //     Authorization: `Bearer ${session.accessToken}`,
+    //   },
+    // });
+    // if (deleted.ok)
+    // setExpenses((prev) => prev.filter((i) => i._id !== id));
   };
-  
+
   return (
     <div>
       <Box
@@ -39,10 +45,14 @@ const ExpensePageWrapper = ({ session, expenses: initialExpenses }: Props) => {
       >
         <FormModal>
           <PostExpense
-            onPost={(expense) => setExpenses((prev) => [...prev, expense])}
+            onPost={(newExpense: any) => {
+              queryClient.setQueryData(['expense', yearMonth], (oldData: any) => {
+                return [...oldData, newExpense]
+              })
+            }}
           />
         </FormModal>
-       <YearMonthSelect />
+        <YearMonthSelect />
       </Box>
       <TableView records={expenses} deleteRecord={handleDelete} />
     </div>
