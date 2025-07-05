@@ -2,7 +2,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
-export async function getIncomes(yearMonth: string): Promise<Income> {
+export async function getIncomes(yearMonth: string): Promise<Income[]> {
   const session = await getServerSession(authOptions);
   const url = new URL(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/incomes");
   if (yearMonth) {
@@ -15,8 +15,7 @@ export async function getIncomes(yearMonth: string): Promise<Income> {
     cache: "no-store",
   });
 
-  const incomes = await res.json();
-  console.log("here are incomes", incomes);
+  const incomes : Income[] = await res.json();
   return incomes;
 }
 
@@ -24,7 +23,6 @@ export async function deleteIncome(
   id: string,
 ): Promise<Income> {
   const session = await getServerSession(authOptions)
-  console.log("session",session?.accessToken)
   const deleteReq = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes/${id}`,
     {

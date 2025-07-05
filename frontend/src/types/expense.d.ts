@@ -1,4 +1,4 @@
-interface Income {
+interface Expense {
   _id: string;
   userId: string;
   yearMonth: string;
