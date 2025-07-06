@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { number, string, z } from "zod";
+import { postExpense } from "@/app/actions/expense.server"
 
 const ExpenseGenre = z.enum([
   "Water",
@@ -35,13 +36,13 @@ const schema = z.object({
 export type ExpenseForm = z.infer<typeof schema>
 
 type FormFeild = {
-  name : keyof ExpenseForm
-  label : string 
-  type : 'text' |  "number"| "select"
-  placeholder : string
-  default? : string
-  color? : "primary" | "secondary"
-  options? : string[] 
+  name: keyof ExpenseForm
+  label: string
+  type: 'text' | "number" | "select"
+  placeholder: string
+  default?: string
+  color?: "primary" | "secondary"
+  options?: string[]
 }
 
 const formFeilds: FormFeild[] = [
@@ -76,47 +77,39 @@ const formFeilds: FormFeild[] = [
 ];
 
 interface Props {
-  onPost : (expense : any) => void
+  onPost: (expense: any) => void
 }
 
-const PostExpense = ({onPost} : Props) => {
-  const {data : session , status} = useSession() 
+const PostExpense = ({ onPost }: Props) => {
+  const { data: session, status } = useSession()
   const {
-    register , 
-    handleSubmit , 
+    register,
+    handleSubmit,
     setError,
-    reset , 
-    formState : {errors , isSubmitting , isSubmitSuccessful}
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful }
   } = useForm<ExpenseForm>({
-    resolver : zodResolver(schema)
+    resolver: zodResolver(schema)
   })
 
   const params = useSearchParams();
   const yearMonth = params.get('yearMonth') || getCurrentYearMonth();
 
-  const onSubmit : SubmitHandler<ExpenseForm> = async (formData : ExpenseForm) => {
+  const onSubmit: SubmitHandler<ExpenseForm> = async (formData: ExpenseForm) => {
     // async await はだめだけど、try catch は通る
 
     const req = { ...formData, yearMonth };
-    const result = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/expenses", {
-      body: JSON.stringify(req),
-      headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.accessToken}`,
-      },
-      method: "POST",
-    });
-    if (!result.ok) {
+    const result = await postExpense(req);
+    if (!result) {
       setError("root", {
-      message: "request failed",
+        message: "request failed",
       });
     } else {
-      const expense = await result.json();
       reset();
-      onPost(expense);
+      onPost(result);
     }
   }
-  return(
+  return (
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
       <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
         支出登録

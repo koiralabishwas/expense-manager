@@ -1,6 +1,7 @@
 "use server";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { ExpenseForm } from "../expenses/PostExpense";
 
 export async function getExpense(yearMonth: string): Promise<Expense[]> {
   const session = await getServerSession(authOptions);
@@ -17,6 +18,22 @@ export async function getExpense(yearMonth: string): Promise<Expense[]> {
 
   const expenses: Expense[] = await res.json();
   return expenses;
+}
+
+export async function postExpense(expense: ExpenseForm) : Promise<Expense> {
+  const session = await getServerSession(authOptions)
+  const result = await fetch(
+    process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/expenses",
+    {
+      body: JSON.stringify(expense),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+      method: "POST",
+    }
+  );
+  return await result.json();
 }
 
 export async function deleteExpense(id: string): Promise<Expense> {

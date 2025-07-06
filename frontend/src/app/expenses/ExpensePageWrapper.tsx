@@ -23,7 +23,7 @@ const ExpensePageWrapper = () => {
 
   const handleDelete = async (id: string) => {
     await deleteExpense(id);
-    queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth], refetchType: "inactive" })
+    queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth]})
   };
 
   return (
