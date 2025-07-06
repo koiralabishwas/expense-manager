@@ -1,6 +1,7 @@
 "use server";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { IncomeForm } from "../incomes/PostIncome";
 
 export async function getIncomes(yearMonth: string): Promise<Income[]> {
   const session = await getServerSession(authOptions);
@@ -17,6 +18,23 @@ export async function getIncomes(yearMonth: string): Promise<Income[]> {
 
   const incomes: Income[] = await res.json();
   return incomes;
+}
+
+export async function postIncome(income : IncomeForm) : Promise<Income> {
+  const session = await getServerSession(authOptions)
+    const result = await fetch(
+      process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/incomes",
+      {
+        body: JSON.stringify(income),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`
+        },
+        method: "POST",
+      }
+    );
+
+    return await result.json();
 }
 
 export async function deleteIncome(id: string): Promise<Income> {

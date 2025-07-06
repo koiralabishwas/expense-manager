@@ -14,6 +14,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { number, string, z } from "zod";
+import {postIncome as postIncomeAction} from "@/app/actions/income.server"
 
 export const IncomeGenre = z.enum([
   "Salary",
@@ -99,28 +100,17 @@ const postIncome = ({ onPost }: Props) => {
     // TODO: do theese fetching in server action
     // ref => https://github.com/HamedBahram/next-rhf/blob/main/components/with-action.tsx
     const req = { ...formData, yearMonth };
-    const result = await fetch(
-      process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/incomes",
-      {
-        body: JSON.stringify(req),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`
-        },
-        method: "POST",
-      }
-    );
+    const result = await postIncomeAction(req);
 
-    if (!result.ok) {
+    if (!result) {
       setError("root", {
         message: "request failed",
       });
     } else {
-      const newIncome = await result.json()
       reset();
       //TODO:
       // show the registered data in modal
-      onPost(newIncome)
+      onPost(result)
     }
   };
 
