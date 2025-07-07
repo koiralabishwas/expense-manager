@@ -27,7 +27,7 @@ const IncomePageWrapper = () => {
   const handleDelete = async (id: string) => {
     const deleted = await deleteIncome(id)
     if (deleted._id)
-      queryClient.invalidateQueries({ queryKey: ["incomes", yearMonth], refetchType: "inactive" })
+      queryClient.invalidateQueries({ queryKey: ["incomes", yearMonth]})
   };
 
   return (
