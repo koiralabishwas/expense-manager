@@ -1,6 +1,6 @@
 "use client";
 import FormModal from "@/components/FormModal";
-import React from "react";
+import React, { Suspense } from "react";
 import PostIncome from "./PostIncome";
 import TableView from "@/components/TableView";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -32,6 +32,7 @@ const IncomePageWrapper = () => {
 
   return (
     <div>
+
       <Box
         sx={{
           display: "flex",
@@ -42,7 +43,7 @@ const IncomePageWrapper = () => {
         <FormModal>
           <PostIncome
             onPost={(newIncome: Income) => {
-              queryClient.invalidateQueries({ queryKey: ["incomes", yearMonth]})
+              queryClient.invalidateQueries({ queryKey: ["incomes", yearMonth] })
             }}
           />
         </FormModal>

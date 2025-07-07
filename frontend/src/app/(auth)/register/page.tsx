@@ -8,6 +8,7 @@ import { z } from "zod";
 import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingIcon from "../../../components/ui/LoadingIcon";
+import { registerUser } from "@/app/actions/auth.server";
 
 const schema = z.object({
   name : z.string().min(5).max(20),
@@ -15,7 +16,7 @@ const schema = z.object({
   password: z.string().min(5, "Password must be at least 5 characters").max(30),
 });
 
-type RegisterForm = z.infer<typeof schema>;
+export type RegisterForm = z.infer<typeof schema>;
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -35,13 +36,10 @@ export default function RegisterPage() {
     //   redirect: false,
     // });
 
-    const result = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL+"/auth/register" ,{
-      method : "POST",
-      headers : {"Content-Type" : "application/Json"},
-      body : JSON.stringify(formData)
-    })
+    const result = await registerUser(formData);
+    console.log(await result)
 
-    if (!result?.ok) {
+    if (!result) {
       setError("root" , {
         message : "Login Failed.Try again later",
         type: "validate",
