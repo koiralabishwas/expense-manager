@@ -9,6 +9,7 @@ import { getCurrentYearMonth } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import YearMonthSelect from "@/components/YearMonthSelect";
 import { Box } from "@mui/material";
+import TotalAmount from "@/components/TotalAmount";
 
 
 
@@ -32,7 +33,7 @@ const IncomePageWrapper = () => {
 
   return (
     <div>
-
+      <TotalAmount records={incomes} />
       <Box
         sx={{
           display: "flex",
