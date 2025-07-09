@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getServerSession } from 'next-auth';
 import { authOptions } from './lib/auth';
+import { getToken } from 'next-auth/jwt';
 
 const PROTECTED_PATHS = ["/dashboard", "/expenses", "/incomes"];
 
@@ -16,9 +16,9 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next(); // Allow non-protected paths
   }
 
-  const session = await getServerSession(authOptions);
+  const token = await getToken({ req : req, secret: process.env.NEXTAUTH_SECRET });
 
-  if (!session) {
+  if (!token) {
     const loginUrl = new URL("/login", req.url);
     return NextResponse.redirect(loginUrl);
   }
