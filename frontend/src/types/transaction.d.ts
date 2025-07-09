@@ -1,4 +1,4 @@
-interface Income {
+type Transaction = {
   _id: string;
   userId: string;
   yearMonth: string;
@@ -9,4 +9,7 @@ interface Income {
   createdAt: string;
   updatedAt: string;
   __v: number;
-}
+};
+
+type Income = Transaction;
+type Expense = Transaction;
