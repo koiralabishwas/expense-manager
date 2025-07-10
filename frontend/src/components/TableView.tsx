@@ -29,8 +29,8 @@ interface Props {
 const columnLabels: Partial<Record<keyof Column, string>> = {
   description: "Description",
   amount: "Amount",
-  currency: "Currency",
   genre: "Genre",
+  currency: "Currency",
   createdAt: "Date",
 };
 const columnKeys = Object.keys(columnLabels) as (keyof Column)[];

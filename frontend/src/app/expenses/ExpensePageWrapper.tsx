@@ -9,7 +9,7 @@ import YearMonthSelect from "@/components/YearMonthSelect";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteExpense, getExpense } from "../actions/expense.server";
 import { getCurrentYearMonth } from "@/lib/utils";
-import TotalAmount from "@/components/TotalAmount";
+import AmountSummary from "@/components/AmountSummary";
 
 
 const ExpensePageWrapper = () => {
@@ -29,7 +29,7 @@ const ExpensePageWrapper = () => {
 
   return (
     <div>
-      <TotalAmount records={expenses} />
+      <AmountSummary records={expenses} />
       <Box
         sx={{
           display: "flex",
