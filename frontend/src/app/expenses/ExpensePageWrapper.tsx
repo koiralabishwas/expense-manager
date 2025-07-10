@@ -9,6 +9,7 @@ import YearMonthSelect from "@/components/YearMonthSelect";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteExpense, getExpense } from "../actions/expense.server";
 import { getCurrentYearMonth } from "@/lib/utils";
+import AmountSummary from "@/components/AmountSummary";
 
 
 const ExpensePageWrapper = () => {
@@ -23,11 +24,12 @@ const ExpensePageWrapper = () => {
 
   const handleDelete = async (id: string) => {
     await deleteExpense(id);
-    queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth]})
+    queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] })
   };
 
   return (
     <div>
+      <AmountSummary records={expenses} />
       <Box
         sx={{
           display: "flex",
