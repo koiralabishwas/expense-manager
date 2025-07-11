@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  mongo:
+    container_name: mongodb
+    image: mongo
+    command: ["mongod", "--quiet"]
+    ports:
+      - "27017:27017"   # Expose for local tools!
+    volumes:
+      - expense-manager:/data/db
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env   # Use a .env for dev
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend:/app   # Host code is mounted inside
+    command: bun run dev # Use dev script for hot reload
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env  # Use a .env for dev
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app  # Host code is mounted inside
+    command: bun run dev # Use dev script for hot reload
+
+volumes:
+  expense-manager:
