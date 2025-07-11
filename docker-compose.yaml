@@ -6,8 +6,6 @@ services:
     image: mongo
     command: ["mongod", "--quiet"]
     restart: always
-    ports:
-      - "27017:27017"
     volumes:
       - expense-manager:/data/db
 
