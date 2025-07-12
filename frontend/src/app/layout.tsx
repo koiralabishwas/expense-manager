@@ -8,6 +8,7 @@ import { EmotionCacheProvider } from "../providers/EmotionCacheProvider";
 import { getServerSession } from "next-auth";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { authOptions } from "@/lib/auth";
+import { Box } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +41,9 @@ export default async function RootLayout({
             <MUIThemeProvider>
               <EmotionCacheProvider>
                 <TopBar />
-                {children}
+                <Box maxWidth="100vw" paddingTop={"2em"}>
+                  {children}
+                </Box>
               </EmotionCacheProvider>
             </MUIThemeProvider>
           </ReactQueryProvider>
