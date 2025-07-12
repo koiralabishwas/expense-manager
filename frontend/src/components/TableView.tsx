@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import React from "react";
+import ConfirmModal from "./ConfirmModal";
 
 type Column = {
   _id: string;
@@ -66,13 +67,27 @@ const TableView = ({ deleteRecord, records }: Props) => {
                   .replace(/-/g, "/")}
               </TableCell>
               <TableCell>
-                <Button
-                  onClick={() => {
-                    deleteRecord(record._id);
-                  }}
+                <ConfirmModal
+                  label="delete"
+                  confirmMessage="click to delete"
                 >
-                  Delete
-                </Button>
+
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      borderWidth: 2, // Make border fatter
+                      borderStyle: "solid",
+                      borderColor: "green",
+                      color: "green"
+                    }}
+                    color="primary"
+                    onClick={() => {
+                      deleteRecord(record._id);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </ConfirmModal>
               </TableCell>
             </TableRow>
           ))}
