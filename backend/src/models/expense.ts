@@ -8,12 +8,13 @@ const expenseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    yearMonth: {
-      type: String,
+    date: {
+      type: Date,
       required: true,
-      match: /^\d{6}$/, // ensures YYYYMM format
+      default: Date.now,
+      // Save as Date object (e.g., new Date())
     },
-    description: { type: String, required: true },
+    description: { type: String },
     amount: { type: Number, required: true },
     currency: { type: String, default: "JPY" },
     genre: {
