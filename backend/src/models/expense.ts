@@ -13,6 +13,12 @@ const expenseSchema = new mongoose.Schema(
       required: true,
       match: /^\d{6}$/, // ensures YYYYMM format
     },
+    // TODO: delete yearMonth later on ,
+
+    date: {
+      type: Date,
+      default: Date.now,
+    },
     description: { type: String },
     amount: { type: Number, required: true },
     currency: { type: String, default: "JPY" },

@@ -7,10 +7,15 @@ const incomeSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    // TODO: delete yearMonth later on ,
     yearMonth: {
       type: String,
       required: true,
       match: /^\d{6}$/, // ensures YYYYMM format
+    },
+    date : {
+      type : Date,
+      default : Date.now
     },
     description: { type: String },
     amount: { type: Number, required: true },
