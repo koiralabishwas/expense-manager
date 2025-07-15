@@ -1,14 +1,27 @@
 import { Context } from "hono";
 import Expense from "../models/expense";
+import { DateTime } from "luxon";
 
 export async function getUserExpenses(ctx: Context) {
   try {
     const { _id } = ctx.get("user");
     const yearMonth = ctx.req.query("yearMonth") ?? null;
+    let startDate;
+    let endDate;
+
+    if (yearMonth) {
+      startDate = DateTime.fromFormat(yearMonth, "yyyyMM", {
+        zone: "utc",
+      }).startOf("month");
+      endDate = startDate.plus({ months: 1 });
+    }
 
     const userExpense = await Expense.find({
       userId: _id,
-      ...(yearMonth && { yearMonth }),
+      ...(yearMonth && { date : {
+        $gte: startDate?.toJSDate(),
+        $lt: endDate?.toJSDate()
+      } }),
     });
     return ctx.json(userExpense);
   } catch (error) {
@@ -22,7 +35,7 @@ export async function postUserExpense(ctx: Context) {
     const body = await ctx.req.json();
     const newUserExpense = await new Expense({
       userId: user._id,
-      yearMonth: body.yearMonth,
+      date : body.date,
       description: body.description,
       amount: body.amount,
       currency: body.currency,

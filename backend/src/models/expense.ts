@@ -1,4 +1,4 @@
-import mongoose, { Mongoose, Types } from "mongoose";
+import mongoose from "mongoose";
 
 // TODO : Make this type usable in other places
 const expenseSchema = new mongoose.Schema(
@@ -8,13 +8,6 @@ const expenseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    yearMonth: {
-      type: String,
-      required: true,
-      match: /^\d{6}$/, // ensures YYYYMM format
-    },
-    // TODO: delete yearMonth later on ,
-
     date: {
       type: Date,
       default: Date.now,
