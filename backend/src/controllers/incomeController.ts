@@ -1,14 +1,30 @@
 import { Context } from "hono";
 import Income from "../models/income";
+import { DateTime } from "luxon";
 
 export async function getUserIncomes(ctx: Context) {
   try {
     const { _id } = ctx.get("user");
     const yearMonth = ctx.req.query("yearMonth") ?? null;
+    let startDate: DateTime | undefined;
+    let endDate: DateTime | undefined;
 
+    if (yearMonth) {
+      startDate = DateTime.fromFormat(yearMonth, "yyyyMM", {
+        zone: "utc",
+      }).startOf("month");
+      endDate = startDate.plus({ month: 1 });
+    }
     const userIncome = await Income.find({
       userId: _id,
-      ...(yearMonth && { yearMonth }),
+      ...(yearMonth &&
+        startDate &&
+        endDate && {
+          date: {
+            $gte: startDate.toJSDate(),
+            $lt: endDate.toJSDate(),
+          },
+        }),
     });
     return ctx.json(userIncome);
   } catch (error) {
@@ -22,7 +38,7 @@ export async function postUserIncome(ctx: Context) {
     const body = await ctx.req.json();
     const newUserIncome = await new Income({
       userId: user._id,
-      yearMonth: body.yearMonth,
+      date: body.date,
       description: body.description,
       amount: body.amount,
       currency: body.currency,

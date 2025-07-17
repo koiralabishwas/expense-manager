@@ -8,6 +8,7 @@ const expenseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    //TODO:make it required
     date: {
       type: Date,
       default: Date.now,
