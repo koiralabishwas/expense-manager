@@ -10,6 +10,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteExpense, getExpense } from "../actions/expense.server";
 import { getCurrentYearMonth } from "@/lib/utils";
 import AmountSummary from "@/components/AmountSummary";
+import ExpenseForm from "@/components/expenses/ExpenseForm";
 
 
 const ExpensePageWrapper = () => {
@@ -45,6 +46,12 @@ const ExpensePageWrapper = () => {
           />
         </FormModal>
         <YearMonthSelect />
+        <FormModal label="new expense form">
+          <ExpenseForm onPost={(newExpense: Expense) => {
+            // queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
+            console.log(newExpense)
+          }}></ExpenseForm>
+        </FormModal>
       </Box>
       <TableView records={expenses} deleteRecord={handleDelete} />
     </div>
