@@ -1,13 +1,11 @@
 import { postExpense } from "@/app/actions/expense.server";
-import { getCurrentYearMonth } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
-import { useSession } from "next-auth/react"
-import { useSearchParams } from "next/navigation";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import DatePickerUI from "../ui/DatePickerUI";
 import { DateTime } from "luxon";
+import { useSearchParams } from "next/navigation";
 
 const ExpenseGenre = z.enum([
   "Water",
@@ -35,14 +33,11 @@ const schema = z.object({
 
 export type ExpenseForm = z.infer<typeof schema>
 
-
-
 interface Props {
   //TODO: make it typesafe 
-  onPost: (expense: any) => void
+  onPost: (expense: Expense) => void
 }
 export default function ExpenseForm(props: Props) {
-  const { data: session, status } = useSession()
   const {
     register,
     handleSubmit,
@@ -54,7 +49,10 @@ export default function ExpenseForm(props: Props) {
     resolver: zodResolver(schema)
   })
 
-  const params = useSearchParams();
+  const params =  useSearchParams().get("yearMonth");
+  const currentYearMonth = params
+    ? DateTime.fromFormat(params, "yyyyMM").set({ day: DateTime.now().day }).toJSDate()
+    : new Date();
 
   const onSubmit: SubmitHandler<ExpenseForm> = async (formdata: ExpenseForm) => {
     const result = await postExpense(formdata)
@@ -134,13 +132,10 @@ export default function ExpenseForm(props: Props) {
           ))}
         </TextField>
         {/*TODO:　これを理解 */}
-        {/* FIXME: 
-          違うyearmonth 選択時にそのyearmonthのyyyymmに設定したいかも
-        */}
         <Controller
           name="date"
           control={control}
-          defaultValue={new Date()}// z.date は js の date のためluxonではなく js dateに
+          defaultValue={currentYearMonth}// z.date は js の date のためluxonではなく js dateに
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <DatePickerUI
               value={value ? DateTime.fromJSDate(value) : null}
