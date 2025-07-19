@@ -10,7 +10,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteExpense, getExpense } from "../actions/expense.server";
 import { getCurrentYearMonth } from "@/lib/utils";
 import AmountSummary from "@/components/AmountSummary";
-import ExpenseForm from "@/components/expenses/ExpenseForm";
+import ExpenseForm from "@/components/ExpenseForm";
 
 
 const ExpensePageWrapper = () => {

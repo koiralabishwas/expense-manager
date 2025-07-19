@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import YearMonthSelect from "@/components/YearMonthSelect";
 import { Box } from "@mui/material";
 import AmountSummary from "@/components/AmountSummary";
+import IncomeForm from "@/components/IncomeForm";
 
 
 
@@ -49,6 +50,13 @@ const IncomePageWrapper = () => {
           />
         </FormModal>
         <YearMonthSelect />
+        <FormModal label="new Income form">
+          <IncomeForm
+            onPost={(newIncome : Income) => {
+              queryClient.invalidateQueries({queryKey : ["incomes" , yearMonth]})
+            }}
+          />
+        </FormModal>
       </Box>
       <TableView records={incomes} deleteRecord={handleDelete} />
     </div>
