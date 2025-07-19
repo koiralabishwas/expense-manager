@@ -1,5 +1,4 @@
 import { Context } from "hono";
-import Expense from "../models/expense";
 import User from "../models/user";
 import { sign, verify } from "hono/jwt";
 import { genSalt, hash, compare } from "bcryptjs";

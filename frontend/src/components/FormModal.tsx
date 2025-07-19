@@ -2,16 +2,17 @@
 import { Button, Modal , Box } from '@mui/material';
 import React from 'react'
 interface Props {
+  label? : string
   children: React.ReactElement<{ handleClose?: () => void }>;
 }
 
-const FormModal = ({children} : Props) => {
+const FormModal = ({children , label} : Props) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <>
-    <Button color='primary' variant='outlined' sx={{borderWidth : "0.3rem" , borderRadius : "1rem" , marginY : 2}} onClick={handleOpen}>Open Form</Button>
+    <Button color='primary' variant='outlined' sx={{borderWidth : "0.3rem" , borderRadius : "1rem" , marginY : 2}} onClick={handleOpen}>{label ? label : "Open Form"}</Button>
     <Modal
         open={open}
         onClose={handleClose}

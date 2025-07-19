@@ -1,7 +1,6 @@
 "use client";
 import FormModal from "@/components/FormModal";
 import React, { Suspense } from "react";
-import PostIncome from "./PostIncome";
 import TableView from "@/components/TableView";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteIncome, getIncomes } from "../actions/income.server";
@@ -10,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import YearMonthSelect from "@/components/YearMonthSelect";
 import { Box } from "@mui/material";
 import AmountSummary from "@/components/AmountSummary";
+import IncomeForm from "@/components/IncomeForm";
 
 
 
@@ -41,10 +41,10 @@ const IncomePageWrapper = () => {
           gap: 5,
         }}
       >
-        <FormModal>
-          <PostIncome
-            onPost={(newIncome: Income) => {
-              queryClient.invalidateQueries({ queryKey: ["incomes", yearMonth] })
+        <FormModal label="new Income">
+          <IncomeForm
+            onPost={(newIncome : Income) => {
+              queryClient.invalidateQueries({queryKey : ["incomes" , yearMonth]})
             }}
           />
         </FormModal>

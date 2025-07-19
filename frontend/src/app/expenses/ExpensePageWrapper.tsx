@@ -1,7 +1,6 @@
 "use client";
 import FormModal from "@/components/FormModal";
 import React from "react";
-import PostExpense from "./PostExpense";
 import TableView from "@/components/TableView";
 import { useSearchParams } from "next/navigation";
 import { Box } from "@mui/material";
@@ -10,6 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteExpense, getExpense } from "../actions/expense.server";
 import { getCurrentYearMonth } from "@/lib/utils";
 import AmountSummary from "@/components/AmountSummary";
+import ExpenseForm from "@/components/ExpenseForm";
 
 
 const ExpensePageWrapper = () => {
@@ -37,12 +37,10 @@ const ExpensePageWrapper = () => {
           gap: 5,
         }}
       >
-        <FormModal>
-          <PostExpense
-            onPost={(newExpense: Expense) => {
-              queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
-            }}
-          />
+        <FormModal label="new expense">
+          <ExpenseForm onPost={(newExpense: Expense) => {
+            queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
+          }}></ExpenseForm>
         </FormModal>
         <YearMonthSelect />
       </Box>

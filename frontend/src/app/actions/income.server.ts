@@ -1,7 +1,7 @@
 "use server";
+import { IncomeForm } from "@/components/IncomeForm";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { IncomeForm } from "../incomes/PostIncome";
 
 export async function getIncomes(yearMonth: string): Promise<Income[]> {
   const session = await getServerSession(authOptions);
