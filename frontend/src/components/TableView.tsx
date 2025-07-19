@@ -16,7 +16,6 @@ type Column = {
   _id: string;
   description: string;
   amount: number;
-  currency: string;
   genre: string;
   createdAt: string;
 };
@@ -31,7 +30,6 @@ const columnLabels: Partial<Record<keyof Column, string>> = {
   description: "Description",
   amount: "Amount",
   genre: "Genre",
-  currency: "Currency",
   createdAt: "Date",
 };
 const columnKeys = Object.keys(columnLabels) as (keyof Column)[];
@@ -60,7 +58,6 @@ const TableView = ({ deleteRecord, records }: Props) => {
               </TableCell>
               <TableCell align="right">{record.amount}</TableCell>
               <TableCell align="right">{record.genre}</TableCell>
-              <TableCell align="right">{record.currency}</TableCell>
               <TableCell align="right">
                 {new Date(record.createdAt)
                   .toLocaleDateString("sv-SE")

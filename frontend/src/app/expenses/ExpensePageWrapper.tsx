@@ -1,7 +1,6 @@
 "use client";
 import FormModal from "@/components/FormModal";
 import React from "react";
-import PostExpense from "./PostExpense";
 import TableView from "@/components/TableView";
 import { useSearchParams } from "next/navigation";
 import { Box } from "@mui/material";
@@ -38,20 +37,12 @@ const ExpensePageWrapper = () => {
           gap: 5,
         }}
       >
-        <FormModal>
-          <PostExpense
-            onPost={(newExpense: Expense) => {
-              queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
-            }}
-          />
-        </FormModal>
-        <YearMonthSelect />
-        <FormModal label="new expense form">
+        <FormModal label="new expense">
           <ExpenseForm onPost={(newExpense: Expense) => {
-            // queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
-            console.log(newExpense)
+            queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
           }}></ExpenseForm>
         </FormModal>
+        <YearMonthSelect />
       </Box>
       <TableView records={expenses} deleteRecord={handleDelete} />
     </div>

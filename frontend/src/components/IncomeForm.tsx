@@ -20,9 +20,6 @@ const schema = z.object({
   genre: IncomeGenre,
   amount: z.number(),
   date: z.date(),
-  currency: z.string()
-    .regex(/^[A-Z]{3}/, "must be 3 digit currency Code")
-    .default("JPY"),
 });
 
 export type IncomeForm = z.infer<typeof schema>
@@ -43,7 +40,7 @@ export default function IncomeForm(props: Props) {
     resolver: zodResolver(schema)
   })
 
-  const params =  useSearchParams().get("yearMonth");
+  const params = useSearchParams().get("yearMonth");
   const currentYearMonth = params
     ? DateTime.fromFormat(params, "yyyyMM").set({ day: DateTime.now().day }).toJSDate()
     : new Date();
@@ -76,28 +73,13 @@ export default function IncomeForm(props: Props) {
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
-          key={"description"}
-          id="description"
-          label="概要"
-          type="text"
-          placeholder="収入の概要"
-          defaultValue={null}
-          {...register("description")}
-          error={!!errors["description"]}
-          helperText={errors["description"]?.message}
-          variant="outlined"
-          margin="normal"
-          fullWidth
-        />
-
-        <TextField
           key={"amount"}
           id="amount"
           label="金額"
           type="number"
           placeholder="金額を数字で入力"
           defaultValue={null}
-          {...register('amount' , { valueAsNumber : true})}
+          {...register('amount', { valueAsNumber: true })}
           error={!!errors["amount"]}
           helperText={errors["amount"]?.message}
           variant="outlined"
@@ -125,6 +107,21 @@ export default function IncomeForm(props: Props) {
             </MenuItem>
           ))}
         </TextField>
+
+        <TextField
+          key={"description"}
+          id="description"
+          label="概要"
+          type="text"
+          placeholder="収入の概要"
+          defaultValue={null}
+          {...register("description")}
+          error={!!errors["description"]}
+          helperText={errors["description"]?.message}
+          variant="outlined"
+          margin="normal"
+          fullWidth
+        />
         {/*TODO:　これを理解 */}
         <Controller
           name="date"
@@ -138,21 +135,6 @@ export default function IncomeForm(props: Props) {
               helperText={error?.message}
             />
           )}
-        />
-
-        <TextField
-          key={"currency"}
-          id="currency"
-          label="通貨"
-          type="text"
-          placeholder="通貨を記入"
-          defaultValue={"JPY"}
-          {...register("currency")}
-          error={!!errors["currency"]}
-          helperText={errors["currency"]?.message}
-          variant="outlined"
-          margin="normal"
-          fullWidth
         />
         <Button
           type="submit"

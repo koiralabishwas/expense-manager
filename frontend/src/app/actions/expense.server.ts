@@ -1,7 +1,7 @@
 "use server";
+import { ExpenseForm } from "@/components/ExpenseForm";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { ExpenseForm } from "../expenses/PostExpense";
 
 export async function getExpense(yearMonth: string): Promise<Expense[]> {
   const session = await getServerSession(authOptions);

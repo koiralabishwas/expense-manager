@@ -42,7 +42,6 @@ export async function postUserExpense(ctx: Context) {
       date: body.date,
       description: body.description,
       amount: body.amount,
-      currency: body.currency,
       genre: body.genre,
     }).save();
     return ctx.json(newUserExpense);
