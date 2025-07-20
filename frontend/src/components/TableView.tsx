@@ -27,9 +27,9 @@ interface Props {
 }
 
 const columnLabels: Partial<Record<keyof Column, string>> = {
-  description: "Description",
-  amount: "Amount",
   genre: "Genre",
+  amount: "Amount",
+  description: "Description",
   createdAt: "Date",
 };
 const columnKeys = Object.keys(columnLabels) as (keyof Column)[];
@@ -53,11 +53,11 @@ const TableView = ({ deleteRecord, records }: Props) => {
               key={record._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
+              <TableCell align="left">{record.genre}</TableCell>
+              <TableCell align="left">{record.amount}</TableCell>
               <TableCell component="th" scope="row">
                 {record.description}
               </TableCell>
-              <TableCell align="right">{record.amount}</TableCell>
-              <TableCell align="right">{record.genre}</TableCell>
               <TableCell align="right">
                 {new Date(record.createdAt)
                   .toLocaleDateString("sv-SE")
