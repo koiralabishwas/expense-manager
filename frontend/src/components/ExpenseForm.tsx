@@ -6,6 +6,8 @@ import { z } from "zod";
 import DatePickerUI from "./ui/DatePickerUI";
 import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
+import { getCurrentYearMonth } from "@/lib/utils";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ExpenseGenre = z.enum([
   "Water",
@@ -30,11 +32,7 @@ const schema = z.object({
 
 export type ExpenseForm = z.infer<typeof schema>
 
-interface Props {
-  //TODO: make it typesafe 
-  onPost: (expense: Expense) => void
-}
-export default function ExpenseForm(props: Props) {
+export default function ExpenseForm() {
   const {
     register,
     handleSubmit,
@@ -45,6 +43,12 @@ export default function ExpenseForm(props: Props) {
   } = useForm<ExpenseForm>({
     resolver: zodResolver(schema)
   })
+
+  const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+
+  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
+
 
   const params = useSearchParams().get("yearMonth");
   const currentYearMonth = params
@@ -61,7 +65,8 @@ export default function ExpenseForm(props: Props) {
     }
 
     reset();
-    props.onPost(result)
+    queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
+
   }
 
   return (
@@ -130,18 +135,21 @@ export default function ExpenseForm(props: Props) {
         />
         {/*TODO:　これを理解 */}
         <Controller
-          name="date"
           control={control}
+          {...register("date")}
           defaultValue={currentYearMonth}// z.date は js の date のためluxonではなく js dateに
-          render={({ field: { value, onChange }, fieldState: { error } }) => (
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
             <DatePickerUI
               value={value ? DateTime.fromJSDate(value) : null}
-              onChange={(dt) => onChange(dt ? dt.toJSDate() : null)}
+              onChange={(dt) => {
+              const selectedDate = dt ? dt.toJSDate() : null;
+              onChange(selectedDate);
+              }}
               error={!!error}
               helperText={error?.message}
             />
-          )}
-        />
+            )}
+          />
         <Button
           type="submit"
           variant="contained"

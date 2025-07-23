@@ -5,15 +5,15 @@ import TableView from "@/components/TableView";
 import { useSearchParams } from "next/navigation";
 import { Box } from "@mui/material";
 import YearMonthSelect from "@/components/YearMonthSelect";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteExpense, getExpense } from "../actions/expense.server";
+import { useQuery } from "@tanstack/react-query";
+import { getExpense } from "../actions/expense.server";
 import { getCurrentYearMonth } from "@/lib/utils";
 import AmountSummary from "@/components/AmountSummary";
 import ExpenseForm from "@/components/ExpenseForm";
+import ExpenseTable from "@/components/ExpenseTable";
 
 
 const ExpensePageWrapper = () => {
-  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
@@ -21,11 +21,6 @@ const ExpensePageWrapper = () => {
     queryKey: ["expenses", yearMonth],
     queryFn: () => getExpense(yearMonth),
   });
-
-  const handleDelete = async (id: string) => {
-    await deleteExpense(id);
-    queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] })
-  };
 
   return (
     <div>
@@ -38,13 +33,11 @@ const ExpensePageWrapper = () => {
         }}
       >
         <FormModal label="new expense">
-          <ExpenseForm onPost={(newExpense: Expense) => {
-            queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
-          }}></ExpenseForm>
+          <ExpenseForm />
         </FormModal>
         <YearMonthSelect />
       </Box>
-      <TableView records={expenses} deleteRecord={handleDelete} />
+      <ExpenseTable records={expenses} />
     </div>
   );
 };
