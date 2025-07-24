@@ -6,6 +6,8 @@ import DatePickerUI from "./ui/DatePickerUI";
 import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { postIncome } from "@/app/actions/income.server";
+import { useQueryClient } from "@tanstack/react-query";
+import { getCurrentYearMonth } from "@/lib/utils";
 
 const IncomeGenre = z.enum([
   "Salary",
@@ -24,11 +26,7 @@ const schema = z.object({
 
 export type IncomeForm = z.infer<typeof schema>
 
-interface Props {
-  //TODO: make it typesafe 
-  onPost: (income: Income) => void
-}
-export default function IncomeForm(props: Props) {
+export default function IncomeForm() {
   const {
     register,
     handleSubmit,
@@ -39,6 +37,10 @@ export default function IncomeForm(props: Props) {
   } = useForm<IncomeForm>({
     resolver: zodResolver(schema)
   })
+
+  const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
   const params = useSearchParams().get("yearMonth");
   const currentYearMonth = params
@@ -55,7 +57,8 @@ export default function IncomeForm(props: Props) {
     }
 
     reset();
-    props.onPost(result)
+    queryClient.invalidateQueries({ queryKey: ['incomes', yearMonth] });
+
   }
 
   return (

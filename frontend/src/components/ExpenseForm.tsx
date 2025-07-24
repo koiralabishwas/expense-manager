@@ -49,7 +49,6 @@ export default function ExpenseForm() {
 
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
-
   const params = useSearchParams().get("yearMonth");
   const currentYearMonth = params
     ? DateTime.fromFormat(params, "yyyyMM").set({ day: DateTime.now().day }).toJSDate()

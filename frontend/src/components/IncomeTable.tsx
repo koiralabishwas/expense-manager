@@ -11,9 +11,7 @@ import {
   TableRow,
 } from "@mui/material";
 import React, { useState } from "react";
-import ConfirmModal from "./ConfirmModal";
-import { Edit } from "@mui/icons-material";
-import EditRecordModal from "./EditRecordModal";
+import EditIncomeModal from "./EditIncomeModal";
 
 export type Column = {
   _id: string;
@@ -26,9 +24,8 @@ export type Column = {
 type Transaction = Column | Income | Expense;
 
 interface Props {
-  records: Transaction[];
+  records: Income[];
   edit?: (id: string) => void;
-  deleteRecord: (id: string) => void;
 }
 
 const columnLabels: Partial<Record<keyof Column, string>> = {
@@ -40,11 +37,11 @@ const columnLabels: Partial<Record<keyof Column, string>> = {
 
 const columnKeys = Object.keys(columnLabels) as (keyof Column)[];
 
-const TableView = ({ deleteRecord, records }: Props) => {
+const IncomeTable = ({ records }: Props) => {
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedModal, setSelectedModal] = useState<Transaction | null>(null);
+  const [selectedModal, setSelectedModal] = useState<Income | null>(null);
 
-  const handleOpenModal = (record: Transaction) => {
+  const handleOpenModal = (record: Income) => {
     setSelectedModal(record);
     setShowEditModal(true);
   };
@@ -63,7 +60,6 @@ const TableView = ({ deleteRecord, records }: Props) => {
               {columnKeys.map((column) => (
                 <TableCell key={column}>{columnLabels[column]}</TableCell>
               ))}
-              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -84,24 +80,6 @@ const TableView = ({ deleteRecord, records }: Props) => {
                   {new Date(record.createdAt).toLocaleDateString("sv-SE").replace(/-/g, "/")}
                 </TableCell>
                 <TableCell>
-                  <ConfirmModal label="Delete" confirmMessage="Click to delete">
-                    <Button
-                      variant="outlined"
-                      sx={{
-                        borderWidth: 2,
-                        borderStyle: "solid",
-                        borderColor: "green",
-                        color: "green",
-                      }}
-                      color="primary"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent triggering row click
-                        deleteRecord(record._id);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </ConfirmModal>
                 </TableCell>
               </TableRow>
             ))}
@@ -110,10 +88,10 @@ const TableView = ({ deleteRecord, records }: Props) => {
       </TableContainer>
 
       {showEditModal && selectedModal && (
-        <EditRecordModal openModal={showEditModal} record={selectedModal} onClose={handleCloseModal} />
+        <EditIncomeModal openModal={showEditModal} record={selectedModal} onClose={handleCloseModal} />
       )}
     </>
   );
 };
 
-export default TableView;
+export default IncomeTable;

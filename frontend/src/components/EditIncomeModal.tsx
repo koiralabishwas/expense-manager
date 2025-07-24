@@ -3,23 +3,21 @@
 import { Box, Button, Modal } from "@mui/material";
 import React from "react";
 import ConfirmModal from "./ConfirmModal";
-import { deleteExpense } from "@/app/actions/expense.server";
+import { getCurrentYearMonth } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { getCurrentYearMonth } from "@/lib/utils";
+import { deleteIncome } from "@/app/actions/income.server";
 
 interface Props {
   openModal: boolean;
-  record: Expense;
+  record: Income;
   onClose: () => void;
 }
 
-const EditExpenseModal = ({ openModal, record, onClose }: Props) => {
+const EditIncomeModal = ({ openModal, record, onClose }: Props) => {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
-
 
   return (
     <Modal
@@ -59,18 +57,17 @@ const EditExpenseModal = ({ openModal, record, onClose }: Props) => {
             onClick={async (e) => {
               e.stopPropagation(); // Prevent triggering row click
 
-              await deleteExpense(record._id);
-              queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] })
+              await deleteIncome(record._id);
+              queryClient.invalidateQueries({ queryKey: ['incomes', yearMonth] })
               onClose();
             }}
           >
             Delete
           </Button>
         </ConfirmModal>
-
       </Box>
     </Modal>
   );
 };
 
-export default EditExpenseModal;
+export default EditIncomeModal;
