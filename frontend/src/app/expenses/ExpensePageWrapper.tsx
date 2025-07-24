@@ -31,7 +31,7 @@ const ExpensePageWrapper = () => {
           gap: 5,
         }}
       >
-        <FormModal label="new expense">
+        <FormModal label="出費を登録">
           <ExpenseForm />
         </FormModal>
         <YearMonthSelect />
