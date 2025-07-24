@@ -1,8 +1,9 @@
 
 interface Props { 
-  records : Transaction[]
+  records : Income[] | Expense[]
 }
 export default function AmountSummary({records} : Props) {
+  console.log("record : " ,records)
   records.map((r) => r)
   const total = records.reduce((sum, r) => sum + r.amount, 0)
   const genres = new Set(records.map(r => r.genre));

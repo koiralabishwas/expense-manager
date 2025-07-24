@@ -1,38 +1,21 @@
-import { postExpense } from "@/app/actions/expense.server";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import DatePickerUI from "./ui/DatePickerUI";
-import { DateTime } from "luxon";
+import { ExpenseForm, ExpenseGenre, ExpenseSchema } from "./ExpenseForm";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getCurrentYearMonth } from "@/lib/utils";
-import { useQueryClient } from "@tanstack/react-query";
+import { DateTime } from "luxon";
+import { putExpense } from "@/app/actions/expense.server";
+import { Typography, TextField, MenuItem, Button } from "@mui/material";
+import { Box } from "@mui/system";
+import DatePickerUI from "./ui/DatePickerUI";
 
-export const ExpenseGenre = z.enum([
-  "Water",
-  "Drinks",
-  "Meal",
-  "Snacks",
-  "Groceries",
-  "Entertainment",
-  "Devices",
-  "Hangouts",
-  "Study",
-  "Clothing",
-  "Other",
-]);
+interface Props {
+  record: Expense
+}
 
-export const ExpenseSchema = z.object({
-  description: z.string().min(1).max(50),
-  genre: ExpenseGenre,
-  amount: z.number(),
-  date: z.date(),
-});
-
-export type ExpenseForm = z.infer<typeof ExpenseSchema>
-
-export default function ExpenseForm() {
+export default function EditExpenseForm(props: Props) {
   const {
     register,
     handleSubmit,
@@ -41,20 +24,22 @@ export default function ExpenseForm() {
     control,
     formState: { errors, isSubmitting, isSubmitSuccessful }
   } = useForm<ExpenseForm>({
-    resolver: zodResolver(ExpenseSchema)
+    resolver: zodResolver(ExpenseSchema),
+    defaultValues: {
+      amount: props.record.amount,
+      description: props.record.description,
+      date: props.record.date ? new Date(props.record.date) : undefined,
+      genre: props.record.genre as z.infer<typeof ExpenseGenre>
+    }
   })
 
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
 
-  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
-
-  const currentYearMonth = yearMonth
-    ? DateTime.fromFormat(yearMonth, "yyyyMM").set({ day: DateTime.now().day }).toJSDate()
-    : new Date();
+  const yearMonth = searchParams.get("yearMont") || getCurrentYearMonth()
 
   const onSubmit: SubmitHandler<ExpenseForm> = async (formdata: ExpenseForm) => {
-    const result = await postExpense(formdata)
+    const result = await putExpense(props.record._id, formdata)
 
     if (!result) {
       setError("root", {
@@ -64,7 +49,6 @@ export default function ExpenseForm() {
 
     reset();
     queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
-
   }
 
   return (
@@ -87,7 +71,6 @@ export default function ExpenseForm() {
           label="金額"
           type="number"
           placeholder="金額を数字で入力"
-          defaultValue={null}
           {...register('amount', { valueAsNumber: true })}
           error={!!errors["amount"]}
           helperText={errors["amount"]?.message}
@@ -97,12 +80,12 @@ export default function ExpenseForm() {
         />
         <TextField
           select
+          defaultValue={props.record.genre}
           key={"genre"}
           id="genre"
           label="種類"
           type="text"
           placeholder="出費の種類を選択"
-          defaultValue={ExpenseGenre.options[0]}
           {...register('genre')}
           error={!!errors["genre"]}
           helperText={errors["genre"]?.message}
@@ -123,7 +106,6 @@ export default function ExpenseForm() {
           label="概要"
           type="text"
           placeholder="出費の概要"
-          defaultValue={null}
           {...register("description")}
           error={!!errors["description"]}
           helperText={errors["description"]?.message}
@@ -132,10 +114,10 @@ export default function ExpenseForm() {
           fullWidth
         />
         {/*TODO:　これを理解 */}
+        {/* control では　...register がつかえないみたい,だから name をつかうみたい */}
         <Controller
           name="date"
           control={control}
-          defaultValue={currentYearMonth}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <DatePickerUI
               value={value ? DateTime.fromJSDate(value) : null}

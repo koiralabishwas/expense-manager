@@ -36,6 +36,24 @@ export async function postExpense(expense: ExpenseForm) : Promise<Expense> {
   return await result.json();
 }
 
+export async function putExpense(_id : string , expense: ExpenseForm) : Promise<Expense> {
+  const session = await getServerSession(authOptions)
+  const result = await fetch(
+    process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/expenses/"+_id,
+    {
+      body: JSON.stringify(expense),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+      method: "PUT",
+    }
+  );
+  return await result.json();
+}
+
+
+
 export async function deleteExpense(id: string): Promise<Expense> {
   const session = await getServerSession(authOptions);
   const deleteReq = await fetch(

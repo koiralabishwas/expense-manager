@@ -38,7 +38,7 @@ const columnKeys = Object.keys(columnLabels) as (keyof Column)[];
 
 const ExpenseTable = ({ records }: Props) => {
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedModal, setSelectedModal] = useState<Transaction | null>(null);
+  const [selectedModal, setSelectedModal] = useState<Expense | null>(null);
 
   const handleOpenModal = (record: Expense) => {
     setSelectedModal(record);
@@ -76,7 +76,7 @@ const ExpenseTable = ({ records }: Props) => {
                 <TableCell>{record.amount}</TableCell>
                 <TableCell>{record.description}</TableCell>
                 <TableCell>
-                  {new Date(record.createdAt).toLocaleDateString("sv-SE").replace(/-/g, "/")}
+                  {new Date(record.date).toLocaleDateString("sv-SE").replace(/-/g, "/")}
                 </TableCell>
                 <TableCell>
                 </TableCell>

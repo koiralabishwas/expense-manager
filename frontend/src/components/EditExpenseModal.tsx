@@ -7,6 +7,7 @@ import { deleteExpense } from "@/app/actions/expense.server";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getCurrentYearMonth } from "@/lib/utils";
+import EditExpenseForm from "./EditExpenseForm";
 
 interface Props {
   openModal: boolean;
@@ -17,7 +18,6 @@ interface Props {
 const EditExpenseModal = ({ openModal, record, onClose }: Props) => {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
 
@@ -41,11 +41,6 @@ const EditExpenseModal = ({ openModal, record, onClose }: Props) => {
           p: 4,
         }}
       >
-        <div>{record._id}</div>
-        <div>{record.description}</div>
-        <div>{record.amount}</div>
-        <div>{record.genre}</div>
-        <div>{new Date(record.createdAt).toLocaleString()}</div>
         <ConfirmModal label="Delete" confirmMessage="削除しますか？">
           <Button
             variant="outlined"
@@ -67,7 +62,9 @@ const EditExpenseModal = ({ openModal, record, onClose }: Props) => {
             Delete
           </Button>
         </ConfirmModal>
-
+        <EditExpenseForm
+          record={record}
+        />
       </Box>
     </Modal>
   );
