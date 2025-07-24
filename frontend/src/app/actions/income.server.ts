@@ -37,6 +37,22 @@ export async function postIncome(income : IncomeForm) : Promise<Income> {
     return await result.json();
 }
 
+export async function putIncome(_id : string , expense: IncomeForm) : Promise<Income> {
+  const session = await getServerSession(authOptions)
+  const result = await fetch(
+    process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/incomes/"+_id,
+    {
+      body: JSON.stringify(expense),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+      method: "PUT",
+    }
+  );
+  return await result.json();
+}
+
 export async function deleteIncome(id: string): Promise<Income> {
   const session = await getServerSession(authOptions);
   const deleteReq = await fetch(

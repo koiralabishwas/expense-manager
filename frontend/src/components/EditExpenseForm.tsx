@@ -36,7 +36,7 @@ export default function EditExpenseForm(props: Props) {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
 
-  const yearMonth = searchParams.get("yearMont") || getCurrentYearMonth()
+  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth()
 
   const onSubmit: SubmitHandler<ExpenseForm> = async (formdata: ExpenseForm) => {
     const result = await putExpense(props.record._id, formdata)

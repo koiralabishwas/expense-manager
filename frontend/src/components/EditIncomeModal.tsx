@@ -7,6 +7,7 @@ import { getCurrentYearMonth } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { deleteIncome } from "@/app/actions/income.server";
+import EditIncomeForm from "./EditIncomeForm";
 
 interface Props {
   openModal: boolean;
@@ -65,6 +66,7 @@ const EditIncomeModal = ({ openModal, record, onClose }: Props) => {
             Delete
           </Button>
         </ConfirmModal>
+        <EditIncomeForm record={record} />
       </Box>
     </Modal>
   );

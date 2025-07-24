@@ -32,7 +32,7 @@ const IncomePageWrapper = () => {
           gap: 5,
         }}
       >
-        <FormModal label="new Income">
+        <FormModal label="収入を登録">
           <IncomeForm/>
         </FormModal>
         <YearMonthSelect />
