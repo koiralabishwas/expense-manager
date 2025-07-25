@@ -1,40 +1,45 @@
 'use client'
-import { Button, Modal , Box } from '@mui/material';
+import { Button, Modal, Box } from '@mui/material';
 import React from 'react'
 interface Props {
-  label? : string
+  label?: string
   children: React.ReactElement<{ handleClose?: () => void }>;
 }
 
-const FormModal = ({children , label} : Props) => {
+const FormModal = ({ children, label }: Props) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <>
-    <Button color='primary' variant='outlined' sx={{borderWidth : "0.3rem" , borderRadius : "1rem" , marginY : 2}} onClick={handleOpen}>{label ? label : "Open Form"}</Button>
-    <Modal
+      <Button color='primary' variant='outlined' sx={{ borderWidth: "0.3rem", borderRadius: "1rem", marginY: 2 }} onClick={handleOpen}>{label ? label : "Open Form"}</Button>
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute' as const,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+          }}
         >
-          <Box 
-             sx={{
-              position: 'absolute' as const,
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: 400,
-              bgcolor: 'background.paper',
-              borderRadius: 2,
-              boxShadow: 24,
-              p: 4,
-            }}
-          >
-          {children}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+            <Button variant='outlined' color='error' onClick={handleClose}>
+              close
+            </Button>
           </Box>
-    </Modal>
+          {children}
+        </Box>
+      </Modal>
     </>
   )
 }

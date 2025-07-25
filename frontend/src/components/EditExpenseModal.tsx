@@ -1,0 +1,74 @@
+"use client";
+
+import { Box, Button, Modal } from "@mui/material";
+import React from "react";
+import ConfirmModal from "./ConfirmModal";
+import { deleteExpense } from "@/app/actions/expense.server";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import { getCurrentYearMonth } from "@/lib/utils";
+import EditExpenseForm from "./EditExpenseForm";
+
+interface Props {
+  openModal: boolean;
+  record: Expense;
+  onClose: () => void;
+}
+
+const EditExpenseModal = ({ openModal, record, onClose }: Props) => {
+  const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
+
+
+  return (
+    <Modal
+      open={openModal}
+      onClose={onClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box
+        sx={{
+          position: "absolute" as const,
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 400,
+          bgcolor: "background.paper",
+          borderRadius: 2,
+          boxShadow: 24,
+          p: 4,
+        }}
+      >
+        <ConfirmModal label="Delete" confirmMessage="削除しますか？">
+          <Button
+            variant="outlined"
+            sx={{
+              borderWidth: 2,
+              borderStyle: "solid",
+              borderColor: "green",
+              color: "green",
+            }}
+            color="primary"
+            onClick={async (e) => {
+              e.stopPropagation(); // Prevent triggering row click
+
+              await deleteExpense(record._id);
+              queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] })
+              onClose();
+            }}
+          >
+            Delete
+          </Button>
+        </ConfirmModal>
+        <EditExpenseForm
+          record={record}
+          setOpenModal={onClose}
+        />
+      </Box>
+    </Modal>
+  );
+};
+
+export default EditExpenseModal;

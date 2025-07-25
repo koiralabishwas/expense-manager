@@ -11,7 +11,7 @@ export async function getUserIncomes(ctx: Context) {
 
     if (yearMonth) {
       startDate = DateTime.fromFormat(yearMonth, "yyyyMM", {
-        zone: "utc",
+        zone: "Asia/Tokyo",
       }).startOf("month");
       endDate = startDate.plus({ month: 1 });
     }
@@ -25,7 +25,7 @@ export async function getUserIncomes(ctx: Context) {
             $lt: endDate.toJSDate(),
           },
         }),
-    });
+    }).sort({date : -1});
     return ctx.json(userIncome);
   } catch (error) {
     return ctx.json({ error }, 400);

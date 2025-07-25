@@ -6,8 +6,10 @@ import { z } from "zod";
 import DatePickerUI from "./ui/DatePickerUI";
 import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
+import { getCurrentYearMonth } from "@/lib/utils";
+import { useQueryClient } from "@tanstack/react-query";
 
-const ExpenseGenre = z.enum([
+export const ExpenseGenre = z.enum([
   "Water",
   "Drinks",
   "Meal",
@@ -21,20 +23,16 @@ const ExpenseGenre = z.enum([
   "Other",
 ]);
 
-const schema = z.object({
+export const ExpenseSchema = z.object({
   description: z.string().min(1).max(50),
   genre: ExpenseGenre,
   amount: z.number(),
   date: z.date(),
 });
 
-export type ExpenseForm = z.infer<typeof schema>
+export type ExpenseForm = z.infer<typeof ExpenseSchema>
 
-interface Props {
-  //TODO: make it typesafe 
-  onPost: (expense: Expense) => void
-}
-export default function ExpenseForm(props: Props) {
+export default function ExpenseForm() {
   const {
     register,
     handleSubmit,
@@ -43,12 +41,15 @@ export default function ExpenseForm(props: Props) {
     control,
     formState: { errors, isSubmitting, isSubmitSuccessful }
   } = useForm<ExpenseForm>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(ExpenseSchema)
   })
 
-  const params = useSearchParams().get("yearMonth");
-  const currentYearMonth = params
-    ? DateTime.fromFormat(params, "yyyyMM").set({ day: DateTime.now().day }).toJSDate()
+  const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
+
+  const currentYearMonth = yearMonth
+    ? DateTime.fromFormat(yearMonth, "yyyyMM").set({ day: DateTime.now().day }).toJSDate()
     : new Date();
 
   const onSubmit: SubmitHandler<ExpenseForm> = async (formdata: ExpenseForm) => {
@@ -61,7 +62,8 @@ export default function ExpenseForm(props: Props) {
     }
 
     reset();
-    props.onPost(result)
+    queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
+
   }
 
   return (
@@ -132,11 +134,14 @@ export default function ExpenseForm(props: Props) {
         <Controller
           name="date"
           control={control}
-          defaultValue={currentYearMonth}// z.date は js の date のためluxonではなく js dateに
+          defaultValue={currentYearMonth}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <DatePickerUI
               value={value ? DateTime.fromJSDate(value) : null}
-              onChange={(dt) => onChange(dt ? dt.toJSDate() : null)}
+              onChange={(dt) => {
+                const selectedDate = dt ? dt.toJSDate() : null;
+                onChange(selectedDate);
+              }}
               error={!!error}
               helperText={error?.message}
             />

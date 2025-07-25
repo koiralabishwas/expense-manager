@@ -1,7 +1,7 @@
 type Transaction = {
   _id: string;
   userId: string;
-  yearMonth: string;
+  date: string;
   description: string;
   amount: number;
   // currency: string; // not needed now
@@ -11,5 +11,5 @@ type Transaction = {
   __v: number;
 };
 
-type Income = Transaction;
-type Expense = Transaction;
+interface Income extends Transaction {}
+interface Expense extends Transaction{}

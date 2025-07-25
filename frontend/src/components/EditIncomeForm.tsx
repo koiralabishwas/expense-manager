@@ -1,32 +1,22 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import DatePickerUI from "./ui/DatePickerUI";
-import { DateTime } from "luxon";
-import { useSearchParams } from "next/navigation";
-import { postIncome } from "@/app/actions/income.server";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import { getCurrentYearMonth } from "@/lib/utils";
+import { DateTime } from "luxon";
+import { Typography, TextField, MenuItem, Button } from "@mui/material";
+import { Box } from "@mui/system";
+import DatePickerUI from "./ui/DatePickerUI";
+import { IncomeForm, IncomeGenre, IncomeSchema } from "./IncomeForm";
+import { putIncome } from "@/app/actions/income.server";
 
-export const IncomeGenre = z.enum([
-  "Salary",
-  "Gratuity",
-  "Allowence",
-  "Bonus",
-  "Other",
-]);
+interface Props {
+  record: Income
+  setOpenModal: () => void
+}
 
-export const IncomeSchema = z.object({
-  description: z.string().min(1).max(50),
-  genre: IncomeGenre,
-  amount: z.number(),
-  date: z.date(),
-});
-
-export type IncomeForm = z.infer<typeof IncomeSchema>
-
-export default function IncomeForm() {
+export default function EditIncomeForm(props: Props) {
   const {
     register,
     handleSubmit,
@@ -35,20 +25,22 @@ export default function IncomeForm() {
     control,
     formState: { errors, isSubmitting, isSubmitSuccessful }
   } = useForm<IncomeForm>({
-    resolver: zodResolver(IncomeSchema)
+    resolver: zodResolver(IncomeSchema),
+    defaultValues: {
+      amount: props.record.amount,
+      description: props.record.description,
+      date: props.record.date ? new Date(props.record.date) : undefined,
+      genre: props.record.genre as z.infer<typeof IncomeGenre>
+    }
   })
 
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
-  const params = useSearchParams().get("yearMonth");
-  const currentYearMonth = params
-    ? DateTime.fromFormat(params, "yyyyMM").set({ day: DateTime.now().day }).toJSDate()
-    : new Date();
+  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth()
 
   const onSubmit: SubmitHandler<IncomeForm> = async (formdata: IncomeForm) => {
-    const result = await postIncome(formdata)
+    const result = await putIncome(props.record._id, formdata)
 
     if (!result) {
       setError("root", {
@@ -58,19 +50,19 @@ export default function IncomeForm() {
 
     reset();
     queryClient.invalidateQueries({ queryKey: ['incomes', yearMonth] });
-
+    props.setOpenModal()
   }
 
   return (
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
       <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
-        収入登録
+        支出登録
       </Typography>
       <Typography color="error">{errors.root?.message}</Typography>
       {isSubmitSuccessful && (
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
           <Typography variant="h5" color="success" fontWeight="bold">
-            収入を登録しました
+            支出を登録しました
           </Typography>
         </Box>
       )}
@@ -81,7 +73,6 @@ export default function IncomeForm() {
           label="金額"
           type="number"
           placeholder="金額を数字で入力"
-          defaultValue={null}
           {...register('amount', { valueAsNumber: true })}
           error={!!errors["amount"]}
           helperText={errors["amount"]?.message}
@@ -91,12 +82,12 @@ export default function IncomeForm() {
         />
         <TextField
           select
+          defaultValue={props.record.genre}
           key={"genre"}
           id="genre"
           label="種類"
           type="text"
           placeholder="出費の種類を選択"
-          defaultValue={IncomeGenre.options[0]}
           {...register('genre')}
           error={!!errors["genre"]}
           helperText={errors["genre"]?.message}
@@ -116,8 +107,7 @@ export default function IncomeForm() {
           id="description"
           label="概要"
           type="text"
-          placeholder="収入の概要"
-          defaultValue={null}
+          placeholder="出費の概要"
           {...register("description")}
           error={!!errors["description"]}
           helperText={errors["description"]?.message}
@@ -126,10 +116,10 @@ export default function IncomeForm() {
           fullWidth
         />
         {/*TODO:　これを理解 */}
+        {/* control では　...register がつかえないみたい,だから name をつかうみたい */}
         <Controller
           name="date"
           control={control}
-          defaultValue={currentYearMonth}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <DatePickerUI
               value={value ? DateTime.fromJSDate(value) : null}
@@ -149,7 +139,7 @@ export default function IncomeForm() {
           sx={{ mt: 2 }}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "submitting" : "SUBMIT"}
+          {isSubmitting ? "submitting...." : "SUBMIT"}
         </Button>
         <Button
           type="reset"
