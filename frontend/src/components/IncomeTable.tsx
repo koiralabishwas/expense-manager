@@ -21,8 +21,6 @@ export type Column = {
   createdAt: string;
 };
 
-type Transaction = Column | Income | Expense;
-
 interface Props {
   records: Income[];
   edit?: (id: string) => void;
@@ -77,7 +75,7 @@ const IncomeTable = ({ records }: Props) => {
                 <TableCell>{record.amount}</TableCell>
                 <TableCell>{record.description}</TableCell>
                 <TableCell>
-                  {new Date(record.createdAt).toLocaleDateString("sv-SE").replace(/-/g, "/")}
+                  {new Date(record.date).toLocaleDateString("sv-SE").replace(/-/g, "/")}
                 </TableCell>
                 <TableCell>
                 </TableCell>

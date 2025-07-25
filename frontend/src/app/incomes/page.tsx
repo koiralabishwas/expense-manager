@@ -7,8 +7,6 @@ export default async function IncomePage() {
   return (
     <div>
       <Suspense>
-
-        <InDevelopmentAlert />
         <Typography
           component={"h1"}
           variant="h5"
@@ -16,7 +14,7 @@ export default async function IncomePage() {
           gutterBottom
           margin={"normal"}
         >
-          収入登録
+          収入
         </Typography>
         <IncomePageWrapper />
       </Suspense>

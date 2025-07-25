@@ -40,11 +40,6 @@ const EditIncomeModal = ({ openModal, record, onClose }: Props) => {
           p: 4,
         }}
       >
-        <div>{record._id}</div>
-        <div>{record.description}</div>
-        <div>{record.amount}</div>
-        <div>{record.genre}</div>
-        <div>{new Date(record.createdAt).toLocaleString()}</div>
         <ConfirmModal label="Delete" confirmMessage="削除しますか？">
           <Button
             variant="outlined"

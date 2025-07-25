@@ -16,7 +16,7 @@ export default async function ExpensePage() {
           gutterBottom
           margin={"normal"}
         >
-          出費登録
+          出費
         </Typography>
         <ExpensePageWrapper />
       </Suspense>

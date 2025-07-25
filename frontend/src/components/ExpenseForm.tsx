@@ -46,7 +46,6 @@ export default function ExpenseForm() {
 
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
   const currentYearMonth = yearMonth
