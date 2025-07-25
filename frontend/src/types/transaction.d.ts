@@ -10,6 +10,6 @@ type Transaction = {
   updatedAt: string;
   __v: number;
 };
-
-interface Income extends Transaction {}
-interface Expense extends Transaction{}
+// use interface if you want to extend it with additional types 
+type Income = Transaction;
+type Expense = Transaction;
