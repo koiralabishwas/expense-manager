@@ -64,6 +64,7 @@ const EditExpenseModal = ({ openModal, record, onClose }: Props) => {
         </ConfirmModal>
         <EditExpenseForm
           record={record}
+          setOpenModal={onClose}
         />
       </Box>
     </Modal>

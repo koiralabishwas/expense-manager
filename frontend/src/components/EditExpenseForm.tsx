@@ -13,6 +13,7 @@ import DatePickerUI from "./ui/DatePickerUI";
 
 interface Props {
   record: Expense
+  setOpenModal : () => void
 }
 
 export default function EditExpenseForm(props: Props) {
@@ -49,6 +50,7 @@ export default function EditExpenseForm(props: Props) {
 
     reset();
     queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] });
+    props.setOpenModal()
   }
 
   return (
