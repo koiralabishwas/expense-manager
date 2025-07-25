@@ -27,7 +27,7 @@ export async function getUserExpenses(ctx: Context) {
             $lt: endDate.toJSDate(),
           },
         }),
-    });
+    }).sort({date : -1});
     return ctx.json(userExpense);
   } catch (error) {
     return ctx.json({ error }, 400);
