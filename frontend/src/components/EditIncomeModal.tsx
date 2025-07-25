@@ -61,7 +61,8 @@ const EditIncomeModal = ({ openModal, record, onClose }: Props) => {
             Delete
           </Button>
         </ConfirmModal>
-        <EditIncomeForm record={record} />
+        <EditIncomeForm record={record}
+        setOpenModal={onClose} />
       </Box>
     </Modal>
   );

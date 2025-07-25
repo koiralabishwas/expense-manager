@@ -13,6 +13,7 @@ import { putIncome } from "@/app/actions/income.server";
 
 interface Props {
   record: Income
+  setOpenModal: () => void
 }
 
 export default function EditIncomeForm(props: Props) {
@@ -49,6 +50,7 @@ export default function EditIncomeForm(props: Props) {
 
     reset();
     queryClient.invalidateQueries({ queryKey: ['incomes', yearMonth] });
+    props.setOpenModal()
   }
 
   return (

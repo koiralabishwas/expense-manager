@@ -129,11 +129,14 @@ export default function IncomeForm() {
         <Controller
           name="date"
           control={control}
-          defaultValue={currentYearMonth}// z.date は js の date のためluxonではなく js dateに
+          defaultValue={currentYearMonth}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <DatePickerUI
               value={value ? DateTime.fromJSDate(value) : null}
-              onChange={(dt) => onChange(dt ? dt.toJSDate() : null)}
+              onChange={(dt) => {
+                const selectedDate = dt ? dt.toJSDate() : null;
+                onChange(selectedDate);
+              }}
               error={!!error}
               helperText={error?.message}
             />
