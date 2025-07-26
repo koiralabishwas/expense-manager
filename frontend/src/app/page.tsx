@@ -5,16 +5,22 @@ import { Box, Button } from "@mui/material";
 export default async function Home() {
   const session = await getServerSession();
   return (
-    <div>
+    <Box sx={{
+      display: "grid",
+      alignItems : "center",
+      gridAutoFlow: "row",
+      rowGap: 2,
+      padding:2,
+      width: "100%",
+      placeItems : "center",
+    }} >
       Hello, {session?.user.name || "Guest"}!
-      <Box p={"3rem"}>
-        <Button LinkComponent={"a"} href="/incomes" sx={{my: "1rem"}} variant="outlined" fullWidth>
-          Income
-        </Button>
-        <Button LinkComponent={"a"} href="/expenses" sx={{my : "1rem"}} variant="outlined" fullWidth>
-          Expenses
-        </Button>
-      </Box>
-    </div>
+      <Button LinkComponent={"a"} href="/incomes" variant="outlined" fullWidth>
+        Income
+      </Button>
+      <Button LinkComponent={"a"} href="/expenses" variant="outlined" fullWidth>
+        Expenses
+      </Button>
+    </Box >
   );
 }
