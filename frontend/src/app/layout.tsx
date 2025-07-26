@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import TopBar from "../components/TopBar";
 import AuthProvider from "../providers/AuthProvider";
 import MUIThemeProvider from "../providers/MUIThemeProvider";
 import { EmotionCacheProvider } from "../providers/EmotionCacheProvider";
-import { getServerSession } from "next-auth";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import { authOptions } from "@/lib/auth";
 import { Box } from "@mui/material";
+import './globals.css'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +33,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ja">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
         <AuthProvider>
           <ReactQueryProvider>
             <MUIThemeProvider>

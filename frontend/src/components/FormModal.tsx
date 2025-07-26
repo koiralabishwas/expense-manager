@@ -25,11 +25,11 @@ const FormModal = ({ children, label }: Props) => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            width: "90%",
             bgcolor: 'background.paper',
             borderRadius: 2,
             boxShadow: 24,
-            p: 4,
+            p: 1,
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
