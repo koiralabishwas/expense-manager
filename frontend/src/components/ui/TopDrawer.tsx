@@ -12,7 +12,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export default function LeftDrawer() {
+export default function TopDrawer() {
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -45,13 +45,13 @@ export default function LeftDrawer() {
       <Button
         sx={{
           color: "white",
-          "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.1)" },
+          "&:hover": { backgroundColor: "#0000001a" },
         }}
         onClick={toggleDrawer(true)}
       >
         <MenuIcon fontSize="large" />
       </Button>
-      <Drawer open={open} onClose={toggleDrawer(false)}>
+      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
     </div>

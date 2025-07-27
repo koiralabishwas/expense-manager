@@ -17,8 +17,7 @@ import {
 } from "@mui/material";
 import { Settings, Logout } from "@mui/icons-material";
 import { signIn, signOut, useSession } from "next-auth/react";
-import LeftDrawer from "./ui/LeftMenu";
-import { Session } from "next-auth";
+import TopDrawer from "./ui/TopDrawer";
 
 const TopBar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -41,12 +40,11 @@ const { data: sessions, status } = useSession();
   }
 
   return (
-    <AppBar position="absolute" sx={{ boxShadow: "none" }}>
+    <AppBar position="sticky" sx={{ boxShadow: "none" }}>
       <Toolbar variant="dense" disableGutters>
         {/* User Initial Icon or Placeholder */}
-        <LeftDrawer />
         {/* Title */}
-        <Typography fontSize={25} sx={{ flexGrow: 1 }}>
+        <Typography fontSize={25} sx={{ flexGrow: 1 , pl : 1 }}>
           家計師くん
         </Typography>
 
@@ -133,6 +131,8 @@ const { data: sessions, status } = useSession();
             </Menu>
           </Box>
         )}
+                <TopDrawer />
+
       </Toolbar>
     </AppBar>
   );

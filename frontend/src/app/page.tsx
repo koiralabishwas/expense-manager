@@ -11,7 +11,7 @@ export default async function Home() {
       gridAutoFlow: "row",
       rowGap: 2,
       padding:2,
-      width: "100%",
+      width: "90%",
       placeItems : "center",
     }} >
       Hello, {session?.user.name || "Guest"}!
