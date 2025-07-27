@@ -18,6 +18,7 @@ app.use('/*',cors({
 app.use("/*" ,errorHandler)
 app.route("/", home);
 app.route("/auth", authRoutes);
+app.get('/auth/check', authentication , (ctx) => ctx.text('authorized', 200) )
 
 // auth required routes
 app.use("/api/*",authentication);
