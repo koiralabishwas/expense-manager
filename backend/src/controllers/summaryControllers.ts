@@ -1,7 +1,7 @@
 import { Context } from "hono";
 
 import User from "../models/user";
-import { getMonthlyBalanceSummary } from "../service/summary";
+import { getMonthlyBalanceSummary } from "../service/summaryService";
 
 export async function getBalanceSummary(ctx: Context) {
   try {

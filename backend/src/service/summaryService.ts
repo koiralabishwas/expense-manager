@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import Expense from "../models/expense";
 import Income from "../models/income";
 
-// TODO: need to calculate
+// TODO: make it memmory efficient
 export async function getMonthlyBalanceSummary(
   userId: string,
   yearMonth: string
@@ -21,17 +21,22 @@ export async function getMonthlyBalanceSummary(
     },
   }).sort({ date: -1 });
 
+  
   const userIncomes = await Income.find({
     userId: userId,
     date: {
       $gte: startDate.toJSDate(),
       $lt: endDate.toJSDate(),
     },
-  });
-
+  }).sort({ date: -1 });
+  
+  const totalExpense = userExpense.reduce((sum, e) => sum + (e.amount || 0), 0);
+  const totalIncome = userIncomes.reduce((sum , e) => sum + (e.amount || 0) , 0)
+  const netAmount = totalIncome - totalExpense
   return {
     yearMonth,
-    userExpense,
-    userIncomes
+    totalExpense,
+    totalIncome,
+    netAmount
   };
 }
