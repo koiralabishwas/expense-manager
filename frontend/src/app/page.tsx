@@ -5,6 +5,7 @@ import BSTable from "@/components/BSSummaryTable";
 
 export default async function Home() {
   const session = await getServerSession();
+  console.log(  "token" , session?.accessToken)
   return (
     <Box sx={{
       display: "grid",
