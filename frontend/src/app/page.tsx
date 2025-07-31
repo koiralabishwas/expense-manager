@@ -16,7 +16,7 @@ export default async function Home() {
       placeItems : "center",
     }} >
       Hello, {session?.user.name || "Guest"}!
-      {/* <YearMonthSelect /> */}
+      <YearMonthSelect />
       <BSTable/>
       <Button LinkComponent={"a"} href="/incomes" variant="outlined" fullWidth>
         Income
