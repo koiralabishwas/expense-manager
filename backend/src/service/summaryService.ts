@@ -9,6 +9,7 @@ export async function getMonthlyBalanceSummary(userId: string, yearMonth: string
   }).startOf("month");
   const endDate = startDate.plus({ months: 1 });
 
+  // string のままだと読み込まない
   const userObjectId = new Types.ObjectId(userId);
 
   const expenseAgg = await Expense.aggregate([
