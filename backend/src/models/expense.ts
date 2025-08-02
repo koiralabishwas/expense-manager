@@ -20,6 +20,11 @@ const expenseSchema = new mongoose.Schema(
       type: String,
       default: "Other",
     },
+    //TODO: 引き落としが翌月か翌々月かで対応しなければならない
+    isCredit : { 
+      type : Boolean ,
+      default : false
+    }
   },
   { timestamps: true }
 );

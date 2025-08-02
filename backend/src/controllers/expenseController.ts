@@ -44,6 +44,7 @@ export async function postUserExpense(ctx: Context) {
       description: body.description,
       amount: body.amount,
       genre: body.genre,
+      isCredit : body.isCredit
     }).save();
     return ctx.json(newUserExpense);
   } catch (error) {
