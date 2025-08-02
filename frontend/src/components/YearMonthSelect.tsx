@@ -11,12 +11,15 @@ import { useSearchParams } from "next/navigation";
 import { useId, useMemo } from "react";
 
 export default function YearMonthSelect() {
+
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = (now.getMonth() + 1).toString().padStart(2, "0");
-  const baseDate = new Date(currentYear, now.getMonth(), 1); // 1st day of current month
 
   const yearMonthOptions = useMemo(() => {
+    // Move the calculation inside the hook
+    const baseDate = new Date(currentYear, now.getMonth(), 1);
+
     return Array.from({ length: 12 }, (_, i) => {
       const date = new Date(baseDate);
       date.setMonth(baseDate.getMonth() - 6 + i);
@@ -24,7 +27,8 @@ export default function YearMonthSelect() {
       const month = (date.getMonth() + 1).toString().padStart(2, "0");
       return `${year}${month}`;
     });
-  }, [baseDate]);
+    // The dependencies are now primitive values that are stable across renders
+  }, [currentYear, currentMonth , now]);
 
   const searchParams = useSearchParams();
   const selectedYearMonth =
