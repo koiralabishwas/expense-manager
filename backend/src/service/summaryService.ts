@@ -44,10 +44,12 @@ export async function getMonthlyBalanceSummary(userId: string, yearMonth: string
   ]);
   const totalIncome = incomeAgg[0]?.totalIncome || 0;
 
+  // TODO: complete totalExpense and cashLoss
   return {
     yearMonth,
-    totalExpense,
+    totalExpense, // current month all expense
     totalIncome,
+    // cashLoss , // {prevmonth isPostpaid = true }+ {thismonth isPostpaid = false}
     netAmount: totalIncome - totalExpense,
   };
 }

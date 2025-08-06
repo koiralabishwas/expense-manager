@@ -16,7 +16,11 @@ export async function getUserExpenses(ctx: Context) {
       }).startOf("month");
       endDate = startDate.plus({ months: 1 });
     }
-
+    // TODO: also give summary like , 
+    // totalExpese , 
+    // cashExpense : total cash expense 
+    // postPaid expense : expense  => isPostpaid = true
+    // genreTotal : {}
     const userExpense = await Expense.find({
       userId: _id,
       ...(yearMonth &&
