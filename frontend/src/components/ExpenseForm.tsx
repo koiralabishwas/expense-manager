@@ -29,7 +29,7 @@ export const ExpenseSchema = z.object({
   genre: ExpenseGenre,
   amount: z.number(),
   date: z.date(),
-  isCredit: z.boolean().optional().default(false),
+  isPostpaid: z.boolean().optional().default(false),
 });
 
 export type ExpenseForm = z.infer<typeof ExpenseSchema>
@@ -97,7 +97,7 @@ export default function ExpenseForm() {
           fullWidth
         />
         <Controller
-          name="isCredit"
+          name="isPostpaid"
           control={control}
           render={({ field }) => (
             <FormControlLabel

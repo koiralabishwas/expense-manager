@@ -21,7 +21,7 @@ const expenseSchema = new mongoose.Schema(
       default: "Other",
     },
     //TODO: 引き落としが翌月か翌々月かで対応しなければならない
-    isCredit : { 
+    isPostpaid : { 
       type : Boolean ,
       default : false
     }

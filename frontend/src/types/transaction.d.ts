@@ -13,5 +13,5 @@ type Transaction = {
 // use interface if you want to extend it with additional types 
 type Income = Transaction;
 interface Expense extends Transaction {
-  isCredit? : boolean
+  isPostpaid? : boolean
 }

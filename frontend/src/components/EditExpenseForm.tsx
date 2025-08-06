@@ -31,7 +31,7 @@ export default function EditExpenseForm(props: Props) {
       description: props.record.description,
       date: props.record.date ? new Date(props.record.date) : undefined,
       genre: props.record.genre as z.infer<typeof ExpenseGenre>,
-      isCredit: props.record.isCredit
+      isPostpaid: props.record.isPostpaid
     }
   })
 
@@ -83,7 +83,7 @@ export default function EditExpenseForm(props: Props) {
         />
         {/* Use Controller for the Switch component */}
         <Controller
-          name="isCredit"
+          name="isPostpaid"
           control={control}
           render={({ field }) => (
             <FormControlLabel
