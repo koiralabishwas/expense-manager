@@ -49,7 +49,7 @@ export async function getMonthlyBalanceSummary(userId: string, yearMonth: string
     yearMonth,
     totalExpense, // current month all expense
     totalIncome,
-    // cashLoss , // {prevmonth isPostpaid = true }+ {thismonth isPostpaid = false}
+    // cashLoss , // {prevmonth isPostPaid = true }+ {thismonth isPostPaid = false}
     netAmount: totalIncome - totalExpense,
   };
 }
