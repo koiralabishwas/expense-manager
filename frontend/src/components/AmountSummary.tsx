@@ -1,24 +1,31 @@
+'use client'
+import { ExpenseSummary } from "@/app/actions/expense.server";
 
 interface Props { 
-  records : Income[] | Expense[]
+  expenseSumarry : ExpenseSummary 
 }
-export default function AmountSummary({records} : Props) {
-  console.log("record : " ,records)
-  records.map((r) => r)
-  const total = records.reduce((sum, r) => sum + r.amount, 0)
-  const genres = new Set(records.map(r => r.genre));
-  const genreTotals = Array.from(genres).map(genre => {
-    const genreTotal = records
-      .filter(r => r.genre === genre)
-      .reduce((sum, r) => sum + r.amount, 0);
-    return { genre, total: genreTotal };
-  });
+export default function AmountSummary({expenseSumarry} : Props) {
+  console.log(expenseSumarry)
 
   return (
     <>
-      <div>Total : {total}</div>
-      {genreTotals.map((g) => (
-        <div key={g.genre}>{g.genre} : {g.total}</div>
+      {Object.entries(expenseSumarry).map(([key, value]) => (
+      typeof value === 'object' && value !== null ? (
+        <div key={key}>
+        <div>{key} :</div>
+        <div style={{ paddingLeft: 16 }}>
+          {Object.entries(value).map(([subKey, subValue]) => (
+          <div key={subKey}>
+            {subKey} : {subValue.toString()}
+          </div>
+          ))}
+        </div>
+        </div>
+      ) : (
+        <div key={key}>
+        {key} : {value.toString()}
+        </div>
+      )
       ))}
     </>
   )

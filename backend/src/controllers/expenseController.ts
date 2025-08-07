@@ -15,11 +15,6 @@ export async function getUserExpenses(ctx: Context) {
       }).startOf("month");
       endDate = startDate.plus({ months: 1 });
     }
-    // TODO: also give summary like ,
-    // totalExpese ,
-    // cashExpense : total cash expense => isPostPaid = false
-    // postPaid expense : expense  => isPostPaid = true
-    // genreTotal : {}
     const expenses = await Expense.find({
       userId: _id,
       ...(yearMonth &&
