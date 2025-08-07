@@ -11,17 +11,16 @@ export async function getUserExpenses(ctx: Context) {
 
     if (yearMonth) {
       startDate = DateTime.fromFormat(yearMonth, "yyyyMM", {
-        
         zone: "Asia/Tokyo",
       }).startOf("month");
       endDate = startDate.plus({ months: 1 });
     }
-    // TODO: also give summary like , 
-    // totalExpese , 
-    // cashExpense : total cash expense 
-    // postPaid expense : expense  => isPostpaid = true
+    // TODO: also give summary like ,
+    // totalExpese ,
+    // cashExpense : total cash expense => isPostPaid = false
+    // postPaid expense : expense  => isPostPaid = true
     // genreTotal : {}
-    const userExpense = await Expense.find({
+    const expenses = await Expense.find({
       userId: _id,
       ...(yearMonth &&
         startDate &&
@@ -31,8 +30,36 @@ export async function getUserExpenses(ctx: Context) {
             $lt: endDate.toJSDate(),
           },
         }),
-    }).sort({date : -1});
-    return ctx.json(userExpense);
+    }).sort({ date: -1 });
+
+    const total = expenses.reduce(
+      (totalExpense, expense) => totalExpense + (expense.amount || 0),
+      0
+    );
+    const cashPaid = expenses
+      .filter((ex) => ex.isPostPaid === false)
+      .reduce((sum, ex) => sum + (ex.amount || 0), 0);
+    const postPaid = expenses
+      .filter((ex) => ex.isPostPaid === true)
+      .reduce((sum, ex) => sum + (ex.amount || 0), 0);
+
+    const genreSummary = expenses.reduce((acc, expense) => {
+      const genre = expense.genre;
+      const amount = expense.amount || 0;
+      acc[genre] = (acc[genre] || 0) + amount;
+      return acc;
+    }, {} as Record<string, number>);
+
+    return ctx.json({
+      yearMonth,
+      expenses,
+      summary: {
+        total: total,
+        cashPaid,
+        postPaid,
+        genres: genreSummary,
+      },
+    });
   } catch (error) {
     return ctx.json({ error }, 400);
   }
@@ -48,7 +75,7 @@ export async function postUserExpense(ctx: Context) {
       description: body.description,
       amount: body.amount,
       genre: body.genre,
-      isPostpaid : body.isPostpaid
+      isPostPaid: body.isPostPaid,
     }).save();
     return ctx.json(newUserExpense);
   } catch (error) {
