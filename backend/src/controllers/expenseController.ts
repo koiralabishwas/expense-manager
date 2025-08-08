@@ -38,7 +38,7 @@ export async function getUserExpenses(ctx: Context) {
       .filter((ex) => ex.isPostPaid === true)
       .reduce((sum, ex) => sum + (ex.amount || 0), 0);
 
-    const genreSummary = expenses.reduce((acc, expense) => {
+    const genres = expenses.reduce((acc, expense) => {
       const genre = expense.genre;
       const amount = expense.amount || 0;
       acc[genre] = (acc[genre] || 0) + amount;
@@ -49,10 +49,10 @@ export async function getUserExpenses(ctx: Context) {
       yearMonth,
       expenses,
       summary: {
-        total: total,
+        total,
         cashPaid,
         postPaid,
-        genres: genreSummary,
+        genres,
       },
     });
   } catch (error) {

@@ -15,7 +15,7 @@ export async function getUserIncomes(ctx: Context) {
       }).startOf("month");
       endDate = startDate.plus({ month: 1 });
     }
-    const userIncome = await Income.find({
+    const incomes = await Income.find({
       userId: _id,
       ...(yearMonth &&
         startDate &&
@@ -25,8 +25,28 @@ export async function getUserIncomes(ctx: Context) {
             $lt: endDate.toJSDate(),
           },
         }),
-    }).sort({date : -1});
-    return ctx.json(userIncome);
+    }).sort({ date: -1 });
+
+    const total = incomes.reduce(
+      (totalExpense, income) => totalExpense + (income.amount || 0),
+      0
+    );
+
+    const genres = incomes.reduce((acc, incomes) => {
+      const genre = incomes.genre;
+      const amount = incomes.amount || 0;
+      acc[genre] = (acc[genre] || 0) + amount;
+      return acc;
+    }, {} as Record<string, number>);
+
+    return ctx.json({
+      yearMonth,
+      incomes,
+        summary : {
+          total ,
+          genres
+        }
+    });
   } catch (error) {
     return ctx.json({ error }, 400);
   }

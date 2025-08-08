@@ -1,15 +1,13 @@
 'use client'
-import { ExpenseSummary } from "@/app/actions/expense.server";
 
 interface Props { 
-  expenseSumarry : ExpenseSummary 
+  summary : ExpenseSummary | IncomeSummary
 }
-export default function AmountSummary({expenseSumarry} : Props) {
-  console.log(expenseSumarry)
+export default function AmountSummary({summary} : Props) {
 
   return (
     <>
-      {Object.entries(expenseSumarry).map(([key, value]) => (
+      {Object.entries(summary).map(([key, value]) => (
       typeof value === 'object' && value !== null ? (
         <div key={key}>
         <div>{key} :</div>

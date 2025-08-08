@@ -3,18 +3,7 @@ import { ExpenseForm } from "@/components/ExpenseForm";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 
-export type ExpenseSummary = {
-  total: string;
-  cashPaid: string;
-  postPaid: string;
-  genre: Record<string, number>;
-};
 
-export type ExpenseRes = {
-  yearMonth: string;
-  expenses: Expense[];
-  summary: ExpenseSummary;
-};
 
 export async function getExpense(yearMonth: string): Promise<ExpenseRes> {
   const session = await getServerSession(authOptions);
