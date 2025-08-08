@@ -1,10 +1,12 @@
 import { Context } from "hono";
 import Expense from "../models/expense";
 import { DateTime } from "luxon";
+import { Types } from "mongoose";
 
 export async function getUserExpenses(ctx: Context) {
   try {
     const { _id } = ctx.get("user");
+    const userObjectId = new Types.ObjectId(_id);
     const yearMonth = ctx.req.query("yearMonth") ?? null;
     let startDate: DateTime | undefined;
     let endDate: DateTime | undefined;
@@ -45,6 +47,27 @@ export async function getUserExpenses(ctx: Context) {
       return acc;
     }, {} as Record<string, number>);
 
+    const expenseAgg = await Expense.aggregate([
+      { $match: { userId: userObjectId } },
+      {
+        $facet: {
+          prevMonthPostPaid: [
+            {
+              $match: {
+                isPostPaid: true,
+                date: {
+                  $gte: startDate?.minus({ month: 1 }).toJSDate(),
+                  $lt: endDate?.minus({ month: 1 }).toJSDate(),
+                },
+              },
+            },
+            { $group: { _id: null, total: { $sum: "$amount" } } },
+          ],
+        },
+      },
+    ]);
+    const prevMonthPostPaid = expenseAgg[0]?.prevMonthPostPaid?.[0]?.total || 0;
+
     return ctx.json({
       yearMonth,
       expenses,
@@ -52,6 +75,8 @@ export async function getUserExpenses(ctx: Context) {
         total,
         cashPaid,
         postPaid,
+        prevMonthPostPaid : prevMonthPostPaid,
+        cashLoss: cashPaid + prevMonthPostPaid,
         genres,
       },
     });

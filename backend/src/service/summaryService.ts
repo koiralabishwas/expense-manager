@@ -37,7 +37,10 @@ export async function getMonthlyBalanceSummary(
           {
             $match: {
               isPostPaid: true,
-              date: { $gte: prevStartDate.toJSDate(), $lt: prevEndDate.toJSDate() },
+              date: {
+                $gte: prevStartDate.toJSDate(),
+                $lt: prevEndDate.toJSDate(),
+              },
             },
           },
           { $group: { _id: null, total: { $sum: "$amount" } } },
@@ -51,6 +54,15 @@ export async function getMonthlyBalanceSummary(
           },
           { $group: { _id: null, total: { $sum: "$amount" } } },
         ],
+        currentMonthPostPaid: [
+          {
+            $match: {
+              isPostPaid: true,
+              date: { $gte: startDate.toJSDate(), $lt: endDate.toJSDate() },
+            },
+          },
+          { $group: { _id: null, total: { $sum: "$amount" } } },
+        ],
       },
     },
   ]);
@@ -59,8 +71,9 @@ export async function getMonthlyBalanceSummary(
   const totalExpense = expenseData.totalExpense?.[0]?.total || 0;
   const prevMonthPostPaid = expenseData.prevMonthPostPaid?.[0]?.total || 0;
   const currentMonthPaid = expenseData.currentMonthPaid?.[0]?.total || 0;
+  const currentMonthPostPaid = expenseData.currentMonthPostPaid?.[0]?.total || 0;
 
-  const cashLoss = prevMonthPostPaid + currentMonthPaid;
+  const totalCashLoss = prevMonthPostPaid + currentMonthPaid;
 
   // --- Aggregate income in one query ---
   const incomeAgg = await Income.aggregate([
@@ -76,13 +89,12 @@ export async function getMonthlyBalanceSummary(
 
   return {
     yearMonth,
-    totalExpense, // current month all expense
+    prevMonthPostPaid,
+    currentMonthPaid,
+    currentMonthPostPaid,
     totalIncome,
-    cashLoss, // prevMonth postpaid + currentMonth paid
+    totalExpense, // current month all expense
+    totalCashLoss, // prevMonth postpaid + currentMonth paid
     netAmount: totalIncome - totalExpense,
-    info: {
-      prevMonthPostPaid,
-      currentMonthPaid,
-    },
   };
 }

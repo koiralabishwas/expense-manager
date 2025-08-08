@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { Box, Button } from "@mui/material";
 import YearMonthSelect from "@/components/YearMonthSelect";
-import BSTable from "@/components/BSSummaryTable";
+import BSTable from "@/components/SummaryTable";
 
 export default async function Home() {
   const session = await getServerSession();
