@@ -1,5 +1,4 @@
 "use client";
-//TODO: Lets try some server actions
 import { useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";

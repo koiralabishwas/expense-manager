@@ -17,8 +17,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // TODO: need to redirect to /login if not logged in
-
   return (
     <html lang="ja">
       <body>
