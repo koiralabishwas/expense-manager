@@ -20,9 +20,6 @@ type LoginForm = z.infer<typeof schema>;
 export default function LoginPage() {
   const router = useRouter();
   const { status } = useSession();
-  if (status === "authenticated") {
-    signOut()
-  }
   const {
     register,
     handleSubmit,
