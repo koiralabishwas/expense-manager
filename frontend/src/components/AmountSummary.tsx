@@ -1,25 +1,60 @@
+'use client'
 
-interface Props { 
-  records : Income[] | Expense[]
+import { Box, Typography, Divider } from "@mui/material";
+
+interface Props {
+  summary: ExpenseSummary | IncomeSummary
 }
-export default function AmountSummary({records} : Props) {
-  console.log("record : " ,records)
-  records.map((r) => r)
-  const total = records.reduce((sum, r) => sum + r.amount, 0)
-  const genres = new Set(records.map(r => r.genre));
-  const genreTotals = Array.from(genres).map(genre => {
-    const genreTotal = records
-      .filter(r => r.genre === genre)
-      .reduce((sum, r) => sum + r.amount, 0);
-    return { genre, total: genreTotal };
-  });
 
+// Translation dictionary
+const keyLabels: Record<string, string> = {
+  total: "合計",
+  cashPaid: "現金払い",
+  postPaid: "後払い",
+  genre: "ジャンル別",
+  prevMonthPostPaid: "先月分引落し",
+  cashLoss: "合計キャッシュロス"
+};
+
+export default function AmountSummary({ summary }: Props) {
   return (
-    <>
-      <div>Total : {total}</div>
-      {genreTotals.map((g) => (
-        <div key={g.genre}>{g.genre} : {g.total}</div>
-      ))}
-    </>
+    <Box sx={{
+      px : 5
+    }}>
+      <Box>
+
+        {Object.entries(summary).map(([key, value], index) => {
+          const label = keyLabels[key] ?? key;
+
+          return typeof value === 'object' && value !== null ? (
+            <Box key={key} sx={{ mb: 2 }}>
+              <Typography sx={{ fontWeight: "bold" }}>{label}</Typography>
+              <Box sx={{ pl: 2, mt: 1 }}>
+                {Object.entries(value).map(([subKey, subValue]) => (
+                  <Box
+                    key={subKey}
+                    sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
+                  >
+                    <Typography>{subKey}</Typography>
+                    <Typography>{subValue.toLocaleString()}</Typography>
+                  </Box>
+                ))}
+              </Box>
+              {index !== Object.entries(summary).length - 1 && (
+                <Divider sx={{ my: 1 }} />
+              )}
+            </Box>
+          ) : (
+            <Box
+              key={key}
+              sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
+            >
+              <Typography>{label}</Typography>
+              <Typography>{Number(value).toLocaleString()}</Typography>
+            </Box>
+          );
+        })}
+      </Box>
+    </Box>
   )
 }

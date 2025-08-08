@@ -1,4 +1,4 @@
-type Transaction = {
+type Income = {
   _id: string;
   userId: string;
   date: string;
@@ -10,6 +10,14 @@ type Transaction = {
   updatedAt: string;
   __v: number;
 };
-// use interface if you want to extend it with additional types 
-type Income = Transaction;
-type Expense = Transaction;
+
+type IncomeSummary = {
+  total : number,
+  genre : Record<string,number>
+}
+
+type IncomeRes = {
+  yearMonth : string,
+  incomes : Income[],
+  summary : IncomeSummary
+}

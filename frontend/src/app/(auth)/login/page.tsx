@@ -2,7 +2,7 @@
 //TODO:
 // READ  :  https://chatgpt.com/c/67e6cb91-2584-8009-ae1f-9aa0bfba659d
 import { useEffect } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,6 +20,9 @@ type LoginForm = z.infer<typeof schema>;
 export default function LoginPage() {
   const router = useRouter();
   const { status } = useSession();
+  if (status === "authenticated") {
+    signOut()
+  }
   const {
     register,
     handleSubmit,

@@ -6,31 +6,47 @@ export async function getUserIncomes(ctx: Context) {
   try {
     const { _id } = ctx.get("user");
     const yearMonth = ctx.req.query("yearMonth") ?? null;
-    let startDate: DateTime | undefined;
-    let endDate: DateTime | undefined;
+
+    let startDate: DateTime | null = null;
+    let endDate: DateTime | null = null;
 
     if (yearMonth) {
-      startDate = DateTime.fromFormat(yearMonth, "yyyyMM", {
-        zone: "Asia/Tokyo",
-      }).startOf("month");
-      endDate = startDate.plus({ month: 1 });
+      startDate = DateTime.fromFormat(yearMonth, "yyyyMM", { zone: "Asia/Tokyo" }).startOf("month");
+      endDate = startDate.plus({ months: 1 }); // fixed to "months" for consistency
     }
-    const userIncome = await Income.find({
+
+    const dateFilter =
+      startDate && endDate
+        ? { date: { $gte: startDate.toJSDate(), $lt: endDate.toJSDate() } }
+        : {};
+
+    const incomes = await Income.find({
       userId: _id,
-      ...(yearMonth &&
-        startDate &&
-        endDate && {
-          date: {
-            $gte: startDate.toJSDate(),
-            $lt: endDate.toJSDate(),
-          },
-        }),
-    }).sort({date : -1});
-    return ctx.json(userIncome);
+      ...dateFilter,
+    }).sort({ date: -1 });
+
+    // Single pass for summary
+    const summary = {
+      total: 0,
+      genres: {} as Record<string, number>,
+    };
+
+    for (const inc of incomes) {
+      const amount = inc.amount || 0;
+      summary.total += amount;
+      summary.genres[inc.genre] = (summary.genres[inc.genre] || 0) + amount;
+    }
+
+    return ctx.json({
+      yearMonth,
+      incomes,
+      summary,
+    });
   } catch (error) {
-    return ctx.json({ error }, 400);
+    return ctx.json({ error: String(error) }, 400);
   }
 }
+
 
 export async function postUserIncome(ctx: Context) {
   try {

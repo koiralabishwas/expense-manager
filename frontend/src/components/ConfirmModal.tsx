@@ -14,7 +14,7 @@ const ConfirmModal = (props: Props) => {
   const handleClose = () => setOpen(false)
   return (
     <>
-      <Button color='warning' variant='outlined' sx={{ borderWidth: "0.3rem", borderRadius: "1rem", marginY: 2 }} onClick={handleOpen}>{props.label}</Button>
+      <Button color='error' variant='outlined' sx={{ borderWidth: "0.3rem", borderRadius: "1rem", marginY: 2 }} onClick={handleOpen}>{props.label}</Button>
       <Modal
         open={open}
         onClose={handleClose}

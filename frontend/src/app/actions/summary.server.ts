@@ -2,7 +2,7 @@
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 
-export async function getBalanceSummary(yearMonth : string) {
+export async function getMonthSummary(yearMonth : string) {
   const session = await getServerSession(authOptions);
   const url = new URL(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/summary/balance")
   url.searchParams.set('yearMonth' , yearMonth)
@@ -13,6 +13,6 @@ export async function getBalanceSummary(yearMonth : string) {
     cache : "no-store"
   })
 
-  const balanceSummary : BalanceSumarry = await res.json()
+  const balanceSummary : BalanceSummary = await res.json()
   return balanceSummary
 }

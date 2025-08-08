@@ -17,27 +17,33 @@ const IncomePageWrapper = () => {
   const searchParams = useSearchParams();
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
-  const { data: incomes = [] } = useQuery({
+  const { data: incomesRes } = useQuery<IncomeRes>({
     queryKey: ["incomes", yearMonth],
     queryFn: () => getIncomes(yearMonth),
   });
 
   return (
     <div>
-      <AmountSummary records={incomes} />
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 5,
-        }}
-      >
-        <FormModal label="収入を登録">
-          <IncomeForm/>
-        </FormModal>
-        <YearMonthSelect />
-      </Box>
-      <IncomeTable records={incomes} />
+      {incomesRes && (
+        <>
+          {console.log(incomesRes)}
+
+          <AmountSummary summary={incomesRes.summary} />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+            }}
+          >
+            <FormModal label="収入を登録">
+              <IncomeForm />
+            </FormModal>
+            <YearMonthSelect />
+          </Box>
+          <IncomeTable records={incomesRes.incomes} />
+        </>
+      )}
     </div>
   );
 };

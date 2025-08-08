@@ -18,11 +18,13 @@ import {
 import { Settings, Logout } from "@mui/icons-material";
 import { signIn, signOut, useSession } from "next-auth/react";
 import TopDrawer from "./ui/TopDrawer";
+import { useRouter } from "next/navigation";
 
 const TopBar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 const { data: sessions, status } = useSession();
   const open = Boolean(anchorEl);
+  const router = useRouter();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -44,7 +46,11 @@ const { data: sessions, status } = useSession();
       <Toolbar variant="dense" disableGutters>
         {/* User Initial Icon or Placeholder */}
         {/* Title */}
-        <Typography fontSize={25} sx={{ flexGrow: 1 , pl : 1 }}>
+        <Typography
+          onClick={() => router.push('/') }
+          fontSize={25}
+          sx={{ flexGrow: 1, pl: 1, cursor: "pointer" }}
+        >
           家計師くん
         </Typography>
 

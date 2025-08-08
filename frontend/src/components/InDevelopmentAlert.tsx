@@ -1,19 +1,23 @@
-import { Typography } from "@mui/material";
-
 export default function InDevelopmentAlert() {
   return (
-    <Typography
-      variant="h3"
-      sx={{
-        color: "red",
-        backgroundColor: "slateblue",
-        display: "flex",
-        flex: 1,
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100px",
+    <div
+      style={{
+        backgroundColor: "#ffeaea",
+        borderRadius: "3px",
+        padding: "8px 12px",
+        marginBottom: "8px",
       }}
-    >開発中</Typography>
+    >
+      <span
+        style={{
+          fontFamily: "inherit",
+          fontWeight: 500,
+          fontSize: "0.85rem",
+          color: "#2a3d11ff",
+        }}
+      >
+        開発中のため、起動がおかしいときは一回 logout してみてください
+      </span>
+    </div>
   )
 }

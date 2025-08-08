@@ -1,6 +1,6 @@
 import { postExpense } from "@/app/actions/expense.server";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControlLabel, MenuItem, Switch, TextField, Typography } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import DatePickerUI from "./ui/DatePickerUI";
@@ -8,6 +8,7 @@ import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
+import { Label } from "@mui/icons-material";
 
 export const ExpenseGenre = z.enum([
   "Water",
@@ -28,6 +29,7 @@ export const ExpenseSchema = z.object({
   genre: ExpenseGenre,
   amount: z.number(),
   date: z.date(),
+  isPostPaid: z.boolean().optional().default(false),
 });
 
 export type ExpenseForm = z.infer<typeof ExpenseSchema>
@@ -94,6 +96,28 @@ export default function ExpenseForm() {
           margin="normal"
           fullWidth
         />
+        <Controller
+          name="isPostPaid"
+          control={control}
+          render={({ field }) => (
+            <FormControlLabel
+              control={
+                <Switch
+                  {...field}
+                />
+              }
+              label="後払い"
+              labelPlacement="start"
+              sx={{
+                ml: 0.5
+              }}
+            />
+          )}
+        />
+        <Typography paddingLeft={1.5} variant="caption" color="text.secondary" ml={0}>
+          クレジットなどの支払いの場合チェック
+        </Typography>
+
         <TextField
           select
           key={"genre"}

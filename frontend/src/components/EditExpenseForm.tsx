@@ -7,13 +7,13 @@ import { useSearchParams } from "next/navigation";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { DateTime } from "luxon";
 import { putExpense } from "@/app/actions/expense.server";
-import { Typography, TextField, MenuItem, Button } from "@mui/material";
+import { Typography, TextField, MenuItem, Button, FormControlLabel, Switch } from "@mui/material";
 import { Box } from "@mui/system";
 import DatePickerUI from "./ui/DatePickerUI";
 
 interface Props {
   record: Expense
-  setOpenModal : () => void
+  setOpenModal: () => void
 }
 
 export default function EditExpenseForm(props: Props) {
@@ -30,7 +30,8 @@ export default function EditExpenseForm(props: Props) {
       amount: props.record.amount,
       description: props.record.description,
       date: props.record.date ? new Date(props.record.date) : undefined,
-      genre: props.record.genre as z.infer<typeof ExpenseGenre>
+      genre: props.record.genre as z.infer<typeof ExpenseGenre>,
+      isPostPaid: props.record.isPostPaid
     }
   })
 
@@ -80,6 +81,30 @@ export default function EditExpenseForm(props: Props) {
           margin="normal"
           fullWidth
         />
+        {/* Use Controller for the Switch component */}
+        <Controller
+          name="isPostPaid"
+          control={control}
+          render={({ field }) => (
+            <FormControlLabel
+              control={
+                <Switch
+                  {...field}
+                  checked={field.value} // Explicitly set the checked property
+                />
+              }
+              label="後払い"
+              labelPlacement="start"
+              sx={{
+                ml: 0.5
+              }}
+            />
+          )}
+        />
+        <Typography paddingLeft={1.5} variant="caption" color="text.secondary" ml={0}>
+          クレジットなどの支払いの場合チェック
+        </Typography>
+
         <TextField
           select
           defaultValue={props.record.genre}

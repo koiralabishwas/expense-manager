@@ -33,7 +33,7 @@ const FormModal = ({ children, label }: Props) => {
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-            <Button variant='outlined' color='error' onClick={handleClose}>
+            <Button variant='outlined' color='warning' onClick={handleClose}>
               close
             </Button>
           </Box>

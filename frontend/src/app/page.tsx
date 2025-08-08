@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth";
 import { Box, Button } from "@mui/material";
 import YearMonthSelect from "@/components/YearMonthSelect";
-import BSTable from "@/components/BSSummaryTable";
+import SummaryTable from "@/components/SummaryTable";
+import InDevelopmentAlert from "@/components/InDevelopmentAlert";
 
 export default async function Home() {
   const session = await getServerSession();
@@ -15,9 +16,10 @@ export default async function Home() {
       width: "90%",
       placeItems : "center",
     }} >
+      <InDevelopmentAlert/>
       Hello, {session?.user.name || "Guest"}!
       <YearMonthSelect />
-      <BSTable/>
+      <SummaryTable/>
       <Button LinkComponent={"a"} href="/incomes" variant="outlined" fullWidth>
         Income
       </Button>
