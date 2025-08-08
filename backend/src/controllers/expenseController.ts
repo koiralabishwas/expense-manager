@@ -8,82 +8,73 @@ export async function getUserExpenses(ctx: Context) {
     const { _id } = ctx.get("user");
     const userObjectId = new Types.ObjectId(_id);
     const yearMonth = ctx.req.query("yearMonth") ?? null;
-    let startDate: DateTime | undefined;
-    let endDate: DateTime | undefined;
+
+    let startDate: DateTime | null = null;
+    let endDate: DateTime | null = null;
 
     if (yearMonth) {
-      startDate = DateTime.fromFormat(yearMonth, "yyyyMM", {
-        zone: "Asia/Tokyo",
-      }).startOf("month");
+      startDate = DateTime.fromFormat(yearMonth, "yyyyMM", { zone: "Asia/Tokyo" }).startOf("month");
       endDate = startDate.plus({ months: 1 });
     }
+
+    const dateFilter = startDate && endDate
+      ? { date: { $gte: startDate.toJSDate(), $lt: endDate.toJSDate() } }
+      : {};
+
     const expenses = await Expense.find({
       userId: _id,
-      ...(yearMonth &&
-        startDate &&
-        endDate && {
-          date: {
-            $gte: startDate.toJSDate(),
-            $lt: endDate.toJSDate(),
-          },
-        }),
+      ...dateFilter,
     }).sort({ date: -1 });
 
-    const total = expenses.reduce(
-      (totalExpense, expense) => totalExpense + (expense.amount || 0),
-      0
-    );
-    const cashPaid = expenses
-      .filter((ex) => ex.isPostPaid === false)
-      .reduce((sum, ex) => sum + (ex.amount || 0), 0);
-    const postPaid = expenses
-      .filter((ex) => ex.isPostPaid === true)
-      .reduce((sum, ex) => sum + (ex.amount || 0), 0);
+    // Single pass calculation
+    const summary = {
+      total: 0,
+      cashPaid: 0,
+      postPaid: 0,
+      genres: {} as Record<string, number>,
+    };
 
-    const genres = expenses.reduce((acc, expense) => {
-      const genre = expense.genre;
-      const amount = expense.amount || 0;
-      acc[genre] = (acc[genre] || 0) + amount;
-      return acc;
-    }, {} as Record<string, number>);
+    for (const ex of expenses) {
+      const amount = ex.amount || 0;
+      summary.total += amount;
+      if (ex.isPostPaid) summary.postPaid += amount;
+      else summary.cashPaid += amount;
+      summary.genres[ex.genre] = (summary.genres[ex.genre] || 0) + amount;
+    }
 
-    const expenseAgg = await Expense.aggregate([
-      { $match: { userId: userObjectId } },
-      {
-        $facet: {
-          prevMonthPostPaid: [
-            {
-              $match: {
-                isPostPaid: true,
-                date: {
-                  $gte: startDate?.minus({ month: 1 }).toJSDate(),
-                  $lt: endDate?.minus({ month: 1 }).toJSDate(),
-                },
+    // Aggregation for prevMonthPostPaid
+    const prevMonthPostPaid = startDate && endDate
+      ? (await Expense.aggregate([
+          {
+            $match: {
+              userId: userObjectId,
+              isPostPaid: true,
+              date: {
+                $gte: startDate.minus({ months: 1 }).toJSDate(),
+                $lt: endDate.minus({ months: 1 }).toJSDate(),
               },
             },
-            { $group: { _id: null, total: { $sum: "$amount" } } },
-          ],
-        },
-      },
-    ]);
-    const prevMonthPostPaid = expenseAgg[0]?.prevMonthPostPaid?.[0]?.total || 0;
+          },
+          { $group: { _id: null, total: { $sum: "$amount" } } },
+        ]))[0]?.total || 0
+      : 0;
+
+    const cashLoss = summary.cashPaid + prevMonthPostPaid;
 
     return ctx.json({
       yearMonth,
       expenses,
       summary: {
-        total,
-        cashPaid,
-        postPaid,
-        prevMonthPostPaid : prevMonthPostPaid,
-        cashLoss: cashPaid + prevMonthPostPaid,
-        genres,
+        ...summary,
+        prevMonthPostPaid,
+        cashLoss,
       },
     });
   } catch (error) {
-    return ctx.json({ error }, 400);
+    return ctx.json({ error: String(error) }, 400);
   }
 }
+
 
 export async function postUserExpense(ctx: Context) {
   try {
