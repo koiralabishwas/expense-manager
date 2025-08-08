@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { Box, Button } from "@mui/material";
 import YearMonthSelect from "@/components/YearMonthSelect";
-import BSTable from "@/components/SummaryTable";
+import SummaryTable from "@/components/SummaryTable";
 
 export default async function Home() {
   const session = await getServerSession();
@@ -17,7 +17,7 @@ export default async function Home() {
     }} >
       Hello, {session?.user.name || "Guest"}!
       <YearMonthSelect />
-      <BSTable/>
+      <SummaryTable/>
       <Button LinkComponent={"a"} href="/incomes" variant="outlined" fullWidth>
         Income
       </Button>
