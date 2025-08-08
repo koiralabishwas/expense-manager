@@ -31,7 +31,7 @@ export default function SummaryTable() {
 
                 <Typography>後払い</Typography>
                 <Typography>{balance.currentMonthPostPaid.toLocaleString()}</Typography>
-
+                <Divider sx={{ my: 2, fontWeight: "bold" }} variant="fullWidth" />
                 <Typography>合計</Typography>
                 <Typography>{balance.totalExpense.toLocaleString()}</Typography>
               </Box>
@@ -40,7 +40,7 @@ export default function SummaryTable() {
               純額 : {balance.netAmount.toLocaleString()}
             </Typography>
           </>
-            <Divider sx={{ my: 2, fontWeight: "bold" }} variant="fullWidth" />
+          <Divider sx={{ my: 2, fontWeight: "bold" }} variant="fullWidth" />
 
           <>
             <Box sx={{ display: "flex" }}>
@@ -54,6 +54,7 @@ export default function SummaryTable() {
                 <Typography>{balance.currentMonthPaid.toLocaleString()}</Typography>
                 <Typography>先月後払い引落</Typography>
                 <Typography>{balance.prevMonthPostPaid.toLocaleString()}</Typography>
+                <Divider sx={{ my: 2, fontWeight: "bold" }} variant="fullWidth" />
 
                 <Typography>合計</Typography>
                 <Typography>{balance.totalCashLoss.toLocaleString()}</Typography>

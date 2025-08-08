@@ -28,20 +28,20 @@ export default async function RootLayout({
                 <div
                   style={{
                   backgroundColor: "#ffeaea",
-                  borderRadius: "4px",
+                  borderRadius: "3px",
                   padding: "8px 12px",
-                  marginBottom: "12px",
+                  marginBottom: "8px",
                   }}
                 >
                   <span
                   style={{
                     fontFamily: "inherit",
                     fontWeight: 500,
-                    fontSize: "0.95rem",
+                    fontSize: "0.85rem",
                     color: "#2a3d11ff",
                   }}
                   >
-                  開発中..起動がおかしいときは一回 logout してみてください
+                  開発中のため、起動がおかしいときは一回 logout してみてください
                   </span>
                 </div>
                 {children}
