@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { signOut } from "next-auth/react";
 
 const PROTECTED_PATHS = ["/dashboard", "/expenses", "/incomes"];
 
@@ -33,7 +32,6 @@ export async function middleware(req: NextRequest) {
     );
 
     if (!checkRes.ok) {
-      await signOut()
       return NextResponse.redirect(new URL("/login", req.url));
     }
   } catch (err) {

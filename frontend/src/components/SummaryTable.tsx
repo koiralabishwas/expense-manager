@@ -22,22 +22,22 @@ export default function SummaryTable() {
             <Box sx={{ display: "flex" }}>
               <Box>
                 <Typography>収入</Typography>
-                <Typography>{balance.totalIncome}</Typography>
+                <Typography>{balance.totalIncome.toLocaleString()}</Typography>
               </Box>
               <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
               <Box>
                 <Typography>即時払い</Typography>
-                <Typography>{balance.currentMonthPaid}</Typography>
+                <Typography>{balance.currentMonthPaid.toLocaleString()}</Typography>
 
                 <Typography>後払い</Typography>
-                <Typography>{balance.currentMonthPostPaid}</Typography>
+                <Typography>{balance.currentMonthPostPaid.toLocaleString()}</Typography>
 
                 <Typography>合計</Typography>
-                <Typography>{balance.totalExpense}</Typography>
+                <Typography>{balance.totalExpense.toLocaleString()}</Typography>
               </Box>
             </Box>
             <Typography sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-              純額 : {balance.netAmount}
+              純額 : {balance.netAmount.toLocaleString()}
             </Typography>
           </>
             <Divider sx={{ my: 2, fontWeight: "bold" }} variant="fullWidth" />
@@ -46,21 +46,21 @@ export default function SummaryTable() {
             <Box sx={{ display: "flex" }}>
               <Box>
                 <Typography>収入</Typography>
-                <Typography>{balance.totalIncome}</Typography>
+                <Typography>{balance.totalIncome.toLocaleString()}</Typography>
               </Box>
               <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
               <Box>
                 <Typography>現金出費</Typography>
-                <Typography>{balance.currentMonthPaid}</Typography>
+                <Typography>{balance.currentMonthPaid.toLocaleString()}</Typography>
                 <Typography>先月後払い引落</Typography>
-                <Typography>{balance.prevMonthPostPaid}</Typography>
+                <Typography>{balance.prevMonthPostPaid.toLocaleString()}</Typography>
 
                 <Typography>合計</Typography>
-                <Typography>{balance.totalCashLoss}</Typography>
+                <Typography>{balance.totalCashLoss.toLocaleString()}</Typography>
               </Box>
             </Box>
             <Typography sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-              現金残高 : {balance.totalIncome - balance.totalCashLoss}
+              現金残高 : {(balance.totalIncome - balance.totalCashLoss).toLocaleString()}
             </Typography>
           </>
         </Box>
