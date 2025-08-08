@@ -6,51 +6,47 @@ export async function getUserIncomes(ctx: Context) {
   try {
     const { _id } = ctx.get("user");
     const yearMonth = ctx.req.query("yearMonth") ?? null;
-    let startDate: DateTime | undefined;
-    let endDate: DateTime | undefined;
+
+    let startDate: DateTime | null = null;
+    let endDate: DateTime | null = null;
 
     if (yearMonth) {
-      startDate = DateTime.fromFormat(yearMonth, "yyyyMM", {
-        zone: "Asia/Tokyo",
-      }).startOf("month");
-      endDate = startDate.plus({ month: 1 });
+      startDate = DateTime.fromFormat(yearMonth, "yyyyMM", { zone: "Asia/Tokyo" }).startOf("month");
+      endDate = startDate.plus({ months: 1 }); // fixed to "months" for consistency
     }
+
+    const dateFilter =
+      startDate && endDate
+        ? { date: { $gte: startDate.toJSDate(), $lt: endDate.toJSDate() } }
+        : {};
+
     const incomes = await Income.find({
       userId: _id,
-      ...(yearMonth &&
-        startDate &&
-        endDate && {
-          date: {
-            $gte: startDate.toJSDate(),
-            $lt: endDate.toJSDate(),
-          },
-        }),
+      ...dateFilter,
     }).sort({ date: -1 });
 
-    const total = incomes.reduce(
-      (totalExpense, income) => totalExpense + (income.amount || 0),
-      0
-    );
+    // Single pass for summary
+    const summary = {
+      total: 0,
+      genres: {} as Record<string, number>,
+    };
 
-    const genres = incomes.reduce((acc, incomes) => {
-      const genre = incomes.genre;
-      const amount = incomes.amount || 0;
-      acc[genre] = (acc[genre] || 0) + amount;
-      return acc;
-    }, {} as Record<string, number>);
+    for (const inc of incomes) {
+      const amount = inc.amount || 0;
+      summary.total += amount;
+      summary.genres[inc.genre] = (summary.genres[inc.genre] || 0) + amount;
+    }
 
     return ctx.json({
       yearMonth,
       incomes,
-        summary : {
-          total ,
-          genres
-        }
+      summary,
     });
   } catch (error) {
-    return ctx.json({ error }, 400);
+    return ctx.json({ error: String(error) }, 400);
   }
 }
+
 
 export async function postUserIncome(ctx: Context) {
   try {
