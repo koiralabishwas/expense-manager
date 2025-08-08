@@ -25,6 +25,25 @@ export default async function RootLayout({
             <MUIThemeProvider>
               <EmotionCacheProvider>
                 <TopBar />
+                <div
+                  style={{
+                  backgroundColor: "#ffeaea",
+                  borderRadius: "4px",
+                  padding: "8px 12px",
+                  marginBottom: "12px",
+                  }}
+                >
+                  <span
+                  style={{
+                    fontFamily: "inherit",
+                    fontWeight: 500,
+                    fontSize: "0.95rem",
+                    color: "#2a3d11ff",
+                  }}
+                  >
+                  開発中..起動がおかしいときは一回 logout してみてください
+                  </span>
+                </div>
                 {children}
               </EmotionCacheProvider>
             </MUIThemeProvider>
