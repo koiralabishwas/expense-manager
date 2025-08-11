@@ -11,6 +11,7 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
+import { ListItemIcon } from "@mui/material";
 
 export default function TopDrawer() {
   const [open, setOpen] = useState(false);
@@ -24,13 +25,14 @@ export default function TopDrawer() {
       <Divider />
       <List>
         {[
+          // アイコンを組み込む
           { text: "Home", icon: <InboxIcon /> ,link : "/"},
           { text: "Income", icon: <InboxIcon /> , link : "/incomes" },
           { text: "Expense", icon: <MailIcon /> , link : "/expenses" },
         ].map((item, index) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton onClick={() => {window.location.href = item.link}}>
-              {/* TODO: Icon 入れろ */}
+              {/* TODO: Income , Expense , Home などの　組み込んだアイコンを入れろ */}
               {/* <ListItemIcon>{item.icon}</ListItemIcon> */}
               <ListItemText primary={item.text} />
             </ListItemButton>

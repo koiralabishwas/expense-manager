@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// TODO : Make this type usable in other places
 const expenseSchema = new mongoose.Schema(
   {
     userId: {
@@ -11,16 +10,16 @@ const expenseSchema = new mongoose.Schema(
     //TODO:make it required
     date: {
       type: Date,
-      default: Date.now,
+      required : true,
     },
     description: { type: String },
-    amount: { type: Number, required: true },
+    amount: { type: Number, required: true ,},
     currency: { type: String, default: "JPY" },
     genre: {
       type: String,
       default: "Other",
     },
-    //TODO: 引き落としが翌月か翌々月かで対応しなければならない
+    //TODO: 引き落としが翌月か翌々月か対応できるように
     isPostPaid : { 
       type : Boolean ,
       default : false
