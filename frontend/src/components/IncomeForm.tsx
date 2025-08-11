@@ -18,7 +18,7 @@ export const IncomeGenre = z.enum([
 ]);
 
 export const IncomeSchema = z.object({
-  description: z.string().min(1).max(50),
+  description: z.string().max(50).optional(),
   genre: IncomeGenre,
   amount: z.number(),
   date: z.date(),

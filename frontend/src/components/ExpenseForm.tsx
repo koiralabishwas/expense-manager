@@ -25,7 +25,7 @@ export const ExpenseGenre = z.enum([
 ]);
 
 export const ExpenseSchema = z.object({
-  description: z.string().min(1).max(50),
+  description: z.string().max(50).optional(),
   genre: ExpenseGenre,
   amount: z.number(),
   date: z.date(),
