@@ -1,5 +1,6 @@
 'use client'
 
+import { incomeGenreLabels } from "@/lib/constants/genre";
 import { Box, Typography, Divider } from "@mui/material";
 
 interface Props {
@@ -11,9 +12,9 @@ const keyLabels: Record<string, string> = {
   total: "合計",
   cashPaid: "現金払い",
   postPaid: "後払い",
-  genre: "ジャンル別",
+  genres: "種類別",
   prevMonthPostPaid: "先月分引落し",
-  cashLoss: "合計キャッシュロス"
+  cashLoss: "合計キャッシュロス",
 };
 
 export default function AmountSummary({ summary }: Props) {
@@ -31,11 +32,14 @@ export default function AmountSummary({ summary }: Props) {
               <Typography sx={{ fontWeight: "bold" }}>{label}</Typography>
               <Box sx={{ pl: 2, mt: 1 }}>
                 {Object.entries(value).map(([subKey, subValue]) => (
-                  <Box
+                    <Box
                     key={subKey}
                     sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
-                  >
-                    <Typography>{subKey}</Typography>
+                    >
+                      {/* TODO: ここを理解 */}
+                    <Typography>
+                      {subKey in incomeGenreLabels ? incomeGenreLabels[subKey as keyof typeof incomeGenreLabels] : subKey}
+                    </Typography>
                     <Typography>{subValue.toLocaleString()}</Typography>
                   </Box>
                 ))}
