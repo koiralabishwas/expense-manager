@@ -8,18 +8,11 @@ import { useSearchParams } from "next/navigation";
 import { postIncome } from "@/app/actions/income.server";
 import { useQueryClient } from "@tanstack/react-query";
 import { getCurrentYearMonth } from "@/lib/utils";
-
-export const IncomeGenre = z.enum([
-  "Salary",
-  "Gratuity",
-  "Allowence",
-  "Bonus",
-  "Other",
-]);
+import { incomeGenreLabels, incomeGenres } from "@/lib/constants/genre";
 
 export const IncomeSchema = z.object({
   description: z.string().max(50).optional(),
-  genre: IncomeGenre,
+  genre: z.enum(incomeGenres),
   amount: z.number(),
   date: z.date(),
 });
@@ -96,7 +89,7 @@ export default function IncomeForm() {
           label="種類"
           type="text"
           placeholder="出費の種類を選択"
-          defaultValue={IncomeGenre.options[0]}
+          defaultValue={incomeGenres[0]}
           {...register('genre')}
           error={!!errors["genre"]}
           helperText={errors["genre"]?.message}
@@ -104,11 +97,12 @@ export default function IncomeForm() {
           margin="normal"
           fullWidth>
 
-          {IncomeGenre.options.map((opt) => (
-            <MenuItem key={opt} value={opt}>
-              {opt}
+          {incomeGenres.map((genre) => (
+            <MenuItem key={genre} value={genre}>
+              {incomeGenreLabels[genre]}
             </MenuItem>
           ))}
+
         </TextField>
 
         <TextField

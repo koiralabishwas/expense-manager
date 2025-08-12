@@ -1,5 +1,4 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
@@ -8,8 +7,9 @@ import { DateTime } from "luxon";
 import { Typography, TextField, MenuItem, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import DatePickerUI from "./ui/DatePickerUI";
-import { IncomeForm, IncomeGenre, IncomeSchema } from "./IncomeForm";
+import { IncomeForm, IncomeSchema } from "./IncomeForm";
 import { putIncome } from "@/app/actions/income.server";
+import { incomeGenreLabels, incomeGenres } from "@/lib/constants/genre";
 
 interface Props {
   record: Income
@@ -30,7 +30,7 @@ export default function EditIncomeForm(props: Props) {
       amount: props.record.amount,
       description: props.record.description,
       date: props.record.date ? new Date(props.record.date) : undefined,
-      genre: props.record.genre as z.infer<typeof IncomeGenre>
+      genre: props.record.genre
     }
   })
 
@@ -95,9 +95,10 @@ export default function EditIncomeForm(props: Props) {
           margin="normal"
           fullWidth>
 
-          {IncomeGenre.options.map((opt) => (
-            <MenuItem key={opt} value={opt}>
-              {opt}
+
+          {incomeGenres.map((genre) => (
+            <MenuItem key={genre} value={genre}>
+              {incomeGenreLabels[genre]}
             </MenuItem>
           ))}
         </TextField>
