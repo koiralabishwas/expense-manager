@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import EditExpenseModal from "./EditExpenseModal";
+import { expenseGenreLabels } from "@/lib/constants/genre";
 
 export type Column = {
   _id: string;
@@ -26,10 +27,10 @@ interface Props {
 }
 
 const columnLabels: Partial<Record<keyof Column, string>> = {
-  genre: "Genre",
-  amount: "Amount",
-  description: "Description",
-  createdAt: "Date",
+  genre: "種類",
+  amount: "金額",
+  description: "概要",
+  createdAt: "日付",
 };
 
 const columnKeys = Object.keys(columnLabels) as (keyof Column)[];
@@ -71,7 +72,7 @@ const ExpenseTable = ({ records }: Props) => {
                 onClick={() => handleOpenModal(record)}
                 hover
               >
-                <TableCell>{record.genre}</TableCell>
+                <TableCell>{expenseGenreLabels[record.genre]}</TableCell>
                 <TableCell>{record.amount}</TableCell>
                 <TableCell>{record.description}</TableCell>
                 <TableCell>

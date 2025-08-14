@@ -1,25 +1,38 @@
-interface Expense extends Transaction {
+type Expense = {
   _id: string;
   userId: string;
   date: string;
   description: string;
   amount: number;
   // currency: string; // not needed now
-  genre: string;
+  genre: ExpenseGenre;
   createdAt: string;
   updatedAt: string;
   isPostPaid: boolean;
   __v: number;
-}
+};
 
- type ExpenseSummary = {
+type ExpenseGenre =
+  | "Water"
+  | "Drinks"
+  | "Meal"
+  | "Snacks"
+  | "Groceries"
+  | "Entertainment"
+  | "Devices"
+  | "Hangouts"
+  | "Study"
+  | "Clothing"
+  | "Other";
+
+type ExpenseSummary = {
   total: number;
   cashPaid: number;
   postPaid: number;
   genre: Record<string, number>;
 };
 
- type ExpenseRes = {
+type ExpenseRes = {
   yearMonth: string;
   expenses: Expense[];
   summary: ExpenseSummary;

@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { incomeGenreLabels } from "@/lib/constants/genre";
+import { expenseGenreLabels, incomeGenreLabels } from "@/lib/constants/genre";
 import { Box, Typography, Divider } from "@mui/material";
 
 interface Props {
-  summary: ExpenseSummary | IncomeSummary
+  summary: ExpenseSummary | IncomeSummary;
 }
 
 // Translation dictionary
@@ -15,31 +15,46 @@ const keyLabels: Record<string, string> = {
   genres: "種類別",
   prevMonthPostPaid: "先月分引落し",
   cashLoss: "合計キャッシュロス",
+  DialyGoods: "日常品",
 };
 
 export default function AmountSummary({ summary }: Props) {
   return (
-    <Box sx={{
-      px : 5
-    }}>
+    <Box
+      sx={{
+        px: 5,
+      }}
+    >
       <Box>
-
         {Object.entries(summary).map(([key, value], index) => {
           const label = keyLabels[key] ?? key;
 
-          return typeof value === 'object' && value !== null ? (
+          return typeof value === "object" && value !== null ? (
             <Box key={key} sx={{ mb: 2 }}>
               <Typography sx={{ fontWeight: "bold" }}>{label}</Typography>
               <Box sx={{ pl: 2, mt: 1 }}>
                 {Object.entries(value).map(([subKey, subValue]) => (
-                    <Box
+                  <Box
                     key={subKey}
-                    sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
-                    >
-                      {/* TODO: ここを理解 */}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: 0.5,
+                    }}
+                  >
+                    {/* TODO: ここを理解 */}
                     <Typography>
-                      {subKey in incomeGenreLabels ? incomeGenreLabels[subKey as keyof typeof incomeGenreLabels] : subKey}
+                      {subKey in incomeGenreLabels
+                        ? incomeGenreLabels[
+                            subKey as keyof typeof incomeGenreLabels
+                          ]
+                        : subKey in expenseGenreLabels
+                        ? expenseGenreLabels[
+                            subKey as keyof typeof expenseGenreLabels
+                          ]
+                        : subKey}
                     </Typography>
+
                     <Typography>{subValue.toLocaleString()}</Typography>
                   </Box>
                 ))}
@@ -60,5 +75,5 @@ export default function AmountSummary({ summary }: Props) {
         })}
       </Box>
     </Box>
-  )
+  );
 }
