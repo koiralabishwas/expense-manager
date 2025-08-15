@@ -41,7 +41,13 @@ const IncomePageWrapper = () => {
             </FormModal>
             <YearMonthSelect />
           </Box>
+          <Box
+          sx={{
+            px : 1
+          }}
+          >
           <IncomeTable records={incomesRes.incomes} />
+          </Box>
         </>
       )}
     </div>
