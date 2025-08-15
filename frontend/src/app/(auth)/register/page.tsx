@@ -10,9 +10,9 @@ import LoadingIcon from "../../../components/ui/LoadingIcon";
 import { registerUser } from "@/app/actions/auth.server";
 
 const schema = z.object({
-  name : z.string().min(5).max(20),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(5, "Password must be at least 5 characters").max(30),
+  name : z.string().min(1 , "１字以上２０字以下で入力してください").max(20),
+  email: z.string().email("メールアドレスが無効です"),
+  password: z.string().min(5, "パスワードは５文字以上必要です。").max(30),
 });
 
 export type RegisterForm = z.infer<typeof schema>;
