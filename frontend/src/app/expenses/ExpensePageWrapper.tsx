@@ -38,7 +38,13 @@ const ExpensePageWrapper = () => {
             </FormModal>
             <YearMonthSelect />
           </Box>
-          <ExpenseTable records={expenseRes.expenses} />
+          <Box
+            sx={{
+              px: 1
+            }}
+          >
+            <ExpenseTable records={expenseRes.expenses} />
+          </Box>
         </>
       )}
     </div>

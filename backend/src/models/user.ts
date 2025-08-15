@@ -9,7 +9,7 @@ export const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      minLength: 2,
+      minLength: 1,
       maxLength: 30,
     },
     email: {

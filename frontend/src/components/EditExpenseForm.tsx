@@ -1,6 +1,6 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { ExpenseForm, ExpenseGenre, ExpenseSchema } from "./ExpenseForm";
+import { ExpenseForm, ExpenseSchema } from "./ExpenseForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
@@ -10,6 +10,7 @@ import { putExpense } from "@/app/actions/expense.server";
 import { Typography, TextField, MenuItem, Button, FormControlLabel, Switch } from "@mui/material";
 import { Box } from "@mui/system";
 import DatePickerUI from "./ui/DatePickerUI";
+import { expenseGenreLabels, expenseGenres } from "@/lib/constants/genre";
 
 interface Props {
   record: Expense
@@ -30,7 +31,7 @@ export default function EditExpenseForm(props: Props) {
       amount: props.record.amount,
       description: props.record.description,
       date: props.record.date ? new Date(props.record.date) : undefined,
-      genre: props.record.genre as z.infer<typeof ExpenseGenre>,
+      genre: props.record.genre,
       isPostPaid: props.record.isPostPaid
     }
   })
@@ -120,9 +121,9 @@ export default function EditExpenseForm(props: Props) {
           margin="normal"
           fullWidth>
 
-          {ExpenseGenre.options.map((opt) => (
-            <MenuItem key={opt} value={opt}>
-              {opt}
+          {expenseGenres.map((genre) => (
+            <MenuItem key={genre} value={genre}>
+              {expenseGenreLabels[genre]}
             </MenuItem>
           ))}
         </TextField>

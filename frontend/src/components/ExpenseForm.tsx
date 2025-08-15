@@ -8,25 +8,11 @@ import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { Label } from "@mui/icons-material";
-
-export const ExpenseGenre = z.enum([
-  "Water",
-  "Drinks",
-  "Meal",
-  "Snacks",
-  "Groceries",
-  "Entertainment",
-  "Devices",
-  "Hangouts",
-  "Study",
-  "Clothing",
-  "Other",
-]);
+import { expenseGenreLabels, expenseGenres } from "@/lib/constants/genre";
 
 export const ExpenseSchema = z.object({
-  description: z.string().min(1).max(50),
-  genre: ExpenseGenre,
+  description: z.string().max(50).optional(),
+  genre: z.enum(expenseGenres),
   amount: z.number(),
   date: z.date(),
   isPostPaid: z.boolean().optional().default(false),
@@ -125,7 +111,7 @@ export default function ExpenseForm() {
           label="種類"
           type="text"
           placeholder="出費の種類を選択"
-          defaultValue={ExpenseGenre.options[0]}
+          defaultValue={expenseGenres[0]}
           {...register('genre')}
           error={!!errors["genre"]}
           helperText={errors["genre"]?.message}
@@ -133,9 +119,9 @@ export default function ExpenseForm() {
           margin="normal"
           fullWidth>
 
-          {ExpenseGenre.options.map((opt) => (
-            <MenuItem key={opt} value={opt}>
-              {opt}
+          {expenseGenres.map((genre) => (
+            <MenuItem key={genre} value={genre}>
+              {expenseGenreLabels[genre]}
             </MenuItem>
           ))}
         </TextField>

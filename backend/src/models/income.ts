@@ -7,10 +7,9 @@ const incomeSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    //TODO:make it required
     date : {
       type : Date,
-      default : Date.now,
+      required : true,
     },
     description: { type: String },
     amount: { type: Number, required: true },

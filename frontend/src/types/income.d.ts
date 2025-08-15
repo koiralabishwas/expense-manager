@@ -1,23 +1,28 @@
+
 type Income = {
   _id: string;
   userId: string;
   date: string;
-  description: string;
+  description?: string;
   amount: number;
   // currency: string; // not needed now
-  genre: string;
+  genre: IncomeGenre;
   createdAt: string;
   updatedAt: string;
   __v: number;
 };
 
+// NOTE : edit for opitional Genre
+
+type IncomeGenre = "Salary" | "Gratituty" | "Allowence" | "Bonus" | "Other"
+
 type IncomeSummary = {
-  total : number,
-  genre : Record<string,number>
-}
+  total: number;
+  genre: Record<string, number>;
+};
 
 type IncomeRes = {
-  yearMonth : string,
-  incomes : Income[],
-  summary : IncomeSummary
-}
+  yearMonth: string;
+  incomes: Income[];
+  summary: IncomeSummary;
+};
