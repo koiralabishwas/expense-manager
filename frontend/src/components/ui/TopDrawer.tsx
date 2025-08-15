@@ -26,9 +26,9 @@ export default function TopDrawer() {
       <List>
         {[
           // アイコンを組み込む
-          { text: "Home", icon: <InboxIcon /> ,link : "/"},
-          { text: "Income", icon: <InboxIcon /> , link : "/incomes" },
-          { text: "Expense", icon: <MailIcon /> , link : "/expenses" },
+          { text: "Home", icon: <InboxIcon /> ,link : "/" ,},
+          { text: "収入", icon: <InboxIcon /> , link : "/incomes" },
+          { text: "出費", icon: <MailIcon /> , link : "/expenses" },
         ].map((item, index) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton onClick={() => {window.location.href = item.link}}>

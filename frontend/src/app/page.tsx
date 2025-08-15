@@ -21,10 +21,10 @@ export default async function Home() {
       <YearMonthSelect />
       <SummaryTable/>
       <Button LinkComponent={"a"} href="/incomes" variant="outlined" fullWidth>
-        Income
+        収入
       </Button>
       <Button LinkComponent={"a"} href="/expenses" variant="outlined" fullWidth>
-        Expenses
+        出費
       </Button>
     </Box >
   );
