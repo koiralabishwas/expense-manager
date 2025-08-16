@@ -17,3 +17,19 @@ export async function registerUser(registerForm: RegisterForm) {
     return result;
   }
 }
+
+export async function checkIsAuthorized() : Promise<Boolean> {
+  const req = await fetch(
+    process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/check",
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/Json" },
+    }
+  );
+
+  if (req.status !== 200 ) {
+    return false
+  }
+
+  return true
+}
