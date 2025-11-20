@@ -4,10 +4,12 @@ help: ## help 表示 `make help` でタスクの一覧を確認できます
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36mmake %-20s\033[0m %s\n", $$1, $$2}'
 
 dev: ## for dev use i.e hot reloads front , back 
-	@docker compose -f docker-compose.dev.yaml up
+	@docker compose -f docker-compose.dev.yaml up & make run-dev
 
-dev-build: ## for dev use with build
-	@docker compose -f docker-compose.dev.yaml up --build
+run-dev: ## Run frontend and backend locally (no docker)
+	bunx concurrently --names "FRONT,BACK" -c "blue,magenta" \
+	"cd frontend && bun i && bun run dev" \
+	"cd backend && bun i && bun run dev"
 
 test-prod: ## for testing production with logs
 	@docker compose -f docker-compose.prod.yaml up
