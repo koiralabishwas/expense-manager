@@ -21,6 +21,72 @@ export const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    settings : {
+      expenseGenres: {
+        type: [String],
+        default: [
+          "Water",
+          "Drinks",
+          "Meal",
+          "Snacks",
+          "Groceries",
+          "Entertainment",
+          "Devices",
+          "Hangouts",
+          "Study",
+          "Clothing",
+          "Other",
+        ],
+      },
+      incomeGenres: {
+        type: [String],
+        default: [
+          "Salary",
+          "Gratuity",
+          "Allowance",
+          "Bonus",
+          "Other",
+        ],
+      },
+      creditPaymentTiming : {
+        delayMonth : {
+          type: Number,
+          default:1
+        },
+        day : {
+          type : Number,
+          min : 1,
+          max : 31,
+          default : 25
+        }
+      },
+      subscriptions: [
+        {
+          name: {
+            type: String,
+            required: true,
+          },
+          // Recommendation: You likely need the cost of the subscription
+          amount: {
+            type: Number,
+            required: true, 
+            default: 0
+          },
+          day: {
+            type: Number,
+            required: true,
+            min: 1,
+            max: 31, // Added validation for valid days
+          },
+          isActive: {
+            type: Boolean,
+            default: true, // Default to true makes sense when adding a new one
+          },
+        },
+      ],
+    }
+
   },
   { timestamps: true },
 );
