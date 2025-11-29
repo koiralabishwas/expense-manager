@@ -50,6 +50,10 @@ export const userSchema = new mongoose.Schema(
         ],
       },
       creditPaymentTiming : {
+        /**
+         * TODO:
+         * cash loss に影響、何ヶ月後のものに適用するか
+         */
         delayMonth : {
           type: Number,
           default:1
@@ -62,6 +66,7 @@ export const userSchema = new mongoose.Schema(
         }
       },
       subscriptions: [
+        //TODO: run as a batch every start of the month and add the expenses .
         {
           name: {
             type: String,
