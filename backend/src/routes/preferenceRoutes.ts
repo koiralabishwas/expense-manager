@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { addIncomeGenre, getUserPreferences, removeIncomeGenre } from "../controllers/userSettingController";
+import { addIncomeGenre, getUserPreferences, removeIncomeGenre } from "../controllers/preferenceController";
 
 export const preferenceRoutes = new Hono();
 
