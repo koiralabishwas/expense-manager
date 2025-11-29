@@ -22,7 +22,7 @@ export const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    settings : {
+    preferences : {
       expenseGenres: {
         type: [String],
         default: [

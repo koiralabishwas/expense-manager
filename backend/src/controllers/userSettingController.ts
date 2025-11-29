@@ -3,13 +3,13 @@ import User from "../models/user";
 
 //TODO: validaiton
 
-export async function getUserSettings(ctx: Context) {
+export async function getUserPreferences(ctx: Context) {
   try {
     const { _id } = ctx.get("user");
     const user = await User.findById(_id);
-    return ctx.json(user?.settings);
+    return ctx.json(user?.preferences);
   } catch (error) {
-    return ctx.json({ error: "Failed to get user settings", err: error }, 500);
+    return ctx.json({ error: "Failed to get user preferences", err: error }, 500);
   }
 }
 
@@ -21,11 +21,11 @@ export async function addIncomeGenre(ctx: Context) {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       {
-        $addToSet: { "settings.incomeGenres": incomeGenre },
+        $addToSet: { "preferences.incomeGenres": incomeGenre },
       },
       { new: true }
     );
-    return ctx.json(updatedUser?.settings?.incomeGenres);
+    return ctx.json(updatedUser?.preferences?.incomeGenres);
   } catch (error) {
     return ctx.json({ error: "Failed adding genre", err: error }, 500);
   }
@@ -39,11 +39,11 @@ export async function removeIncomeGenre(ctx: Context) {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       {
-        $pull: { "settings.incomeGenres": incomeGenre },
+        $pull: { "preferences.incomeGenres": incomeGenre },
       },
       { new: true }
     );
-    return ctx.json(updatedUser?.settings?.incomeGenres);
+    return ctx.json(updatedUser?.preferences?.incomeGenres);
 
   } catch (error) {
     return ctx.json({ error: "Failed deleting genre", err: error }, 500);

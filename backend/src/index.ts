@@ -9,7 +9,7 @@ import { authRoutes } from "./routes/authRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
 import { authentication } from "./middlewares/authentication";
 import { summaryRoutes } from "./routes/summaryRoutes";
-import { settingRoutes } from "./routes/settingRoutes";
+import { preferenceRoutes } from "./routes/preferenceRoutes";
 
 const app = new Hono();
 const protectedRoutes = new Hono();
@@ -27,7 +27,7 @@ app.get('/auth/check', authentication , (ctx) => ctx.text('authorized', 200) )
 // auth required routes
 app.use("/api/*",authentication);
 app.route("/api/users", userRoutes); // Set up user routes
-app.route("/api/users/settings" , settingRoutes)
+app.route("/api/users/preferences" , preferenceRoutes)
 app.route("/api/incomes", incomeRoutes);
 app.route("/api/expenses", expenseRoutes);
 app.route("/api/summary", summaryRoutes);
