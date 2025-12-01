@@ -47,7 +47,7 @@ export const userSchema = new mongoose.Schema(
           "Allowance",
           "Bonus",
           "Other",
-        ],
+        ]
       },
       creditPaymentTiming : {
         /**
@@ -69,18 +69,17 @@ export const userSchema = new mongoose.Schema(
         //TODO: run as a batch every start of the month and add the expenses .
         {
           name: {
-            type: String,
             required: true,
+            type: String,
           },
           // Recommendation: You likely need the cost of the subscription
           amount: {
-            type: Number,
             required: true, 
-            default: 0
-          },
-          day: {
             type: Number,
+          },
+          paymentDay: {
             required: true,
+            type: Number,
             min: 1,
             max: 31, // Added validation for valid days
           },
