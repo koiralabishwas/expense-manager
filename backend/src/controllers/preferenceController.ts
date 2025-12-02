@@ -38,7 +38,7 @@ export async function addIncomeGenre(ctx: Context) {
       {
         $addToSet: { "preferences.incomeGenres": incomeGenre },
       },
-    {new : true , runValidators : true}
+      { new: true, runValidators: true }
     );
     return ctx.json(updatedUser?.preferences?.incomeGenres);
   } catch (error) {
@@ -56,14 +56,13 @@ export async function deleteIncomeGenre(ctx: Context) {
       {
         $pull: { "preferences.incomeGenres": incomeGenre },
       },
-    {new : true , runValidators : true}
+      { new: true, runValidators: true }
     );
     return ctx.json(updatedUser?.preferences?.incomeGenres);
   } catch (error) {
     return ctx.json({ error: "Failed deleting genre", err: error }, 500);
   }
 }
-
 
 export async function getExpenseGenre(ctx: Context) {
   try {
@@ -79,14 +78,14 @@ export async function addExpenseGenre(ctx: Context) {
   try {
     const { _id } = ctx.get("user");
     const body = await ctx.req.json();
-    const expenseGenre = body.expenseGenre; 
+    const expenseGenre = body.expenseGenre;
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       {
         // $addToSet prevents duplicates automatically
         $addToSet: { "preferences.expenseGenres": expenseGenre },
       },
-    {new : true , runValidators : true}
+      { new: true, runValidators: true }
     );
     return ctx.json(updatedUser?.preferences?.expenseGenres);
   } catch (error) {
@@ -106,7 +105,7 @@ export async function deleteExpenseGenre(ctx: Context) {
         // $pull removes the item from the array
         $pull: { "preferences.expenseGenres": expenseGenre },
       },
-    {new : true , runValidators : true}
+      { new: true, runValidators: true }
     );
     return ctx.json(updatedUser?.preferences?.expenseGenres);
   } catch (error) {
