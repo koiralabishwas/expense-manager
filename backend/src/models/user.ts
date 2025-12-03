@@ -1,7 +1,4 @@
-import { DateTime } from "luxon";
 import mongoose from "mongoose";
-import Income from "./income";
-import Expense from "./expense";
 
 // Define a schema for the `User` model
 export const userSchema = new mongoose.Schema(
@@ -13,6 +10,7 @@ export const userSchema = new mongoose.Schema(
       maxLength: 30,
     },
     email: {
+      // TODO : use gmai mailing system to send confirmation mail to this email address
       type: String,
       required: true,
       unique: true,
