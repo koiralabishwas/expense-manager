@@ -112,21 +112,82 @@ export async function deleteExpenseGenre(ctx: Context) {
     return ctx.json({ error: "Failed deleting genre", err: error }, 500);
   }
 }
+export async function getSubscription(ctx: Context) {
+  try {
+    const { _id } = ctx.get("user");
+    const subscription = await User.findById(_id).then(
+      (user) => user?.preferences?.subscriptions
+    );
+    return ctx.json(subscription);
+  } catch (error) {
+    return ctx.json({ error: "failed getting subscription", err: error });
+  }
+}
 
-export async function addSubscription(ctx:Context) {
-    try {
+export async function addSubscription(ctx: Context) {
+  try {
     const { _id } = ctx.get("user");
     const body = await ctx.req.json();
     const subscription = body.subscription;
 
-    const updatedUser = await User.findByIdAndUpdate(_id, {
-      $addToSet :{"preferences.subscriptions" : subscription}
-    },
-    {new : true , runValidators : true}
-  )
-  return ctx.json(updatedUser?.preferences?.subscriptions);
-
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        $addToSet: { "preferences.subscriptions": subscription },
+      },
+      { new: true, runValidators: true }
+    );
+    return ctx.json(updatedUser?.preferences?.subscriptions);
   } catch (error) {
-    return ctx.json({error : "failed adding subscription" , err : error})
+    return ctx.json({ error: "failed adding subscription", err: error });
+  }
+}
+
+export async function deleteSubscription(ctx: Context) {
+  try {
+    const { _id } = ctx.get("user");
+    const subsId = ctx.req.param("subscriptionId");
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        $pull: { "preferences.subscriptions": { _id: subsId } },
+      },
+      { new: true }
+    );
+    return ctx.json(updatedUser?.preferences?.subscriptions);
+  } catch (error) {
+    return ctx.json({ error: "failed deleting subscription", err: error });
+  }
+}
+
+// TODO: error handling when non existing subscription
+export async function editSubscription(ctx: Context) {
+  try {
+    const { _id } = ctx.get("user");
+    const subsId = ctx.req.param("subscriptionId");
+    const body = await ctx.req.json();
+    const updatedSubscription = body?.subscription;
+
+    if (!updatedSubscription) {
+      return ctx.json({ error: "no subscription provided" }, 400);
+    }
+
+    // 1. Convert the object to Mongoose "dot notation"
+    const setOptions: Record<string, any> = {};
+
+    for (const [key, value] of Object.entries(updatedSubscription)) {
+      // This creates "preferences.subscriptions.$.name"
+      setOptions[`preferences.subscriptions.$.${key}`] = value;
+    }
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: _id, "preferences.subscriptions._id": subsId },
+      {
+        $set: setOptions,
+      },
+      { new: true, runValidators: true }
+    );
+    return ctx.json(updatedUser?.preferences?.subscriptions);
+  } catch (error) {
+    return ctx.json({ error: "failed editing subscription", err: error });
   }
 }
