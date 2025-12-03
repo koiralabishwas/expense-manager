@@ -124,6 +124,7 @@ export async function getSubscription(ctx: Context) {
   }
 }
 
+// TODO: subscription 作成特に　expense にも記録する
 export async function addSubscription(ctx: Context) {
   try {
     const { _id } = ctx.get("user");
