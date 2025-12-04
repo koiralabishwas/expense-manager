@@ -122,7 +122,7 @@ const { data: sessions, status } = useSession();
                 My Profile
               </MenuItem>
               <Divider />
-              <MenuItem>
+              <MenuItem onClick={() => router.push('/preferences')}>
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>

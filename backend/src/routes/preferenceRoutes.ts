@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { addIncomeGenre, getUserPreferences, deleteIncomeGenre, getIncomeGenre, getExpenseGenre, addExpenseGenre, deleteExpenseGenre, addSubscription, getSubscription, editSubscription, deleteSubscription } from "../controllers/preferenceController";
+import { addIncomeGenre, getUserPreferences, deleteIncomeGenre, getIncomeGenre, getExpenseGenre, addExpenseGenre, deleteExpenseGenre, addSubscription, getSubscription, editSubscription, deleteSubscription, getCreditPaymentTiming, editCreditPaymentTiming } from "../controllers/preferenceController";
 
 export const preferenceRoutes = new Hono();
 
@@ -18,8 +18,7 @@ preferenceRoutes.post('/subscription' , addSubscription)
 preferenceRoutes.put('/subscription/:subscriptionId' , editSubscription)
 preferenceRoutes.delete('/subscription/:subscriptionId' , deleteSubscription)
 
+preferenceRoutes.get("/creditPaymentTiming" , getCreditPaymentTiming)
+preferenceRoutes.put("/creditPaymentTiming" , editCreditPaymentTiming)
 
-preferenceRoutes.post("/")
-preferenceRoutes.put("/")
-preferenceRoutes.delete("")
 

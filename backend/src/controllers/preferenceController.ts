@@ -192,3 +192,44 @@ export async function editSubscription(ctx: Context) {
     return ctx.json({ error: "failed editing subscription", err: error });
   }
 }
+
+// Credit Payment Timing (which is needed to calculate cass loss)
+export async function getCreditPaymentTiming(ctx: Context) {
+  try {
+    const { _id } = ctx.get("user");
+    const creditPaymentTiming = await User.findById(_id).then(
+      (user) => user?.preferences?.creditPaymentTiming
+    );
+    return ctx.json(creditPaymentTiming);
+  } catch (error) {
+    return ctx.json({
+      error: "failed getting creditPaymentTiming",
+      err: error,
+    });
+  }
+}
+
+export async function editCreditPaymentTiming(ctx: Context) {
+  try {
+    const { _id } = ctx.get("user");
+    const { delayMonth, day } = await ctx.req.json();
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          "preferences.creditPaymentTiming.delayMonth": delayMonth,
+          "preferences.creditPaymentTiming.day": day,
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    return ctx.json(updatedUser?.preferences?.creditPaymentTiming);
+  } catch (error) {
+    return ctx.json({
+      error: "failed getting creditPaymentTiming",
+      err: error,
+      req: await ctx.req.json(),
+    });
+  }
+}
