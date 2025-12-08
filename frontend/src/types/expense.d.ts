@@ -29,6 +29,8 @@ type ExpenseSummary = {
   total: number;
   cashPaid: number;
   postPaid: number;
+  prevMonthPostPaid:number,
+  cashLoss : number
   genre: Record<string, number>;
 };
 
