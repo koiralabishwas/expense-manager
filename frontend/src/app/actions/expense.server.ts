@@ -87,50 +87,41 @@ export async function getExpense(yearMonth: string): Promise<ExpenseRes> {
 }
 
 export async function postExpense(expense: ExpenseForm): Promise<Expense> {
+  await connectDB();
   const session = await getServerSession(authOptions);
-  const result = await fetch(
-    process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/expenses",
-    {
-      body: JSON.stringify(expense),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-      method: "POST",
-    }
-  );
-  return await result.json();
+  const newUserExpense = await new Expense({
+    userId: session?.user._id,
+    date: expense.date,
+    description: expense.description,
+    amount: expense.amount,
+    genre: expense.genre,
+    isPostPaid: expense.isPostPaid,
+  }).save();
+
+  return JSON.parse(JSON.stringify(newUserExpense));
 }
 
 export async function putExpense(
   _id: string,
   expense: ExpenseForm
 ): Promise<Expense> {
+  await connectDB();
   const session = await getServerSession(authOptions);
-  const result = await fetch(
-    process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/expenses/" + _id,
-    {
-      body: JSON.stringify(expense),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-      method: "PUT",
-    }
+  const changedUserExpense = await Expense.findOneAndUpdate(
+    { _id: _id, userId: session?.user._id },
+    expense,
+    { new: true, runValidators: true }
   );
-  return await result.json();
+  return JSON.parse(JSON.stringify(changedUserExpense));
 }
 
 export async function deleteExpense(id: string): Promise<Expense> {
+  await connectDB();
   const session = await getServerSession(authOptions);
-  const deleteReq = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    }
-  );
-  return await deleteReq.json();
+  const deletedUserExpense = await Expense.findOneAndDelete({
+    _id: id,
+    userId: session?.user._id,
+  });
+  console.log('lgtm')
+  return JSON.parse(JSON.stringify(deletedUserExpense))
 }
