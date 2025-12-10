@@ -1,35 +1,26 @@
 "use server";
 
+import connectDB from "@/configs/db";
 import { RegisterForm } from "../(auth)/register/page";
+import User from "@/models/user";
+import { genSalt, hash, compare } from "bcryptjs";
+
 
 export async function registerUser(registerForm: RegisterForm) {
-  const req = await fetch(
-    process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/register",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/Json" },
-      body: JSON.stringify(registerForm),
-    }
-  );
+  await connectDB();
+    const { name, email, password } = registerForm;
 
-  const result = await req.json();
-  if (result) {
-    return result;
+  const existingUser = await User.findOne({ email: registerForm.email });
+  if (existingUser) {
+    throw new Error("user already exists with the given email address");
   }
+  const hashedPassword = hash(password, await genSalt(10));
+  const user = new User({
+    name : name,
+    email : email,
+    password : await hashedPassword
+  })
+  await user.save()
+  return JSON.parse(JSON.stringify(user))
 }
 
-export async function checkIsAuthorized() : Promise<Boolean> {
-  const req = await fetch(
-    process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/check",
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/Json" },
-    }
-  );
-
-  if (req.status !== 200 ) {
-    return false
-  }
-
-  return true
-}
