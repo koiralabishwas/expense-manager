@@ -7,10 +7,8 @@ dev: ## for dev use i.e hot reloads front , back
 	make run-dev-db & make run-dev-servers
 
 run-dev-servers: ## Run frontend and backend locally (no docker)
-	bunx concurrently --names "FRONT,BACK" -c "blue,magenta" \
-	"cd frontend && bun i && bun run dev" 
-# 	
-# 	"cd backend && bun i && bun run dev"
+	bunx concurrently --names "FRONT" -c "blue" \
+	"bun i && bun run dev" 
 
 run-dev-db:
 	@docker compose -f docker-compose.dev.yaml up
