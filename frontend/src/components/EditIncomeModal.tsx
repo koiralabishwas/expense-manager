@@ -6,7 +6,7 @@ import ConfirmModal from "./ConfirmModal";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { deleteIncome } from "@/app/actions/income.server";
+import { deleteIncome } from "@/server/income.server";
 import EditIncomeForm from "./EditIncomeForm";
 
 interface Props {

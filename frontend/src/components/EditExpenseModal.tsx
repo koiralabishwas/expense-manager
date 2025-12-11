@@ -3,7 +3,7 @@
 import { Box, Button, Modal } from "@mui/material";
 import React from "react";
 import ConfirmModal from "./ConfirmModal";
-import { deleteExpense } from "@/app/actions/expense.server";
+import { deleteExpense } from "@/server/expense.server";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getCurrentYearMonth } from "@/lib/utils";

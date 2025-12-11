@@ -8,7 +8,7 @@ import { Typography, TextField, MenuItem, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import DatePickerUI from "./ui/DatePickerUI";
 import { IncomeForm, IncomeSchema } from "./IncomeForm";
-import { putIncome } from "@/app/actions/income.server";
+import { putIncome } from "@/server/income.server";
 import { incomeGenreLabels, incomeGenres } from "@/lib/constants/genre";
 
 interface Props {

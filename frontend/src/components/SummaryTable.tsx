@@ -1,5 +1,5 @@
 'use client'
-import { getMonthSummary } from "@/app/actions/summary.server";
+import { getMonthSummary } from "@/server/summary.server";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";

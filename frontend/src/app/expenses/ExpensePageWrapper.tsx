@@ -9,7 +9,7 @@ import { getCurrentYearMonth } from "@/lib/utils";
 import AmountSummary from "@/components/AmountSummary";
 import ExpenseForm from "@/components/ExpenseForm";
 import ExpenseTable from "@/components/ExpenseTable";
-import { getExpense } from "../actions/expense.server";
+import { getExpense } from "../../server/expense.server";
 
 
 const ExpensePageWrapper = () => {

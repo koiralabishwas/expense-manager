@@ -1,4 +1,4 @@
-import { postExpense } from "@/app/actions/expense.server";
+import { postExpense } from "@/server/expense.server";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, FormControlLabel, MenuItem, Switch, TextField, Typography } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";

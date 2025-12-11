@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingIcon from "../../../components/ui/LoadingIcon";
-import { registerUser } from "@/app/actions/auth.server";
+import { registerUser } from "@/server/auth.server";
 
 const schema = z.object({
   name : z.string().min(1 , "１字以上２０字以下で入力してください").max(20),

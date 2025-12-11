@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { DateTime } from "luxon";
-import { putExpense } from "@/app/actions/expense.server";
+import { putExpense } from "@/server/expense.server";
 import { Typography, TextField, MenuItem, Button, FormControlLabel, Switch } from "@mui/material";
 import { Box } from "@mui/system";
 import DatePickerUI from "./ui/DatePickerUI";

@@ -5,7 +5,7 @@ import { z } from "zod";
 import DatePickerUI from "./ui/DatePickerUI";
 import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
-import { postIncome } from "@/app/actions/income.server";
+import { postIncome } from "@/server/income.server";
 import { useQueryClient } from "@tanstack/react-query";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { incomeGenreLabels, incomeGenres } from "@/lib/constants/genre";

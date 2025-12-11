@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import { addIncomeGenre, getPreferences } from "../actions/preference.server";
+import { addIncomeGenre, getPreferences } from "../../server/preference.server";
 import { Button, Typography } from "@mui/material";
 
 export default async function PreferencePage() {
