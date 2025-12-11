@@ -59,19 +59,15 @@ export async function getIncomes(yearMonth: string): Promise<IncomeRes> {
 
 export async function postIncome(income: IncomeForm): Promise<Income> {
   const session = await getServerSession(authOptions);
-  const result = await fetch(
-    process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/incomes",
-    {
-      body: JSON.stringify(income),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-      method: "POST",
-    }
-  );
+  const newUserIncome = await new Income({
+    userId: session?.user._id,
+    date: income.date,
+    description: income.description,
+    amount: income.amount,
+    genre: income.genre,
+  }).save();
 
-  return await result.json();
+  return JSON.parse(JSON.stringify(newUserIncome));
 }
 
 export async function putIncome(
@@ -79,30 +75,20 @@ export async function putIncome(
   expense: IncomeForm
 ): Promise<Income> {
   const session = await getServerSession(authOptions);
-  const result = await fetch(
-    process.env.NEXT_PUBLIC_BACKEND_URL! + "/api/incomes/" + _id,
-    {
-      body: JSON.stringify(expense),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-      method: "PUT",
-    }
+  const changedUserIncome = await Income.findOneAndUpdate(
+    { _id: _id, userId: session?.user._id },
+    expense,
+    { new: true, runValidators: true }
   );
-  return await result.json();
+
+  return JSON.parse(JSON.stringify(changedUserIncome));
 }
 
 export async function deleteIncome(id: string): Promise<Income> {
   const session = await getServerSession(authOptions);
-  const deleteReq = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incomes/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    }
-  );
-  return await deleteReq.json();
+ const deletedUserIncome = await Income.findOneAndDelete({
+      _id: id,
+      userId: session?.user._id,
+    });
+  return JSON.parse(JSON.stringify(deletedUserIncome))
 }
