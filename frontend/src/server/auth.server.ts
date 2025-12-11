@@ -1,7 +1,7 @@
 "use server";
 
+import { RegisterForm } from "@/app/(auth)/register/page";
 import connectDB from "@/configs/db";
-import { RegisterForm } from "../(auth)/register/page";
 import User from "@/models/user";
 import { genSalt, hash, compare } from "bcryptjs";
 
