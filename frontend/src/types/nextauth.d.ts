@@ -1,29 +1,28 @@
-// types/next-auth.d.ts
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 declare module "next-auth" {
+  // 1. The User object returned from your 'authorize' function
   interface User {
     _id: string;
-    token?: string;
+    // We removed 'token' because it's no longer needed
   }
 
+  // 2. The Session object available in client (useSession) & server (getServerSession)
   interface Session {
     user: {
       _id: string;
-      name: string;
-      email: string;
+      name?: string | null;
+      email?: string | null;
     };
-    accessToken?: string;
+    // We removed 'accessToken' because the session cookie handles security now
   }
 }
 
 declare module "next-auth/jwt" {
+  // 3. The JSON Web Token stored in the encrypted cookie
   interface JWT {
-    user?: {
-      _id: string;
-      name: string;
-      email: string;
-    };
-    accessToken?: string;
+    _id: string;
+    // We flatten this (no nested 'user' object) for simpler access
   }
 }
