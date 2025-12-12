@@ -22,7 +22,6 @@ services:
     # 2. OVERRIDE the DB Connection for Docker specifically
     environment:
       - MONGODB_URI=mongodb://mongo:27017/expense-tracker
-      - NEXTAUTH_URL=http://localhost:3000
     depends_on:
       - mongo
 
