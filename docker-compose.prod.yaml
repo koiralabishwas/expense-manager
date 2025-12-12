@@ -28,4 +28,3 @@ services:
 
 volumes:
   expense-manager:
-  external: true
