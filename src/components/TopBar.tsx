@@ -126,7 +126,7 @@ const { data: sessions, status } = useSession();
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>
-                Settings
+                Preferences
               </MenuItem>
               <MenuItem onClick={() => signOut()}>
                 <ListItemIcon>

@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 import User from "@/models/user";
 import { getServerSession } from "next-auth";
 
-export async function getPreferences() {
+export async function getPreferences() : Promise<Preferences> {
   connectDB();
   const session = await getServerSession(authOptions);
   try {
