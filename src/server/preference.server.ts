@@ -5,8 +5,20 @@ import { authOptions } from "@/lib/auth";
 import User from "@/models/user";
 import { getServerSession } from "next-auth";
 
+export async function getUser() : Promise<any> {
+  await connectDB();
+  const session = await getServerSession(authOptions);
+  try {
+    const user = await User.findById(session?.user._id)
+    return JSON.parse(JSON.stringify(user))
+  } catch (error) {
+    throw new Error("Failed to get user document");
+
+  }
+}
+
 export async function getPreferences() : Promise<Preferences> {
-  connectDB();
+  await connectDB();
   const session = await getServerSession(authOptions);
   try {
     const user = await User.findById(session?.user._id);
