@@ -1,8 +1,9 @@
-type Subscription = {
+import { userSchema } from "@/models/user"
+
+type UserT = {
   name : string,
-  amount : number,
-  paymentDay : number
-  isActive : Boolean
+  email : string,
+  preferences : Preferences
 }
 
 type Preferences = {
@@ -13,4 +14,11 @@ type Preferences = {
     day : number,
   }
   subscriptions : [Subscription]
+}
+
+type Subscription = {
+  name : string,
+  amount : number,
+  paymentDay : number
+  isActive : Boolean
 }

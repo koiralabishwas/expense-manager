@@ -3,9 +3,10 @@
 import connectDB from "@/configs/db";
 import { authOptions } from "@/lib/auth";
 import User from "@/models/user";
+import { Preferences, UserT } from "@/types/user";
 import { getServerSession } from "next-auth";
 
-export async function getUser() : Promise<any> {
+export async function getUserData() : Promise<UserT> {
   await connectDB();
   const session = await getServerSession(authOptions);
   try {
