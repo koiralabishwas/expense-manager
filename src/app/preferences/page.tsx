@@ -1,5 +1,5 @@
 "use client"
-import { Box, flex } from "@mui/system";
+import { Box, flex, gap } from "@mui/system";
 import { addExpenseGenre, addIncomeGenre, getPreferences, getUserData } from "../../server/preference.server";
 import { Button, Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
@@ -60,8 +60,10 @@ export default function PreferencePage() {
             justifyContent: "center",
             alignItems: "left",
           }}>
+            <Box sx={{display : "flex"  , alignItems :"center" , gap : "20px"} }>
             <Typography mt={2}>出費ジャンル</Typography>
             <ExpenseGenreForm />
+            </Box>
             <ExpenseGenreList expenseGenres={user.preferences.expenseGenres} />
 
             <Typography mt={2}>収入ジャンル</Typography>

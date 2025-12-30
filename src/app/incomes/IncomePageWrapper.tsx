@@ -1,7 +1,7 @@
 "use client";
 import FormModal from "@/components/FormModal";
 import React, { Suspense } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { deleteIncome, getIncomes } from "../../server/income.server";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";

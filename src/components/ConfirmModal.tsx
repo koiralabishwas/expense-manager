@@ -1,11 +1,10 @@
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Modal, SxProps, Theme, Typography } from '@mui/material';
 import React from 'react'
 
 interface Props {
   label: string,
   confirmMessage: string,
-  children: React.ReactElement;
-
+  children: (close: () => void) => React.ReactNode;
 }
 
 const ConfirmModal = (props: Props) => {
@@ -14,7 +13,7 @@ const ConfirmModal = (props: Props) => {
   const handleClose = () => setOpen(false)
   return (
     <>
-      <Button color='error' variant='outlined' sx={{ borderWidth: "0.3rem", borderRadius: "1rem", marginY: 2 }} onClick={handleOpen}>{props.label}</Button>
+      <Button color='error' variant='outlined' onClick={handleOpen}>{props.label}</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -38,12 +37,12 @@ const ConfirmModal = (props: Props) => {
             <Box display="flex" gap={2}>
             <Button
               variant='outlined'
-              color='error'
+              color='primary'
               onClick={handleClose}
             >
               cancel
             </Button>
-            {props.children}
+            {props.children(handleClose)}
             </Box>
         </Box>
       </Modal>

@@ -7,13 +7,13 @@ type UserT = {
 }
 
 type Preferences = {
-  expenseGenres : [String],
-  incomeGenres : [String]
+  expenseGenres : string[],
+  incomeGenres : string[]
   creditPaymentTiming : {
     delayMonth :number,
     day : number,
   }
-  subscriptions : [Subscription]
+  subscriptions : Subscription[]
 }
 
 type Subscription = {
