@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import User, { userSchema } from "@/models/user";
 import { UserT } from "@/types/user";
 import { useSession } from "next-auth/react";
+import IncomeGenreList from "./IncomeGenreList";
 
 export default function PreferencePage() {
   const { data: user } = useQuery<UserT>({
@@ -67,11 +68,7 @@ export default function PreferencePage() {
             <ExpenseGenreList expenseGenres={user.preferences.expenseGenres} />
 
             <Typography mt={2}>収入ジャンル</Typography>
-            <Box px={2}>
-              {user.preferences.incomeGenres && user.preferences.incomeGenres.map((i, n) =>
-                <Typography key={n}>{i}</Typography>
-              )}
-            </Box>
+            <IncomeGenreList incomeGenres={user.preferences.incomeGenres} />
 
             <Typography mt={2}>サブスクリプション</Typography>
             <Box>
