@@ -1,17 +1,15 @@
 "use client"
 import { Box, flex, gap } from "@mui/system";
-import { addExpenseGenre, addIncomeGenre, getPreferences, getUserData } from "../../server/preference.server";
+import { getUserData } from "../../server/preference.server";
 import { Button, Typography } from "@mui/material";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import ExpenseGenreList from "./ExpenseGenreList";
 import ExpenseGenreForm from "./ExpenseGenreForm";
 import { useQuery } from "@tanstack/react-query";
-import User, { userSchema } from "@/models/user";
 import { UserT } from "@/types/user";
-import { useSession } from "next-auth/react";
 import IncomeGenreList from "./IncomeGenreList";
 import IncomeGenreForm from "./incomeGenreForm";
+import SubscriptionForm from "./SubscriptionForm";
+import SubscriptionList from "./SubscriptionList";
 
 export default function PreferencePage() {
   const { data: user } = useQuery<UserT>({
@@ -19,8 +17,10 @@ export default function PreferencePage() {
     queryFn: () => getUserData()
   })
 
-  if (user !== undefined)
+  { console.log(user) }
+  if (user?.name)
     return (
+
       <Box p={2}>
         <Box sx={{
           display: "flex",
@@ -73,17 +73,16 @@ export default function PreferencePage() {
               <IncomeGenreForm />
             </Box>
             <IncomeGenreList incomeGenres={user.preferences.incomeGenres} />
-            <Typography mt={2}>サブスクリプション</Typography>
+
             <Box>
-              {user.preferences.subscriptions && user.preferences.subscriptions.map((s, n) =>
-                <Box px={2} pb={2} key={n}>
-                  <Typography>{s.name}</Typography>
-                  <Typography>{s.amount}円</Typography>
-                  <Typography>{s.paymentDay}日支払い</Typography>
-                  <Typography>{s.isActive ? "契約中" : "停止中"}</Typography>
-                </Box>
-              )}
+              <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                <Typography mt={2}>サブスクリプション</Typography>
+                <SubscriptionForm />
+              </Box>
             </Box>
+
+            <SubscriptionList subscriptions={user.preferences.subscriptions} />
+
 
             <Typography mt={2}>後払い設定</Typography>
             <Box></Box>

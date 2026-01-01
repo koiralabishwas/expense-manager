@@ -17,6 +17,7 @@ type Preferences = {
 }
 
 type Subscription = {
+  // _id:string,
   name : string,
   amount : number,
   paymentDay : number

@@ -1,4 +1,5 @@
 "use server";
+import { Subscription } from '@/types/user'
 
 import connectDB from "@/configs/db";
 import { authOptions } from "@/lib/auth";
@@ -120,13 +121,7 @@ export async function getSubscription() {
 
 // TODO: subscription 作成特に　expense にも記録する
 
-type Subscription = {
-  _id : string
-  name: string;
-  amount: string;
-  paymentDay: number;
-  isActive: boolean;
-};
+
 export async function addSubscription(subscription : Subscription) {
   connectDB();
   const session = await getServerSession(authOptions);
@@ -137,7 +132,7 @@ export async function addSubscription(subscription : Subscription) {
       $addToSet: { "preferences.subscriptions": subscription },
     },
     { new: true, runValidators: true }
-  ).then((user) => user?.preference?.subscriptions);
+  ).then((user) => user?.preferences?.subscriptions);
   return JSON.parse(JSON.stringify(subscirptions))
 }
 
