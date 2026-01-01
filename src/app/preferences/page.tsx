@@ -11,6 +11,7 @@ import User, { userSchema } from "@/models/user";
 import { UserT } from "@/types/user";
 import { useSession } from "next-auth/react";
 import IncomeGenreList from "./IncomeGenreList";
+import IncomeGenreForm from "./incomeGenreForm";
 
 export default function PreferencePage() {
   const { data: user } = useQuery<UserT>({
@@ -61,15 +62,17 @@ export default function PreferencePage() {
             justifyContent: "center",
             alignItems: "left",
           }}>
-            <Box sx={{display : "flex"  , alignItems :"center" , gap : "20px"} }>
-            <Typography mt={2}>出費ジャンル</Typography>
-            <ExpenseGenreForm />
+            <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+              <Typography mt={2}>出費ジャンル</Typography>
+              <ExpenseGenreForm />
             </Box>
             <ExpenseGenreList expenseGenres={user.preferences.expenseGenres} />
 
-            <Typography mt={2}>収入ジャンル</Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+              <Typography mt={2}>収入ジャンル</Typography>
+              <IncomeGenreForm />
+            </Box>
             <IncomeGenreList incomeGenres={user.preferences.incomeGenres} />
-
             <Typography mt={2}>サブスクリプション</Typography>
             <Box>
               {user.preferences.subscriptions && user.preferences.subscriptions.map((s, n) =>
