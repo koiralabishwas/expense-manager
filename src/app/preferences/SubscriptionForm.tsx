@@ -1,6 +1,6 @@
 'use client'
 import FormModal from '@/components/FormModal'
-import { addSubscription } from '@/server/preference.server'
+import { addSubscription, editSubscription } from '@/server/preference.server'
 import { Subscription } from '@/types/user'
 import { Button, MenuItem, TextField } from '@mui/material'
 import { Box } from '@mui/system'
@@ -8,33 +8,37 @@ import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 
 interface Props {
-  props?: Subscription
+  subscription?: Subscription
 }
 
-const SubscriptionForm = ({ props }: Props) => {
+const SubscriptionForm = (props: Props) => {
   const queryClient = useQueryClient()
 
 
   const submitfn = async (formData: FormData) => {
-    const subscription: Subscription = {
+    const subscriptionFormData: Subscription = {
       name: formData.get('name')!.toString(),
       amount: Number(formData.get('amount')!.toString()),
       paymentDay: Number(formData.get('paymentDay')!.toString()),
       isActive: (formData.get("isActive")!.toString()) == "true",
     }
-
-    addSubscription(subscription);
+    if(props.subscription?._id) {
+      editSubscription(props.subscription._id, subscriptionFormData)
+    } else {
+      addSubscription(subscriptionFormData);
+    }
     queryClient.invalidateQueries({ queryKey: ["user"] })
   }
 
   return (
-    <FormModal label='追加' >
+    <FormModal label={props.subscription?._id ?'編集' : "追加"} >
       <Box
         component={"form"}
         action={submitfn}
       >
         <TextField
           fullWidth
+          defaultValue={props.subscription?.name}
           type='text'
           name='name'
           id='name'
@@ -49,6 +53,7 @@ const SubscriptionForm = ({ props }: Props) => {
         />
         <TextField
           fullWidth
+          defaultValue={props.subscription?.amount}
           type='number'
           name='amount'
           id='amount'
@@ -60,6 +65,7 @@ const SubscriptionForm = ({ props }: Props) => {
           }}
         />
         <TextField
+          defaultValue={props.subscription?.paymentDay}
           fullWidth
           type='number'
           name='paymentDay'
@@ -76,14 +82,14 @@ const SubscriptionForm = ({ props }: Props) => {
           select
           name='isActive'
           id='isActive'
-          label="契約状況"
-          defaultValue={"true"}
+          label="契約状況" // TODO: do a toggle instead
+          defaultValue={props.subscription?.isActive === true ? "true" : "false"} // フォームのつ業上 text の "true" or "false"
           sx={{
             marginBottom: "10px"
           }}
         >
           <MenuItem value={"false"}>停止中</MenuItem>
-          <MenuItem value={"true"}>解約中</MenuItem>
+          <MenuItem value={"true"}>利用中</MenuItem>
         </TextField>
         <Button
           type='submit'

@@ -17,6 +17,7 @@ const SubscriptionList = ({ subscriptions }: Props) => {
     <Box>
       {subscriptions.map((s, n) =>
         <Box
+          key={n}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -28,13 +29,13 @@ const SubscriptionList = ({ subscriptions }: Props) => {
             <Typography>{s.name}</Typography>
             <Typography>{s.amount}円</Typography>
             <Typography>{s.paymentDay}日支払い</Typography>
-            <Typography>{s.isActive ? "契約中" : "停止中"}</Typography>
+            <Typography>{s.isActive ? "利用中" : "停止中"}</Typography>
           </Box>
           <Box sx={{
             display: "flex",
             flexDirection: "column"
           }}>
-            <Button sx={{ color: "green", border: "0.1rem solid green", mb: "0.1rem" }}>編集</Button>
+            <SubscriptionForm subscription={s} />
             <Button onClick={() => { deleteSubscription(s._id!); queryClient.invalidateQueries({ queryKey: ["user"] }) }} sx={{ color: "red", border: "0.1rem solid red", mb: "0.1rem" }}>削除</Button>
 
           </Box>
