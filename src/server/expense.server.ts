@@ -122,6 +122,5 @@ export async function deleteExpense(id: string): Promise<Expense> {
     _id: id,
     userId: session?.user._id,
   });
-  console.log('lgtm')
   return JSON.parse(JSON.stringify(deletedUserExpense))
 }

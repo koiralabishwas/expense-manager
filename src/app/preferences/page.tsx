@@ -17,7 +17,6 @@ export default function PreferencePage() {
     queryFn: () => getUserData()
   })
 
-  { console.log(user) }
   if (user?.name)
     return (
 

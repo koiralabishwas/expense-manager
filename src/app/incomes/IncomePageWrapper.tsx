@@ -26,7 +26,6 @@ const IncomePageWrapper = () => {
     <div>
       {incomesRes && (
         <>
-          {console.log(incomesRes)}
 
           <AmountSummary summary={incomesRes.summary} />
           <Box
