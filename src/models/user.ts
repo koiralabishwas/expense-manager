@@ -20,7 +20,7 @@ export const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    preferences : {
+    preferences: {
       expenseGenres: {
         type: [String],
         default: [
@@ -39,31 +39,25 @@ export const userSchema = new mongoose.Schema(
       },
       incomeGenres: {
         type: [String],
-        default: [
-          "Salary",
-          "Gratuity",
-          "Allowance",
-          "Bonus",
-          "Other",
-        ]
+        default: ["Salary", "Gratuity", "Allowance", "Bonus", "Other"],
       },
-      creditPaymentTiming : {
+      creditPaymentTiming: {
         /**
          * TODO:
          * cash loss に影響、何ヶ月後のものに適用するか
          */
-        delayMonth : {
+        delayMonth: {
           type: Number,
-          default:1,
-          min:1,
-          max:12
+          default: 1,
+          min: 1,
+          max: 12,
         },
-        day : {
-          type : Number,
-          min : 1,
-          max : 31,
-          default : 25
-        }
+        day: {
+          type: Number,
+          min: 1,
+          max: 31,
+          default: 25,
+        },
       },
       subscriptions: [
         //TODO: run as a batch every start of the month and add the expenses .
@@ -74,7 +68,7 @@ export const userSchema = new mongoose.Schema(
           },
           // Recommendation: You likely need the cost of the subscription
           amount: {
-            required: true, 
+            required: true,
             type: Number,
           },
           paymentDay: {
@@ -83,20 +77,21 @@ export const userSchema = new mongoose.Schema(
             min: 1,
             max: 31, // Added validation for valid days
           },
+          isPostPaid: {
+            type: Boolean,
+            default: true,
+          },
           isActive: {
             type: Boolean,
             default: true, // Default to true makes sense when adding a new one
           },
         },
       ],
-    }
-
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-
-
-const User = mongoose.models.User || model("User", userSchema );
+const User = mongoose.models.User || model("User", userSchema);
 
 export default User;

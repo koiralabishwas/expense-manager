@@ -103,12 +103,6 @@ export default function PreferencePage() {
             </Box>
           </Box>
         </Box>
-
-        <Box>
-          <Typography>testing out form</Typography>
-
-        </Box>
-
       </Box >
     )
 }

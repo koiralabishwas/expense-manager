@@ -21,5 +21,6 @@ type Subscription = {
   name : string,
   amount : number,
   paymentDay : number
-  isActive : Boolean
+  isActive : boolean
+  isPostPaid : boolean
 }

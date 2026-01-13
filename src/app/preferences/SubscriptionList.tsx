@@ -30,6 +30,7 @@ const SubscriptionList = ({ subscriptions }: Props) => {
             <Typography>{s.amount}円</Typography>
             <Typography>{s.paymentDay}日支払い</Typography>
             <Typography>{s.isActive ? "利用中" : "停止中"}</Typography>
+            <Typography>{s.isPostPaid === true ? "後払い" : ""}</Typography>
           </Box>
           <Box sx={{
             display: "flex",
