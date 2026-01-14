@@ -1,21 +1,22 @@
-"use client"
-import { deleteSubscription } from '@/server/preference.server'
-import { Subscription } from '@/types/user'
-import { Button, Typography } from '@mui/material'
-import { Box, flex } from '@mui/system'
-import { useQueryClient } from '@tanstack/react-query'
-import React, { useState } from 'react'
-import SubscriptionForm from './SubscriptionForm'
+"use client";
+import { deleteSubscription } from "@/server/preference.server";
+import { Subscription } from "@/types/user";
+import { Button, Typography } from "@mui/material";
+import { Box, flex } from "@mui/system";
+import { useQueryClient } from "@tanstack/react-query";
+import React, { useState } from "react";
+import SubscriptionForm from "./SubscriptionForm";
+import ConfirmModal from "@/components/ConfirmModal";
 
 interface Props {
-  subscriptions: Subscription[]
+  subscriptions: Subscription[];
 }
 
 const SubscriptionList = ({ subscriptions }: Props) => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   return (
     <Box>
-      {subscriptions.map((s, n) =>
+      {subscriptions.map((s, n) => (
         <Box
           key={n}
           sx={{
@@ -23,7 +24,6 @@ const SubscriptionList = ({ subscriptions }: Props) => {
             alignItems: "center",
           }}
         >
-
           <Box px={2} pb={2} key={n}>
             {/* <Typography>{s.name}</Typography> */}
             <Typography>{s.name}</Typography>
@@ -32,19 +32,31 @@ const SubscriptionList = ({ subscriptions }: Props) => {
             <Typography>{s.isActive ? "利用中" : "停止中"}</Typography>
             <Typography>{s.isPostPaid === true ? "後払い" : ""}</Typography>
           </Box>
-          <Box sx={{
-            display: "flex",
-            flexDirection: "column"
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <SubscriptionForm subscription={s} />
-            <Button onClick={() => { deleteSubscription(s._id!); queryClient.invalidateQueries({ queryKey: ["user"] }) }} sx={{ color: "red", border: "0.1rem solid red", mb: "0.1rem" }}>削除</Button>
-
+            <ConfirmModal label='削除' confirmMessage='本当に削除しますか？' >
+              {(close) => ( // 'close' is passed from the Modal
+                <Button
+                  sx={{ color: "red", border: "0.1rem solid red", mb: "0.1rem" }}
+                  onClick={() => {
+                    deleteSubscription(s._id!);
+                    queryClient.invalidateQueries({ queryKey: ["user"] });
+                  }}
+                >
+                  削除
+                </Button>
+              )}
+            </ConfirmModal>
           </Box>
         </Box>
-      )}
-      
+      ))}
     </Box>
-  )
-}
+  );
+};
 
-export default SubscriptionList
+export default SubscriptionList;

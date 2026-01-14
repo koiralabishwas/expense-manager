@@ -42,10 +42,6 @@ export const userSchema = new mongoose.Schema(
         default: ["Salary", "Gratuity", "Allowance", "Bonus", "Other"],
       },
       creditPaymentTiming: {
-        /**
-         * TODO:
-         * cash loss に影響、何ヶ月後のものに適用するか
-         */
         delayMonth: {
           type: Number,
           default: 1,

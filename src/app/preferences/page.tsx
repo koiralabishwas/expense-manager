@@ -10,6 +10,7 @@ import IncomeGenreList from "./IncomeGenreList";
 import IncomeGenreForm from "./incomeGenreForm";
 import SubscriptionForm from "./SubscriptionForm";
 import SubscriptionList from "./SubscriptionList";
+import PostPayDateForm from "./PostPayDateForm";
 
 export default function PreferencePage() {
   const { data: user } = useQuery<UserT>({
@@ -100,6 +101,7 @@ export default function PreferencePage() {
                 <Typography>{user.preferences.creditPaymentTiming.day}日</Typography>
                 <Typography>{user.preferences.creditPaymentTiming.delayMonth}ヶ月</Typography>
               </Box>
+              <PostPayDateForm creditPaymentTiming={user.preferences.creditPaymentTiming} />
             </Box>
           </Box>
         </Box>

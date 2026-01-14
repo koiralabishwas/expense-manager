@@ -1,5 +1,5 @@
 "use server";
-import { Subscription } from '@/types/user'
+import { CreditPaymentTiming, Subscription } from '@/types/user'
 
 import connectDB from "@/configs/db";
 import { authOptions } from "@/lib/auth";
@@ -171,10 +171,6 @@ export async function editSubscription(subscriptionId : string,subscription: Sub
   return JSON.parse(JSON.stringify(updatedUser?.preferences?.subscriptions));
 }
 
-type CreditPaymentTiming = {
-  delayMonth : number,
-  day : number
-}
 
 // Credit Payment Timing (which is needed to calculate cass loss)
 export async function getCreditPaymentTiming() {
