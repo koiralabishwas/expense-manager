@@ -6,18 +6,18 @@ import DatePickerUI from "./ui/DatePickerUI";
 import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { postIncome } from "@/server/income.server";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCurrentYearMonth } from "@/lib/utils";
-import { incomeGenreLabels, incomeGenres } from "@/lib/constants/genre";
+import { UserT } from "@/types/user";
 
 export const IncomeSchema = z.object({
   description: z.string().max(50).optional(),
-  genre: z.enum(incomeGenres),
+  genre: z.string(),
   amount: z.number(),
   date: z.date(),
 });
 
-export type IncomeForm = z.infer<typeof IncomeSchema>
+export type IncomeForm = z.infer<typeof IncomeSchema>;
 
 export default function IncomeForm() {
   const {
@@ -26,22 +26,27 @@ export default function IncomeForm() {
     setError,
     reset,
     control,
-    formState: { errors, isSubmitting, isSubmitSuccessful }
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<IncomeForm>({
-    resolver: zodResolver(IncomeSchema)
-  })
+    resolver: zodResolver(IncomeSchema),
+  });
 
   const queryClient = useQueryClient();
+  const user = queryClient.getQueryData<UserT>(["user"]);
+  const incomeGenres = user?.preferences?.incomeGenres ?? [];
+
   const searchParams = useSearchParams();
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
   const params = useSearchParams().get("yearMonth");
   const currentYearMonth = params
-    ? DateTime.fromFormat(params, "yyyyMM").set({ day: DateTime.now().day }).toJSDate()
+    ? DateTime.fromFormat(params, "yyyyMM")
+        .set({ day: DateTime.now().day })
+        .toJSDate()
     : new Date();
 
   const onSubmit: SubmitHandler<IncomeForm> = async (formdata: IncomeForm) => {
-    const result = await postIncome(formdata)
+    const result = await postIncome(formdata);
 
     if (!result) {
       setError("root", {
@@ -50,9 +55,8 @@ export default function IncomeForm() {
     }
 
     reset();
-    queryClient.invalidateQueries({ queryKey: ['incomes', yearMonth] });
-
-  }
+    queryClient.invalidateQueries({ queryKey: ["incomes", yearMonth] });
+  };
 
   return (
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
@@ -75,7 +79,7 @@ export default function IncomeForm() {
           type="number"
           placeholder="金額を数字で入力"
           defaultValue={null}
-          {...register('amount', { valueAsNumber: true })}
+          {...register("amount", { valueAsNumber: true })}
           error={!!errors["amount"]}
           helperText={errors["amount"]?.message}
           variant="outlined"
@@ -90,19 +94,18 @@ export default function IncomeForm() {
           type="text"
           placeholder="出費の種類を選択"
           defaultValue={incomeGenres[0]}
-          {...register('genre')}
+          {...register("genre")}
           error={!!errors["genre"]}
           helperText={errors["genre"]?.message}
           variant="outlined"
           margin="normal"
-          fullWidth>
-
+          fullWidth
+        >
           {incomeGenres.map((genre) => (
             <MenuItem key={genre} value={genre}>
-              {incomeGenreLabels[genre]}
+              {genre}
             </MenuItem>
           ))}
-
         </TextField>
 
         <TextField
@@ -155,7 +158,6 @@ export default function IncomeForm() {
           RESET
         </Button>
       </form>
-
     </Box>
-  )
+  );
 }

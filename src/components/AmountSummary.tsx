@@ -1,6 +1,5 @@
 "use client";
 
-import { expenseGenreLabels, incomeGenreLabels } from "@/lib/constants/genre";
 import { Box, Typography, Divider } from "@mui/material";
 
 interface Props {
@@ -44,15 +43,7 @@ export default function AmountSummary({ summary }: Props) {
                   >
                     {/* TODO: ここを理解 */}
                     <Typography>
-                      {subKey in incomeGenreLabels
-                        ? incomeGenreLabels[
-                            subKey as keyof typeof incomeGenreLabels
-                          ]
-                        : subKey in expenseGenreLabels
-                        ? expenseGenreLabels[
-                            subKey as keyof typeof expenseGenreLabels
-                          ]
-                        : subKey}
+                      {subKey}
                     </Typography>
 
                     <Typography>{subValue.toLocaleString()}</Typography>
