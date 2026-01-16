@@ -4,22 +4,36 @@ import React from "react";
 import { useSearchParams } from "next/navigation";
 import { Box } from "@mui/material";
 import YearMonthSelect from "@/components/YearMonthSelect";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { getCurrentYearMonth } from "@/lib/utils";
 import AmountSummary from "@/components/AmountSummary";
 import ExpenseForm from "@/components/ExpenseForm";
 import ExpenseTable from "@/components/ExpenseTable";
-import { getExpense } from "../../server/expense.server";
+import { getExpenses } from "../../server/expense.server";
+import { getUserData } from "@/server/preference.server";
 
 
 const ExpensePageWrapper = () => {
   const searchParams = useSearchParams();
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
-  const { data: expenseRes } = useQuery<ExpenseRes>({
-    queryKey: ["expenses", yearMonth],
-    queryFn: () => getExpense(yearMonth),
-  });
+  const [userQuery , expenseQuery] = useQueries({
+    queries : [
+      {
+        queryKey : ["user"],
+        queryFn : () => getUserData(),
+        staleTime : Infinity
+      },
+      {
+        queryKey : ["expenses" , yearMonth],
+        queryFn : () => getExpenses(yearMonth),
+        staleTime : Infinity
+      }
+    ]
+  })
+  const {data : user} = userQuery;
+  const {data : expenseRes} = expenseQuery; 
+
   return (
 
     <div>

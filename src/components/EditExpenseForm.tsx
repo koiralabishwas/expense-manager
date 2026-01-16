@@ -1,5 +1,4 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
 import { ExpenseForm, ExpenseSchema } from "./ExpenseForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,7 +9,7 @@ import { putExpense } from "@/server/expense.server";
 import { Typography, TextField, MenuItem, Button, FormControlLabel, Switch } from "@mui/material";
 import { Box } from "@mui/system";
 import DatePickerUI from "./ui/DatePickerUI";
-import { expenseGenreLabels, expenseGenres } from "@/lib/constants/genre";
+import { UserT } from "@/types/user";
 
 interface Props {
   record: Expense
@@ -37,8 +36,9 @@ export default function EditExpenseForm(props: Props) {
   })
 
   const queryClient = useQueryClient();
+  const user = queryClient.getQueryData<UserT>(['user'])
+  const expenseGenres = user?.preferences.expenseGenres ?? []
   const searchParams = useSearchParams();
-
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth()
 
   const onSubmit: SubmitHandler<ExpenseForm> = async (formdata: ExpenseForm) => {
@@ -106,28 +106,38 @@ export default function EditExpenseForm(props: Props) {
           クレジットなどの支払いの場合チェック
         </Typography>
 
-        <TextField
-          select
-          defaultValue={props.record.genre}
-          key={"genre"}
-          id="genre"
-          label="種類"
-          type="text"
-          placeholder="出費の種類を選択"
-          {...register('genre')}
-          error={!!errors["genre"]}
-          helperText={errors["genre"]?.message}
-          variant="outlined"
-          margin="normal"
-          fullWidth>
+        <Controller
+          name="genre"
+          control={control}
+          render={({ field }) => (
 
-          {expenseGenres.map((genre) => (
-            <MenuItem key={genre} value={genre}>
-              {expenseGenreLabels[genre]}
-            </MenuItem>
-          ))}
-        </TextField>
+            <TextField
+              {...field}
+              select
+              label="種類"
+              error={!!errors.genre}
+              helperText={errors["genre"]?.message}
+              defaultValue={props.record.genre}
+              variant="outlined"
+              key={"genre"}
+              id="genre"
+              margin="normal"
+              fullWidth>
+                {/* map available genre from user settings */}
+              {expenseGenres.map((genre) => (
+                <MenuItem key={genre} value={genre}>
+                  {genre}
+                </MenuItem>
+              ))}
 
+              {!expenseGenres.includes(props.record.genre) && (
+                <MenuItem key={props.record.genre} value={props.record.genre}>{props.record.genre} (ジャンル削除済み)</MenuItem>
+              )}
+
+            </TextField>
+          )}
+
+        />
         <TextField
           key={"description"}
           id="description"

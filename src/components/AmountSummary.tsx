@@ -14,7 +14,6 @@ const keyLabels: Record<string, string> = {
   genres: "種類別",
   prevMonthPostPaid: "先月分引落し",
   cashLoss: "合計キャッシュロス",
-  DialyGoods: "日常品",
 };
 
 export default function AmountSummary({ summary }: Props) {
@@ -27,7 +26,7 @@ export default function AmountSummary({ summary }: Props) {
       <Box>
         {Object.entries(summary).map(([key, value], index) => {
           const label = keyLabels[key] ?? key;
-
+          // TODO: refactor this shit 
           return typeof value === "object" && value !== null ? (
             <Box key={key} sx={{ mb: 2 }}>
               <Typography sx={{ fontWeight: "bold" }}>{label}</Typography>
@@ -41,7 +40,6 @@ export default function AmountSummary({ summary }: Props) {
                       mb: 0.5,
                     }}
                   >
-                    {/* TODO: ここを理解 */}
                     <Typography>
                       {subKey}
                     </Typography>
