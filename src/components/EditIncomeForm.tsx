@@ -38,7 +38,6 @@ export default function EditIncomeForm(props: Props) {
   const user = queryClient.getQueryData<UserT>(["user"]);
   const incomeGenres = user?.preferences?.incomeGenres ?? [];
   const searchParams = useSearchParams();
-
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
   const onSubmit: SubmitHandler<IncomeForm> = async (formdata: IncomeForm) => {

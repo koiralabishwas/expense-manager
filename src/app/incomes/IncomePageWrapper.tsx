@@ -31,7 +31,7 @@ const IncomePageWrapper = () => {
     ],
   });
 
-  const { data: user } = userQuery;
+  const { data: user } = userQuery;// cached data is used in other nested conponents
   const { data: incomesRes } = incomeQuery;
 
   return (
