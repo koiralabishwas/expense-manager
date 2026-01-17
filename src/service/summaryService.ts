@@ -2,6 +2,7 @@ import { DateTime } from "luxon";
 import { Types } from "mongoose";
 import Expense from "../models/expense";
 import Income from "../models/income";
+import { getCreditPaymentTiming } from "@/server/preference.server";
 
 export async function getMonthlyBalanceSummary(
   userId: string,
@@ -15,8 +16,10 @@ export async function getMonthlyBalanceSummary(
     .toUTC();
 
   const endDate = startDate.plus({ months: 1 });
-  const prevStartDate = startDate.minus({ months: 1 });
-  const prevEndDate = endDate.minus({ months: 1 });
+
+  const creditPaymentTiming = await getCreditPaymentTiming()
+  const prevStartDate = startDate.minus({ months: creditPaymentTiming.delayMonth });
+  const prevEndDate = endDate.minus({ months: creditPaymentTiming.delayMonth });
 
   const userObjectId = new Types.ObjectId(userId);
 

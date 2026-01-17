@@ -12,7 +12,7 @@ const keyLabels: Record<string, string> = {
   cashPaid: "現金払い",
   postPaid: "後払い",
   genres: "種類別",
-  prevMonthPostPaid: "先月分引落し",
+  prevMonthPostPaid: "後払い引落し",
   cashLoss: "合計キャッシュロス",
 };
 

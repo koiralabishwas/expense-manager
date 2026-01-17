@@ -84,8 +84,10 @@ export default function PreferencePage() {
             <SubscriptionList subscriptions={user.preferences.subscriptions} />
 
 
-            <Typography mt={2}>後払い設定</Typography>
-            <Box></Box>
+            <Box sx={{ display: "flex", alignContent: "center", gap: "1em" }}>
+              <Typography mt={3}>後払い設定</Typography>
+              <PostPayDateForm creditPaymentTiming={user.preferences.creditPaymentTiming} />
+            </Box>
 
             <Box sx={{
               display: "flex",
@@ -95,13 +97,13 @@ export default function PreferencePage() {
             }}>
               <Box px={2}>
                 <Typography>支払日</Typography>
-                <Typography>支払い遅延</Typography>
+                <Typography>支払時期</Typography>
               </Box>
               <Box px={2}>
                 <Typography>{user.preferences.creditPaymentTiming.day}日</Typography>
-                <Typography>{user.preferences.creditPaymentTiming.delayMonth}ヶ月</Typography>
+                <Typography>{user.preferences.creditPaymentTiming.delayMonth === 1 ? "翌月" : user.preferences.creditPaymentTiming.delayMonth === 2 ? "翌々月" : user.preferences.creditPaymentTiming.delayMonth === 3 ? "翌々々月" : user.preferences.creditPaymentTiming.delayMonth
+                }</Typography>
               </Box>
-              <PostPayDateForm creditPaymentTiming={user.preferences.creditPaymentTiming} />
             </Box>
           </Box>
         </Box>

@@ -173,16 +173,16 @@ export async function editSubscription(subscriptionId : string,subscription: Sub
 
 
 // Credit Payment Timing (which is needed to calculate cass loss)
-export async function getCreditPaymentTiming() {
+export async function getCreditPaymentTiming() : Promise<CreditPaymentTiming> {
   await connectDB();
-  const session =await getServerSession(authOptions)
+  const session = await getServerSession(authOptions)
     const creditPaymentTiming = await User.findById(session?.user._id).then(
       (user) => user?.preferences?.creditPaymentTiming
     );
     return JSON.parse(JSON.stringify(creditPaymentTiming));
 }
 
-export async function editCreditPaymentTiming({ delayMonth, day }: CreditPaymentTiming) {
+export async function editCreditPaymentTiming({ delayMonth, day }: CreditPaymentTiming) : Promise<CreditPaymentTiming> {
   await connectDB();
   const session = await getServerSession(authOptions);
   const updatedUser = await User.findByIdAndUpdate(
