@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import EditExpenseModal from "./EditExpenseModal";
-import { expenseGenreLabels } from "@/lib/constants/genre";
 
 export type Column = {
   _id: string;
@@ -72,7 +71,7 @@ const ExpenseTable = ({ records }: Props) => {
                 onClick={() => handleOpenModal(record)}
                 hover
               >
-                <TableCell>{expenseGenreLabels[record.genre]}</TableCell>
+                <TableCell>{record.genre}</TableCell>
                 <TableCell>{record.amount}</TableCell>
                 <TableCell>{record.description}</TableCell>
                 <TableCell>

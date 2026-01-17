@@ -43,25 +43,27 @@ const EditExpenseModal = ({ openModal, record, onClose }: Props) => {
       >
         <Box display="flex" justifyContent="space-between" mb={2} gap={1}>
           <ConfirmModal label="Delete" confirmMessage="削除しますか？">
-            <Button
-              variant="outlined"
-              sx={{
-                borderWidth: 2,
-                borderStyle: "solid",
-                borderColor: "green",
-                color: "green",
-              }}
-              color="primary"
-              onClick={async (e) => {
-                e.stopPropagation(); // Prevent triggering row click
+            {(close) => (
+              <Button
+                variant="outlined"
+                sx={{
+                  borderWidth: 2,
+                  borderStyle: "solid",
+                  borderColor: "green",
+                  color: "green",
+                }}
+                color="primary"
+                onClick={async (e) => {
+                  e.stopPropagation(); // Prevent triggering row click
 
-                await deleteExpense(record._id);
-                queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] })
-                onClose();
-              }}
-            >
-              Delete
-            </Button>
+                  await deleteExpense(record._id);
+                  queryClient.invalidateQueries({ queryKey: ['expenses', yearMonth] })
+                  onClose();
+                }}
+              >
+                Delete
+              </Button>
+            )}
           </ConfirmModal>
           <Button color='warning' variant='outlined' sx={{ borderWidth: "0.3rem", borderRadius: "1rem", marginY: 2 }} onClick={() => onClose()}>close</Button>
 

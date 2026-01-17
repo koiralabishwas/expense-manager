@@ -52,7 +52,7 @@ export default function SummaryTable() {
               <Box>
                 <Typography>現金出費</Typography>
                 <Typography>{balance.currentMonthPaid.toLocaleString()}</Typography>
-                <Typography>先月後払い引落</Typography>
+                <Typography>後払い引落</Typography>
                 <Typography>{balance.prevMonthPostPaid.toLocaleString()}</Typography>
                 <Divider sx={{ my: 2, fontWeight: "bold" }} variant="fullWidth" />
 

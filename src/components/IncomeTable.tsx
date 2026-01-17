@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import EditIncomeModal from "./EditIncomeModal";
-import { incomeGenreLabels } from "@/lib/constants/genre";
 
 export type Column = {
   _id: string;
@@ -72,7 +71,7 @@ const IncomeTable = ({ records }: Props) => {
                 onClick={() => handleOpenModal(record)}
                 hover
               >
-                <TableCell>{incomeGenreLabels[record.genre]}</TableCell>
+                <TableCell>{record.genre}</TableCell>
                 <TableCell>{record.amount}</TableCell>
                 <TableCell>{record.description}</TableCell>
                 <TableCell>

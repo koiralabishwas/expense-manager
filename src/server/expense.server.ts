@@ -7,7 +7,7 @@ import { DateTime } from "luxon";
 import { Types } from "mongoose";
 import { getServerSession } from "next-auth";
 
-export async function getExpense(yearMonth: string): Promise<ExpenseRes> {
+export async function getExpenses(yearMonth: string): Promise<ExpenseRes> {
   await connectDB();
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
@@ -122,6 +122,5 @@ export async function deleteExpense(id: string): Promise<Expense> {
     _id: id,
     userId: session?.user._id,
   });
-  console.log('lgtm')
   return JSON.parse(JSON.stringify(deletedUserExpense))
 }

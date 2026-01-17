@@ -36,7 +36,6 @@ export default function RegisterPage() {
     // });
 
     const result = await registerUser(formData);
-    console.log(await result)
 
     if (!result) {
       setError("root" , {

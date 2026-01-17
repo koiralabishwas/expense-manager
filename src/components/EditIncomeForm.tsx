@@ -9,11 +9,11 @@ import { Box } from "@mui/system";
 import DatePickerUI from "./ui/DatePickerUI";
 import { IncomeForm, IncomeSchema } from "./IncomeForm";
 import { putIncome } from "@/server/income.server";
-import { incomeGenreLabels, incomeGenres } from "@/lib/constants/genre";
+import { UserT } from "@/types/user";
 
 interface Props {
-  record: Income
-  setOpenModal: () => void
+  record: Income;
+  setOpenModal: () => void;
 }
 
 export default function EditIncomeForm(props: Props) {
@@ -23,24 +23,25 @@ export default function EditIncomeForm(props: Props) {
     setError,
     reset,
     control,
-    formState: { errors, isSubmitting, isSubmitSuccessful }
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<IncomeForm>({
     resolver: zodResolver(IncomeSchema),
     defaultValues: {
       amount: props.record.amount,
       description: props.record.description,
       date: props.record.date ? new Date(props.record.date) : undefined,
-      genre: props.record.genre
-    }
-  })
+      genre: props.record.genre,
+    },
+  });
 
   const queryClient = useQueryClient();
+  const user = queryClient.getQueryData<UserT>(["user"]);
+  const incomeGenres = user?.preferences?.incomeGenres ?? [];
   const searchParams = useSearchParams();
-
-  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth()
+  const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
   const onSubmit: SubmitHandler<IncomeForm> = async (formdata: IncomeForm) => {
-    const result = await putIncome(props.record._id, formdata)
+    const result = await putIncome(props.record._id, formdata);
 
     if (!result) {
       setError("root", {
@@ -49,9 +50,9 @@ export default function EditIncomeForm(props: Props) {
     }
 
     reset();
-    queryClient.invalidateQueries({ queryKey: ['incomes', yearMonth] });
-    props.setOpenModal()
-  }
+    queryClient.invalidateQueries({ queryKey: ["incomes", yearMonth] });
+    props.setOpenModal();
+  };
 
   return (
     <Box maxWidth={400} mx="auto" mt={6} px={2}>
@@ -67,41 +68,39 @@ export default function EditIncomeForm(props: Props) {
         </Box>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          key={"amount"}
-          id="amount"
-          label="金額"
-          type="number"
-          placeholder="金額を数字で入力"
-          {...register('amount', { valueAsNumber: true })}
-          error={!!errors["amount"]}
-          helperText={errors["amount"]?.message}
-          variant="outlined"
-          margin="normal"
-          fullWidth
+        <Controller
+          name="genre"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field} // Automatically passes onChange, onBlur, value, ref
+              select
+              label="種類"
+              error={!!errors.genre}
+              helperText={errors.genre?.message}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              // IMPORTANT: If the user has a "legacy" genre that is no longer in their
+              // preferences list, we must ensure it still appears in the dropdown options.
+              // Otherwise, the field will look empty.
+            >
+              {/* 1. Map the available genres from user settings */}
+              {incomeGenres.map((genre) => (
+                <MenuItem key={genre} value={genre}>
+                  {genre}
+                </MenuItem>
+              ))}
+
+              {/* 2. Fallback: If the current record's genre is NOT in the list, add it as a hidden/disabled or extra option so it displays */}
+              {!incomeGenres.includes(props.record.genre) && (
+                <MenuItem key={props.record.genre} value={props.record.genre}>
+                  {props.record.genre} (ジャンル削除済み)
+                </MenuItem>
+              )}
+            </TextField>
+          )}
         />
-        <TextField
-          select
-          defaultValue={props.record.genre}
-          key={"genre"}
-          id="genre"
-          label="種類"
-          type="text"
-          placeholder="出費の種類を選択"
-          {...register('genre')}
-          error={!!errors["genre"]}
-          helperText={errors["genre"]?.message}
-          variant="outlined"
-          margin="normal"
-          fullWidth>
-
-
-          {incomeGenres.map((genre) => (
-            <MenuItem key={genre} value={genre}>
-              {incomeGenreLabels[genre]}
-            </MenuItem>
-          ))}
-        </TextField>
 
         <TextField
           key={"description"}
@@ -152,7 +151,6 @@ export default function EditIncomeForm(props: Props) {
           RESET
         </Button>
       </form>
-
     </Box>
-  )
+  );
 }

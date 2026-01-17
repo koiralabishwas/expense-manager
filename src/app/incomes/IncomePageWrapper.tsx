@@ -1,7 +1,7 @@
 "use client";
 import FormModal from "@/components/FormModal";
 import React, { Suspense } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { deleteIncome, getIncomes } from "../../server/income.server";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
@@ -10,24 +10,34 @@ import { Box } from "@mui/material";
 import AmountSummary from "@/components/AmountSummary";
 import IncomeForm from "@/components/IncomeForm";
 import IncomeTable from "@/components/IncomeTable";
-
-
+import { getUserData } from "@/server/preference.server";
 
 const IncomePageWrapper = () => {
   const searchParams = useSearchParams();
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
-  const { data: incomesRes } = useQuery<IncomeRes>({
-    queryKey: ["incomes", yearMonth],
-    queryFn: () => getIncomes(yearMonth),
+  const [userQuery, incomeQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ["user"],
+        queryFn: () => getUserData(),
+        staleTime: Infinity,
+      },
+      {
+        queryKey: ["incomes", yearMonth],
+        queryFn: () => getIncomes(yearMonth),
+        staleTime: Infinity,
+      },
+    ],
   });
+
+  const { data: user } = userQuery;// cached data is used in other nested conponents
+  const { data: incomesRes } = incomeQuery;
 
   return (
     <div>
       {incomesRes && (
         <>
-          {console.log(incomesRes)}
-
           <AmountSummary summary={incomesRes.summary} />
           <Box
             sx={{
@@ -42,11 +52,11 @@ const IncomePageWrapper = () => {
             <YearMonthSelect />
           </Box>
           <Box
-          sx={{
-            px : 1
-          }}
+            sx={{
+              px: 1,
+            }}
           >
-          <IncomeTable records={incomesRes.incomes} />
+            <IncomeTable records={incomesRes.incomes} />
           </Box>
         </>
       )}

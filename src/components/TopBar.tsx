@@ -28,12 +28,10 @@ const { data: sessions, status } = useSession();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-    console.log(anchorEl);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    console.log(anchorEl);
   };
 
 
@@ -126,7 +124,7 @@ const { data: sessions, status } = useSession();
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>
-                Settings
+                Preferences
               </MenuItem>
               <MenuItem onClick={() => signOut()}>
                 <ListItemIcon>

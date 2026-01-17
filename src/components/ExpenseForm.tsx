@@ -8,11 +8,11 @@ import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { getCurrentYearMonth } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { expenseGenreLabels, expenseGenres } from "@/lib/constants/genre";
+import { UserT } from "@/types/user";
 
 export const ExpenseSchema = z.object({
   description: z.string().max(50).optional(),
-  genre: z.enum(expenseGenres),
+  genre: z.string(),
   amount: z.number(),
   date: z.date(),
   isPostPaid: z.boolean().optional().default(false),
@@ -33,6 +33,9 @@ export default function ExpenseForm() {
   })
 
   const queryClient = useQueryClient();
+  const user = queryClient.getQueryData<UserT>(["user"])
+  const expenseGenres = user?.preferences.expenseGenres ?? []
+
   const searchParams = useSearchParams();
   const yearMonth = searchParams.get("yearMonth") || getCurrentYearMonth();
 
@@ -121,7 +124,7 @@ export default function ExpenseForm() {
 
           {expenseGenres.map((genre) => (
             <MenuItem key={genre} value={genre}>
-              {expenseGenreLabels[genre]}
+              {genre}
             </MenuItem>
           ))}
         </TextField>

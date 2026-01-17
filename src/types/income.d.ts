@@ -14,7 +14,7 @@ type Income = {
 
 // NOTE : edit for opitional Genre
 
-type IncomeGenre = "Salary" | "Gratituty" | "Allowence" | "Bonus" | "Other"
+type IncomeGenre = string
 
 type IncomeSummary = {
   total: number;

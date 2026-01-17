@@ -1,12 +1,26 @@
 "use server";
+import { CreditPaymentTiming, Subscription } from '@/types/user'
 
 import connectDB from "@/configs/db";
 import { authOptions } from "@/lib/auth";
 import User from "@/models/user";
+import { Preferences, UserT } from "@/types/user";
 import { getServerSession } from "next-auth";
 
-export async function getPreferences() {
-  connectDB();
+export async function getUserData() : Promise<UserT> {
+  await connectDB();
+  const session = await getServerSession(authOptions);
+  try {
+    const user = await User.findById(session?.user._id)
+    return JSON.parse(JSON.stringify(user))
+  } catch (error) {
+    throw new Error("Failed to get user document");
+
+  }
+}
+
+export async function getPreferences() : Promise<Preferences> {
+  await connectDB();
   const session = await getServerSession(authOptions);
   try {
     const user = await User.findById(session?.user._id);
@@ -107,13 +121,7 @@ export async function getSubscription() {
 
 // TODO: subscription 作成特に　expense にも記録する
 
-type Subscription = {
-  _id : string
-  name: string;
-  amount: string;
-  paymentDay: number;
-  isActive: boolean;
-};
+
 export async function addSubscription(subscription : Subscription) {
   connectDB();
   const session = await getServerSession(authOptions);
@@ -124,7 +132,7 @@ export async function addSubscription(subscription : Subscription) {
       $addToSet: { "preferences.subscriptions": subscription },
     },
     { new: true, runValidators: true }
-  ).then((user) => user?.preference?.subscriptions);
+  ).then((user) => user?.preferences?.subscriptions);
   return JSON.parse(JSON.stringify(subscirptions))
 }
 
@@ -163,22 +171,18 @@ export async function editSubscription(subscriptionId : string,subscription: Sub
   return JSON.parse(JSON.stringify(updatedUser?.preferences?.subscriptions));
 }
 
-type CreditPaymentTiming = {
-  delayMonth : number,
-  day : number
-}
 
 // Credit Payment Timing (which is needed to calculate cass loss)
-export async function getCreditPaymentTiming() {
+export async function getCreditPaymentTiming() : Promise<CreditPaymentTiming> {
   await connectDB();
-  const session =await getServerSession(authOptions)
+  const session = await getServerSession(authOptions)
     const creditPaymentTiming = await User.findById(session?.user._id).then(
       (user) => user?.preferences?.creditPaymentTiming
     );
     return JSON.parse(JSON.stringify(creditPaymentTiming));
 }
 
-export async function editCreditPaymentTiming({ delayMonth, day }: CreditPaymentTiming) {
+export async function editCreditPaymentTiming({ delayMonth, day }: CreditPaymentTiming) : Promise<CreditPaymentTiming> {
   await connectDB();
   const session = await getServerSession(authOptions);
   const updatedUser = await User.findByIdAndUpdate(
